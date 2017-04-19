@@ -1,0 +1,4 @@
+obj/
+bin/
+!Reference Assemblies/*.dll
+Reference Assemblies/*.xml
