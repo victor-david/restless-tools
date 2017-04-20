@@ -16,3 +16,4 @@ Provides various support and helper classes for applications.
 This library is used by the following GitHub respositories:
 
 - [Panama ∑en](https://github.com/victor-david/panama)
+- [Network Tools](https://github.com/victor-david/network-tools)
