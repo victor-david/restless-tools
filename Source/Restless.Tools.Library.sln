@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Library", "Restless.Tools.Library\Restless.Tools.Library.csproj", "{9A112D3A-717C-4387-A831-F0077C6CC437}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Library", "Restless.Tools.Library\Restless.Tools.Library.csproj", "{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Library.OfficeAutomation", "Restless.Tools.Library.OfficeAutomation\Restless.Tools.Library.OfficeAutomation.csproj", "{6DB76CAD-D35A-4BDF-9A01-DD0DB96C4019}"
 EndProject
