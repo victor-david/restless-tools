@@ -74,6 +74,16 @@ namespace Restless.Tools.Database.SQLite
         {
             return (DateTime)Row[colName];
         }
+        
+        /// <summary>
+        /// Gets a Boolean value from the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <returns>The Boolean value.</returns>
+        protected bool GetBoolean(string colName)
+        {
+            return (bool)Row[colName];
+        }
 
         /// <summary>
         /// Sets an Int64 value on the specified column.
@@ -101,6 +111,16 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, DateTime value)
+        {
+            Row[colName] = value;
+        }
+
+        /// <summary>
+        /// Sets a Boolean value on the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <param name="value">The value.</param>
+        protected void SetValue(string colName, bool value)
         {
             Row[colName] = value;
         }
