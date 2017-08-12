@@ -26,10 +26,15 @@ namespace Restless.Tools.Database.SQLite
         private const string RowId = "_rowid_";
         private const string RowIdAlias = "SYSROWID";
         //private const string ColumnActionPropertyKey = "{6554ed42-bd9a-403b-856e-2545ae03d2d5}";
+
+        // This provides a way to avoid updating the db uneccesarily due to calculated columns.
+        // When an eligible column is changed, it's added to this list. Later, during update, we check
+        // to see if there's any need to update.
+        private Dictionary<DataRow,List<DataColumn>> changedEligibleColumns;
         #endregion
 
         /************************************************************************/
-        
+
         #region Public fields and properties
         /// <summary>
         /// Gets a value that indicates whether or not this table is read only. When True, no update operations are allowed
@@ -93,6 +98,7 @@ namespace Restless.Tools.Database.SQLite
             adapter.InsertCommand = new SQLiteCommand(controller.Connection);
             adapter.UpdateCommand = new SQLiteCommand(controller.Connection);
             adapter.DeleteCommand = new SQLiteCommand(controller.Connection);
+            changedEligibleColumns = new Dictionary<DataRow, List<DataColumn>>();
         }
         #endregion
 
@@ -139,6 +145,7 @@ namespace Restless.Tools.Database.SQLite
             Update(dirty);
             Delete(dirty);
             AcceptChanges();
+            changedEligibleColumns.Clear();
         }
 
         /// <summary>
@@ -412,7 +419,7 @@ namespace Restless.Tools.Database.SQLite
 
         /// <summary>
         /// Override in a derived class to perform post registration operations such as setting table relations. The controller
-        /// calls this method after all tables have been registered.
+        /// calls this method after all tables have been registered. The base method does nothing.
         /// </summary>
         protected internal virtual void SetDataRelations()
         {
@@ -421,7 +428,7 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Override in a derived class to create calculated columns based on established relations. The controller
         /// calls this method after all tables have been registered and all tables have had an opportunity
-        /// to set data relations via the <see cref="SetDataRelations"/> method.
+        /// to set data relations via the <see cref="SetDataRelations"/> method. The base method does nothing.
         /// </summary>
         protected internal virtual void UseDataRelations()
         {
@@ -431,6 +438,7 @@ namespace Restless.Tools.Database.SQLite
         /// Override in a derived class to perform special operations after load and relation operations.
         /// The controller calls this method after all tables have had an opportunity to set data relations
         /// via the  <see cref="SetDataRelations"/> method, and use data relations via the <see cref="UseDataRelations"/> method.
+        /// The base method does nothing.
         /// </summary>
         protected internal virtual void OnInitializationComplete()
         {
@@ -445,6 +453,27 @@ namespace Restless.Tools.Database.SQLite
         /// </param>
         protected internal virtual void OnShuttingDown(bool saveOnShutdown)
         {
+        }
+
+        /// <summary>
+        /// Called when a colum has changed.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnColumnChanged(DataColumnChangeEventArgs e)
+        {
+            base.OnColumnChanged(e);
+            if (IsColumnEligible(e.Column, DataColumnPropertyKey.ExcludeFromUpdate))
+            {
+                if (!changedEligibleColumns.ContainsKey(e.Row))
+                {
+                    changedEligibleColumns.Add(e.Row, new List<DataColumn>());
+                }
+
+                if (!changedEligibleColumns[e.Row].Contains(e.Column))
+                {
+                    changedEligibleColumns[e.Row].Add(e.Column);
+                }
+            }
         }
         #endregion
 
@@ -489,7 +518,7 @@ namespace Restless.Tools.Database.SQLite
 
             foreach (DataColumn col in Columns)
             {
-                if (IsColumnElibible(col, DataColumnPropertyKey.ExcludeFromInsert))
+                if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromInsert))
                 {
                     colList.Append(String.Format("{0},", col.ColumnName));
                 }
@@ -505,7 +534,7 @@ namespace Restless.Tools.Database.SQLite
 
                 foreach (DataColumn col in Columns)
                 {
-                    if (IsColumnElibible(col, DataColumnPropertyKey.ExcludeFromInsert))
+                    if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromInsert))
                     {
                         sql.Append(String.Format(":{0},", col.ColumnName));
                         adapter.InsertCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
@@ -530,27 +559,44 @@ namespace Restless.Tools.Database.SQLite
         {
             if (!dirty.IsUpdateDirty) return;
             StringBuilder sql = new StringBuilder(512);
-            // adapter.UpdateCommand.Parameters.Clear();
 
             foreach (DataRow row in dirty.Update)
             {
-                adapter.UpdateCommand.Parameters.Clear();
-                sql.Clear();
-                sql.Append(String.Format("UPDATE {0} SET ", TableName));
+                if (HaveChangedEligibleColumns(row))
+                {
+                    adapter.UpdateCommand.Parameters.Clear();
+                    sql.Clear();
+                    sql.Append(String.Format("UPDATE {0} SET ", TableName));
+                    foreach (DataColumn col in Columns)
+                    {
+                        if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate))
+                        {
+                            sql.Append(String.Format("{0}=:{0},", col.ColumnName));
+                            adapter.UpdateCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
+                        }
+                    }
+                    // get rid of the last comma
+                    sql.Remove(sql.Length - 1, 1);
+                    sql.Append(String.Format(" WHERE {0}={1}", RowId, row[RowIdAlias]));
+                    adapter.UpdateCommand.CommandText = sql.ToString();
+                    adapter.UpdateCommand.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private bool HaveChangedEligibleColumns(DataRow row)
+        {
+            if (changedEligibleColumns.ContainsKey(row))
+            {
                 foreach (DataColumn col in Columns)
                 {
-                    if (IsColumnElibible(col, DataColumnPropertyKey.ExcludeFromUpdate))
+                    if (changedEligibleColumns[row].Contains(col))
                     {
-                        sql.Append(String.Format("{0}=:{0},", col.ColumnName));
-                        adapter.UpdateCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
+                        return true;
                     }
                 }
-                // get rid of the last comma
-                sql.Remove(sql.Length - 1, 1);
-                sql.Append(String.Format(" WHERE {0}={1}", RowId, row[RowIdAlias]));
-                adapter.UpdateCommand.CommandText = sql.ToString();
-                adapter.UpdateCommand.ExecuteNonQuery();
             }
+            return false;
         }
 
         private void Delete(DirtyRows dirty)
@@ -579,7 +625,7 @@ namespace Restless.Tools.Database.SQLite
             return DbType.String;
         }
 
-        private bool IsColumnElibible(DataColumn col, DataColumnPropertyKey exclusionKey)
+        private bool IsColumnEligible(DataColumn col, DataColumnPropertyKey exclusionKey)
         {
             return
             (
@@ -589,6 +635,11 @@ namespace Restless.Tools.Database.SQLite
                 !col.ExtendedProperties.ContainsKey(exclusionKey)
             );
         }
+
+        //private bool IsColumnEligible(DataRow row, DataColumn col)
+        //{
+        //    IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate);
+        //}
 
         private void InsertLastInsertId(DataRow row)
         {

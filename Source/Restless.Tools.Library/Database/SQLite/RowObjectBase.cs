@@ -5,6 +5,8 @@ using System.Text;
 using System.Data;
 using Restless.Tools.Utility;
 using Restless.Tools.Resources;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Restless.Tools.Database.SQLite
 {
@@ -12,8 +14,9 @@ namespace Restless.Tools.Database.SQLite
     /// Represents an object that encapsulate a single row. This class must be inherited.
     /// </summary>
     /// <typeparam name="T">The table type to which the row belongs</typeparam>
-    public abstract class RowObjectBase<T> where T : TableBase
+    public abstract class RowObjectBase<T>  where T : TableBase 
     {
+        #region Public properties
         /// <summary>
         /// Gets the data row that is the underlying basis for this object.
         /// </summary>
@@ -22,6 +25,29 @@ namespace Restless.Tools.Database.SQLite
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets the table that is the underlying basis for this object.
+        /// </summary>
+        public T Table
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates if this row object is selected.
+        /// </summary>
+        /// <remarks>
+        /// This property is not used by the base class. It is provided as a convienance
+        /// property for use in data binding situations.
+        /// </remarks>
+        public bool IsSelected
+        {
+            get;
+            set;
+        }
+        #endregion
 
         /************************************************************************/
 
@@ -37,12 +63,13 @@ namespace Restless.Tools.Database.SQLite
             {
                 throw new InvalidOperationException(Strings.InvalidOperation_DataRowTableMismatch);
             }
+            Table = (T)row.Table;
             Row = row;
         }
         #endregion
 
         /************************************************************************/
-        
+
         #region Protected methods
         /// <summary>
         /// Gets an Int64 value from the specified column.
@@ -51,7 +78,31 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>The Int64 value.</returns>
         protected Int64 GetInt64(string colName)
         {
-            return (Int64)Row[colName];
+            if (Row[colName] != DBNull.Value)
+            {
+                return (Int64)Row[colName];
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets a Decimal value from the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <returns>The Decimal value.</returns>
+        protected Decimal GetDecimal(string colName)
+        {
+            if (Row[colName] != DBNull.Value)
+            {
+                return (Decimal)Row[colName];
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -64,7 +115,6 @@ namespace Restless.Tools.Database.SQLite
             return Row[colName].ToString();
         }
 
-
         /// <summary>
         /// Gets a DateTime value from the specified column.
         /// </summary>
@@ -72,7 +122,14 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>The DateTime value.</returns>
         protected DateTime GetDateTime(string colName)
         {
-            return (DateTime)Row[colName];
+            if (Row[colName] != DBNull.Value)
+            {
+                return (DateTime)Row[colName];
+            }
+            else
+            {
+                return DateTime.MinValue;
+            }
         }
         
         /// <summary>
@@ -82,7 +139,14 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>The Boolean value.</returns>
         protected bool GetBoolean(string colName)
         {
-            return (bool)Row[colName];
+            if (Row[colName] != DBNull.Value)
+            {
+                return (bool)Row[colName];
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -91,6 +155,16 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, Int64 value)
+        {
+            Row[colName] = value;
+        }
+
+        /// <summary>
+        /// Sets a Decimal value on the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <param name="value">The value.</param>
+        protected void SetValue(string colName, Decimal value)
         {
             Row[colName] = value;
         }
