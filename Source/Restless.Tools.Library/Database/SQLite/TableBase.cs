@@ -8,7 +8,6 @@ using System.IO;
 using System.Data.SQLite;
 using System.Collections.Specialized;
 using System.Data;
-using Restless.Tools.Database.Generic;
 using Restless.Tools.Resources;
 using System.Diagnostics;
 
@@ -138,12 +137,11 @@ namespace Restless.Tools.Database.SQLite
         public void Save()
         {
             if (IsReadOnly) return;
-
-            DirtyRows dirty = new DirtyRows(this);
-            if (!dirty.IsDirty) return;
-            Insert(dirty);
-            Update(dirty);
-            Delete(dirty);
+            var status = new UpdateStatus(this);
+            if (!status.HaveAny) return;
+            Insert(status);
+            Update(status);
+            Delete(status);
             AcceptChanges();
             changedEligibleColumns.Clear();
         }
@@ -168,8 +166,8 @@ namespace Restless.Tools.Database.SQLite
         {
             if (!IsReadOnly)
             {
-                DirtyRows dirty = new DirtyRows(this);
-                return dirty.IsDirty;
+                var status = new UpdateStatus(this);
+                return status.HaveAny;
             }
             return false;
         }
@@ -510,9 +508,9 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Private methods
-        private void Insert(DirtyRows dirty)
+        private void Insert(UpdateStatus status)
         {
-            if (!dirty.IsInsertDirty) return;
+            if (!status.HaveInsert) return;
             StringBuilder colList = new StringBuilder(512);
             StringBuilder sql = new StringBuilder(512);
 
@@ -526,7 +524,7 @@ namespace Restless.Tools.Database.SQLite
             // get rid of the last comma in the column list
             colList.Remove(colList.Length - 1, 1);       
             
-            foreach (DataRow row in dirty.Insert)
+            foreach (DataRow row in status.Insert)
             {
                 adapter.InsertCommand.Parameters.Clear();
                 sql.Clear();
@@ -555,12 +553,12 @@ namespace Restless.Tools.Database.SQLite
             }
         }
 
-        private void Update(DirtyRows dirty)
+        private void Update(UpdateStatus status)
         {
-            if (!dirty.IsUpdateDirty) return;
+            if (!status.HaveUpdate) return;
             StringBuilder sql = new StringBuilder(512);
 
-            foreach (DataRow row in dirty.Update)
+            foreach (DataRow row in status.Update)
             {
                 if (HaveChangedEligibleColumns(row))
                 {
@@ -599,11 +597,11 @@ namespace Restless.Tools.Database.SQLite
             return false;
         }
 
-        private void Delete(DirtyRows dirty)
+        private void Delete(UpdateStatus status)
         {
-            if (IsDeleteRestricted || !dirty.IsDeleteDirty) return;
+            if (IsDeleteRestricted || !status.HaveDelete) return;
             StringBuilder sql = new StringBuilder(512);
-            foreach (DataRow row in dirty.Delete)
+            foreach (DataRow row in status.Delete)
             {
                 adapter.DeleteCommand.Parameters.Clear();
                 sql.Clear();
@@ -677,5 +675,86 @@ namespace Restless.Tools.Database.SQLite
             return false;
         }
         #endregion
+
+        /************************************************************************/
+
+        private class UpdateStatus
+        {
+            /// <summary>
+            /// Gets a list of DataRow objects to be inserted
+            /// </summary>
+            public List<DataRow> Insert
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets a list of DataRow objects that have been updated.
+            /// </summary>
+            public List<DataRow> Update
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets a list of DataRow objects to be deleted.
+            /// </summary>
+            public List<DataRow> Delete
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets a boolean value that indicates if there are records that should be inserted.
+            /// </summary>
+            public bool HaveInsert
+            {
+                get { return Insert.Count > 0; }
+            }
+
+            /// <summary>
+            /// Gets a boolean value that indicates iof there are records that should be updated.
+            /// </summary>
+            public bool HaveUpdate
+            {
+                get { return Update.Count > 0; }
+            }
+
+            /// <summary>
+            /// Gets a bollean value that indicates if there are records that should be deleted
+            /// </summary>
+            public bool HaveDelete
+            {
+                get { return Delete.Count > 0; }
+            }
+
+            /// <summary>
+            /// Gets a boolean value that indicates if any row needs updating for any reason (insert, update, or delete); otherwise, false.
+            /// </summary>
+            public bool HaveAny
+            {
+                get { return HaveInsert || HaveUpdate || HaveDelete; }
+            }
+
+            public UpdateStatus(TableBase table)
+            {
+                //table.changedEligibleColumns
+                Insert = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Added).ToList();
+                Delete = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Deleted).ToList();
+                Update = new List<DataRow>();
+                DataRow[] update = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.ModifiedOriginal);
+                foreach (DataRow row in update)
+                {
+                    if (table.HaveChangedEligibleColumns(row))
+                    {
+                        Update.Add(row);
+                    }
+                }
+
+            }
+        }
     }
 }

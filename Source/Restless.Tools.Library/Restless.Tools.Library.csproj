@@ -122,7 +122,6 @@
     <Compile Include="Converters\Int64ToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverterOptions.cs" />
-    <Compile Include="Database\Generic\ITableImport.cs" />
     <Compile Include="Database\SQLite\ActionDataColumn.cs">
       <SubType>foo</SubType>
     </Compile>
@@ -137,7 +136,6 @@
     </Compile>
     <Compile Include="Database\SQLite\DatabaseControllerBase.cs" />
     <Compile Include="Database\SQLite\ExecuteObject.cs" />
-    <Compile Include="Database\Generic\DirtyRows.cs" />
     <Compile Include="Database\SQLite\TableStatisticBase.cs" />
     <Compile Include="Network\RequestData.cs" />
     <Compile Include="Network\RequestManager.cs" />

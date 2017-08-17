@@ -8,7 +8,6 @@ using Restless.Tools.Utility;
 using Restless.Tools.Resources;
 using System.Collections.ObjectModel;
 using System.Data;
-using Restless.Tools.Database.Generic;
 
 namespace Restless.Tools.Database.SQLite
 {

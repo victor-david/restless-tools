@@ -156,7 +156,10 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, Int64 value)
         {
-            Row[colName] = value;
+            if (!Row[colName].Equals(value))
+            {
+                Row[colName] = value;
+            }
         }
 
         /// <summary>
@@ -166,7 +169,10 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, Decimal value)
         {
-            Row[colName] = value;
+            if (!Row[colName].Equals(value))
+            {
+                Row[colName] = value;
+            }
         }
 
         /// <summary>
@@ -176,7 +182,10 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, string value)
         {
-            Row[colName] = value;
+            if (!Row[colName].Equals(value))
+            {
+                Row[colName] = value;
+            }
         }
 
         /// <summary>
@@ -186,7 +195,10 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, DateTime value)
         {
-            Row[colName] = value;
+            if (!Row[colName].Equals(value))
+            {
+                Row[colName] = value;
+            }
         }
 
         /// <summary>
@@ -196,7 +208,10 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="value">The value.</param>
         protected void SetValue(string colName, bool value)
         {
-            Row[colName] = value;
+            if (!Row[colName].Equals(value))
+            {
+                Row[colName] = value;
+            }
         }
         #endregion
     }
