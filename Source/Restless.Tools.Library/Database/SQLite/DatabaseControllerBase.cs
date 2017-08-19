@@ -135,6 +135,36 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
+        /// Executes a series of statements within a transaction
+        /// </summary>
+        /// <param name="sqlList">The list of sql statements</param>
+        public void ExecuteTransaction(IEnumerable<string> sqlList)
+        {
+            sqlList = sqlList ?? throw new ArgumentNullException("ExecuteTransaction.SqlList");
+
+            using (var transaction = Connection.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var sql in sqlList)
+                    {
+                        using (var cmd = new SQLiteCommand(sql, Connection, transaction))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
         /// Shutdowns the database connection.
         /// </summary>
         /// <param name="saveTables">true to save all tables</param>
@@ -221,6 +251,7 @@ namespace Restless.Tools.Database.SQLite
             where T : TableBase, new()
         {
             var table = new T();
+
             if (!table.Exists() && Behavior.HasFlag(DatabaseControllerBehavior.AutoDdlCreation))
             {
                 table.CreateFromDdl();

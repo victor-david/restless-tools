@@ -102,7 +102,7 @@ namespace Restless.Tools.Database.SQLite
         #endregion
 
         /************************************************************************/
-        
+
         #region Public methods
         /// <summary>
         /// Gets a boolean value that indicates if this table exists within the database.
@@ -560,25 +560,22 @@ namespace Restless.Tools.Database.SQLite
 
             foreach (DataRow row in status.Update)
             {
-                if (HaveChangedEligibleColumns(row))
+                adapter.UpdateCommand.Parameters.Clear();
+                sql.Clear();
+                sql.Append(String.Format("UPDATE {0} SET ", TableName));
+                foreach (DataColumn col in Columns)
                 {
-                    adapter.UpdateCommand.Parameters.Clear();
-                    sql.Clear();
-                    sql.Append(String.Format("UPDATE {0} SET ", TableName));
-                    foreach (DataColumn col in Columns)
+                    if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate))
                     {
-                        if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate))
-                        {
-                            sql.Append(String.Format("{0}=:{0},", col.ColumnName));
-                            adapter.UpdateCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
-                        }
+                        sql.Append(String.Format("{0}=:{0},", col.ColumnName));
+                        adapter.UpdateCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
                     }
-                    // get rid of the last comma
-                    sql.Remove(sql.Length - 1, 1);
-                    sql.Append(String.Format(" WHERE {0}={1}", RowId, row[RowIdAlias]));
-                    adapter.UpdateCommand.CommandText = sql.ToString();
-                    adapter.UpdateCommand.ExecuteNonQuery();
                 }
+                // get rid of the last comma
+                sql.Remove(sql.Length - 1, 1);
+                sql.Append(String.Format(" WHERE {0}={1}", RowId, row[RowIdAlias]));
+                adapter.UpdateCommand.CommandText = sql.ToString();
+                adapter.UpdateCommand.ExecuteNonQuery();
             }
         }
 
@@ -678,6 +675,10 @@ namespace Restless.Tools.Database.SQLite
 
         /************************************************************************/
 
+        #region Update Status (private class)
+        /// <summary>
+        /// Creats and exposes information about rows that need to be updated.
+        /// </summary>
         private class UpdateStatus
         {
             /// <summary>
@@ -741,7 +742,6 @@ namespace Restless.Tools.Database.SQLite
 
             public UpdateStatus(TableBase table)
             {
-                //table.changedEligibleColumns
                 Insert = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Added).ToList();
                 Delete = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Deleted).ToList();
                 Update = new List<DataRow>();
@@ -753,8 +753,8 @@ namespace Restless.Tools.Database.SQLite
                         Update.Add(row);
                     }
                 }
-
             }
         }
+        #endregion
     }
 }
