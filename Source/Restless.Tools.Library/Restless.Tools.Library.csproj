@@ -137,6 +137,7 @@
     <Compile Include="Database\SQLite\DatabaseControllerBase.cs" />
     <Compile Include="Database\SQLite\ExecuteObject.cs" />
     <Compile Include="Database\SQLite\TableStatisticBase.cs" />
+    <Compile Include="Database\SQLite\TransactionAdapter.cs" />
     <Compile Include="Network\RequestData.cs" />
     <Compile Include="Network\RequestManager.cs" />
     <Compile Include="Network\Whois\WhoisEventsArgs.cs" />

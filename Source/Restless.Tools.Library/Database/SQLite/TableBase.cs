@@ -136,14 +136,7 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         public void Save()
         {
-            if (IsReadOnly) return;
-            var status = new UpdateStatus(this);
-            if (!status.HaveAny) return;
-            Insert(status);
-            Update(status);
-            Delete(status);
-            AcceptChanges();
-            changedEligibleColumns.Clear();
+            Save(null); // no transaction
         }
 
         /// <summary>
@@ -479,6 +472,21 @@ namespace Restless.Tools.Database.SQLite
 
         #region Internal methods
         /// <summary>
+        /// Saves the data that has changed.
+        /// </summary>
+        internal void Save(IDbTransaction transaction = null)
+        {
+            if (IsReadOnly) return;
+            var status = new UpdateStatus(this);
+            if (!status.HaveAny) return;
+            Insert(status, transaction);
+            Update(status, transaction);
+            Delete(status, transaction);
+            AcceptChanges();
+            changedEligibleColumns.Clear();
+        }
+
+        /// <summary>
         /// Creates the table in the database from the DDL text.
         /// </summary>
         internal void CreateFromDdl()
@@ -508,9 +516,10 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Private methods
-        private void Insert(UpdateStatus status)
+        private void Insert(UpdateStatus status, IDbTransaction transaction)
         {
             if (!status.HaveInsert) return;
+            adapter.InsertCommand.Transaction = transaction as SQLiteTransaction;
             StringBuilder colList = new StringBuilder(512);
             StringBuilder sql = new StringBuilder(512);
 
@@ -553,9 +562,10 @@ namespace Restless.Tools.Database.SQLite
             }
         }
 
-        private void Update(UpdateStatus status)
+        private void Update(UpdateStatus status, IDbTransaction transaction)
         {
             if (!status.HaveUpdate) return;
+            adapter.UpdateCommand.Transaction = transaction as SQLiteTransaction;
             StringBuilder sql = new StringBuilder(512);
 
             foreach (DataRow row in status.Update)
@@ -594,9 +604,10 @@ namespace Restless.Tools.Database.SQLite
             return false;
         }
 
-        private void Delete(UpdateStatus status)
+        private void Delete(UpdateStatus status, IDbTransaction transaction)
         {
             if (IsDeleteRestricted || !status.HaveDelete) return;
+            adapter.DeleteCommand.Transaction = transaction as SQLiteTransaction;
             StringBuilder sql = new StringBuilder(512);
             foreach (DataRow row in status.Delete)
             {

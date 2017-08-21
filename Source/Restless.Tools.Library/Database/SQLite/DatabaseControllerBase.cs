@@ -8,6 +8,7 @@ using Restless.Tools.Utility;
 using Restless.Tools.Resources;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 
 namespace Restless.Tools.Database.SQLite
 {
@@ -18,7 +19,6 @@ namespace Restless.Tools.Database.SQLite
     {
         #region Private
         private const string DataSetName = "Main";
-
         #endregion
 
         /************************************************************************/
@@ -55,6 +55,7 @@ namespace Restless.Tools.Database.SQLite
 
         /// <summary>
         /// Gets the connection object.
+        /// This property is not available until the <see cref="CreateAndOpen(string)"/> method has been called.
         /// </summary>
         public SQLiteConnection Connection
         {
@@ -64,6 +65,7 @@ namespace Restless.Tools.Database.SQLite
 
         /// <summary>
         /// Gets the execution object.
+        /// This property is not available until the <see cref="CreateAndOpen(string)"/> method has been called.
         /// </summary>
         public ExecuteObject Execution
         {
@@ -72,7 +74,18 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
+        /// Gets the transaction adapeter for this controller.
+        /// This property is not available until the <see cref="CreateAndOpen(string)"/> method has been called.
+        /// </summary>
+        public TransactionAdapter Transaction
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets a value that indicates if the database controller has been initialized.
+        /// This property is set to true when the <see cref="CreateAndOpen(string)"/> method is called.
         /// </summary>
         public bool Initialized
         {
@@ -135,36 +148,6 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
-        /// Executes a series of statements within a transaction
-        /// </summary>
-        /// <param name="sqlList">The list of sql statements</param>
-        public void ExecuteTransaction(IEnumerable<string> sqlList)
-        {
-            sqlList = sqlList ?? throw new ArgumentNullException("ExecuteTransaction.SqlList");
-
-            using (var transaction = Connection.BeginTransaction())
-            {
-                try
-                {
-                    foreach (var sql in sqlList)
-                    {
-                        using (var cmd = new SQLiteCommand(sql, Connection, transaction))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
         /// Shutdowns the database connection.
         /// </summary>
         /// <param name="saveTables">true to save all tables</param>
@@ -193,6 +176,7 @@ namespace Restless.Tools.Database.SQLite
                 Connection.Close();
                 Connection = null;
                 Execution = null;
+                Transaction = null;
                 DatabaseFileName = null;
                 Initialized = false;
             }
@@ -235,6 +219,7 @@ namespace Restless.Tools.Database.SQLite
                 Connection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFileName));
                 Connection.Open();
                 Execution = new ExecuteObject(Connection);
+                Transaction = new TransactionAdapter(Connection);
                 Initialized = true;
             }
         }
