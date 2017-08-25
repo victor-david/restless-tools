@@ -131,12 +131,27 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         public abstract void Load();
 
+
+        /// <summary>
+        /// Saves the data that has changed.
+        /// </summary>
+        /// <param name="transaction">The transaction associated with this save operation.</param>
+        /// <remarks>
+        /// The <paramref name="transaction"/> parameter is designed to be used with the
+        /// <see cref="TransactionAdapter.ExecuteTransaction(Action{SQLiteTransaction}, TableBase[])"/> method.
+        /// </remarks>
+        public void Save(IDbTransaction transaction)
+        {
+            Validations.ValidateNull(transaction, "Save.Transaction");
+            SavePrivate(transaction);
+        }
+
         /// <summary>
         /// Saves the data that has changed.
         /// </summary>
         public void Save()
         {
-            Save(null); // no transaction
+            SavePrivate(null);
         }
 
         /// <summary>
@@ -472,21 +487,6 @@ namespace Restless.Tools.Database.SQLite
 
         #region Internal methods
         /// <summary>
-        /// Saves the data that has changed.
-        /// </summary>
-        internal void Save(IDbTransaction transaction = null)
-        {
-            if (IsReadOnly) return;
-            var status = new UpdateStatus(this);
-            if (!status.HaveAny) return;
-            Insert(status, transaction);
-            Update(status, transaction);
-            Delete(status, transaction);
-            AcceptChanges();
-            changedEligibleColumns.Clear();
-        }
-
-        /// <summary>
         /// Creates the table in the database from the DDL text.
         /// </summary>
         internal void CreateFromDdl()
@@ -516,6 +516,21 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Private methods
+        private void SavePrivate(IDbTransaction transaction)
+        {
+            if (IsReadOnly) return;
+            var status = new UpdateStatus(this);
+            if (!status.HaveAny) return;
+            Insert(status, transaction);
+            Update(status, transaction);
+            Delete(status, transaction);
+            if (transaction == null)
+            {
+                AcceptChanges();
+            }
+            changedEligibleColumns.Clear();
+        }
+
         private void Insert(UpdateStatus status, IDbTransaction transaction)
         {
             if (!status.HaveInsert) return;

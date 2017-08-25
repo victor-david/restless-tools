@@ -83,7 +83,7 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Executes a series of statements within a transaction
         /// </summary>
-        /// <param name="callback">A callback action to perform updates within the transaction</param>
+        /// <param name="updateCallback">A callback action to perform updates within the transaction</param>
         /// <param name="tables">The tables that will participate in the transaction.</param>
         /// <remarks>
         /// <para>
@@ -97,18 +97,19 @@ namespace Restless.Tools.Database.SQLite
         /// in the <paramref name="tables"/> parameter is saved before the transaction begins.
         /// </para>
         /// <para>
-        /// In the <paramref name="callback"/> method, you should perform whatever updates are needed, but NOT
-        /// call the table's <see cref="TableBase.Save(IDbTransaction)"/> method. That is handled automatically by this method
-        /// when the transaction completes successfully.
+        /// In the <paramref name="updateCallback"/> method, you should perform whatever updates are needed. You must call each particpiating
+        /// table's <see cref="TableBase.Save(IDbTransaction)"/> method once during the callback, passing the transaction given in the callback.
         /// </para>
         /// </remarks>
-        public void ExecuteTransaction(Action callback, params TableBase[] tables)
+        public void ExecuteTransaction(Action<SQLiteTransaction> updateCallback, params TableBase[] tables)
         {
-            callback = callback ?? throw new ArgumentNullException("ExecuteTransaction.Callback");
+            updateCallback = updateCallback ?? throw new ArgumentNullException("ExecuteTransaction.UpdateCallback");
+
             if (tables.Count() == 0)
             {
                 throw new InvalidOperationException("ExecuteTransaction (no tables)");
             }
+
             if (tables.Where((t) => t == null).Count() > 0)
             {
                 throw new ArgumentNullException("ExecuteTransaction.Tables");
@@ -123,12 +124,12 @@ namespace Restless.Tools.Database.SQLite
             {
                 try
                 {
-                    callback();
+                    updateCallback(transaction);
+                    transaction.Commit();
                     foreach (var table in tables)
                     {
-                        table.Save(transaction);
+                        table.AcceptChanges();
                     }
-                    transaction.Commit();
                 }
                 catch (Exception)
                 {
