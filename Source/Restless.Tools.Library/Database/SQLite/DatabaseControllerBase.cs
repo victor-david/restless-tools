@@ -256,43 +256,11 @@ namespace Restless.Tools.Database.SQLite
             return table;
         }
 
-        ///// <summary>
-        ///// Instansiates the specified table type and adds it to the Tables collection. Uses default behaviors
-        ///// </summary>
-        ///// <typeparam name="T">The type derived from TableBase</typeparam>
-        ///// <returns>The table object</returns>
-        ///// <remarks>
-        ///// This method attempts to create the table structure within the database.
-        ///// </remarks>
-        //protected T CreateAndRegisterTable<T>()
-        //    where T : TableBase, new()
-        //{
-        //    return CreateAndRegisterTable<T>(Behavior);
-        //}
-
         /// <summary>
         /// Enables a derived class to signal that table registration is complete, allowing the base controller to begin table post registration operations.
         /// </summary>
         protected void TableRegistrationComplete()
         {
-            //foreach (var table in DataSet.Tables.OfType<TableBase>())
-            //{
-            //    if (table.Exists() && !table.HasRows() && Behavior.HasFlag(DatabaseControllerBehavior.AutoPopulate))
-            //    {
-            //        table.Populate();
-            //    }
-            //}
-
-            //foreach (var table in DataSet.Tables.OfType<TableBase>())
-            //{
-            //    if (table.Exists() && Behavior.HasFlag(DatabaseControllerBehavior.AutoDataLoad))
-            //    {
-            //        table.Load();
-            //    }
-            //}
-
-
-
             List<TableBase> failed = new List<TableBase>();
             foreach (var table in DataSet.Tables.OfType<TableBase>())
             {
