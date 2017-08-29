@@ -521,12 +521,36 @@ namespace Restless.Tools.Database.SQLite
             if (IsReadOnly) return;
             var status = new UpdateStatus(this);
             if (!status.HaveAny) return;
-            Insert(status, transaction);
-            Update(status, transaction);
-            Delete(status, transaction);
+
             if (transaction == null)
             {
-                AcceptChanges();
+                using (transaction = Controller.Connection.BeginTransaction())
+                {
+                    try
+                    {
+                        Insert(status, transaction);
+                        Update(status, transaction);
+                        Delete(status, transaction);
+                        transaction.Commit();
+                        AcceptChanges();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        RejectChanges();
+                        throw;
+                    }
+                    finally
+                    {
+                    }
+                }
+            }
+            // already a transaction. AcceptChanges or RejectChanges will be called by TransactionAdapter.
+            else
+            {
+                Insert(status, transaction);
+                Update(status, transaction);
+                Delete(status, transaction);
             }
             changedEligibleColumns.Clear();
         }
@@ -581,8 +605,8 @@ namespace Restless.Tools.Database.SQLite
         {
             if (!status.HaveUpdate) return;
             adapter.UpdateCommand.Transaction = transaction as SQLiteTransaction;
-            StringBuilder sql = new StringBuilder(512);
 
+            StringBuilder sql = new StringBuilder(512);
             foreach (DataRow row in status.Update)
             {
                 adapter.UpdateCommand.Parameters.Clear();
@@ -603,6 +627,7 @@ namespace Restless.Tools.Database.SQLite
                 adapter.UpdateCommand.ExecuteNonQuery();
             }
         }
+
 
         private bool HaveChangedEligibleColumns(DataRow row)
         {
