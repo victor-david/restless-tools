@@ -131,6 +131,20 @@ namespace Restless.Tools.Database.SQLite
                 return DateTime.MinValue;
             }
         }
+
+        /// <summary>
+        /// Gets a nullable DateTime value from the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <returns>The DateTime value, or null.</returns>
+        protected DateTime? GetNullableDateTime(string colName)
+        {
+            if (Row[colName] is DateTime)
+            {
+                return (DateTime)Row[colName];
+            }
+            return null;
+        }
         
         /// <summary>
         /// Gets a Boolean value from the specified column.
@@ -198,6 +212,26 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+            }
+        }
+
+        /// <summary>
+        /// Sets a nullable DateTime value on the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <param name="value">The value.</param>
+        protected void SetValue(string colName, DateTime? value)
+        {
+            if (!Row[colName].Equals(value))
+            {
+                if (value == null)
+                {
+                    Row[colName] = DBNull.Value;
+                }
+                else
+                { 
+                    Row[colName] = value;
+                }
             }
         }
 
