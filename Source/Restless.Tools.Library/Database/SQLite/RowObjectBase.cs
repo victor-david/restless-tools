@@ -198,7 +198,14 @@ namespace Restless.Tools.Database.SQLite
         {
             if (!Row[colName].Equals(value))
             {
-                Row[colName] = value;
+                if (String.IsNullOrEmpty(value))
+                {
+                    Row[colName] = DBNull.Value;
+                }
+                else
+                {
+                    Row[colName] = value;
+                }
             }
         }
 
