@@ -1,16 +1,11 @@
-﻿using Restless.Tools.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Restless.Tools.Network
 {
     /// <summary>
-    /// Represents the base class for request data
+    /// Represents request data used for <see cref="RequestManager"/>.
     /// </summary>
-    public class RequestData
+    public sealed class RequestData
     {
         /************************************************************************/
 
@@ -73,7 +68,6 @@ namespace Restless.Tools.Network
         /************************************************************************/
 
         #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestData"/> class.
         /// </summary>
@@ -90,8 +84,9 @@ namespace Restless.Tools.Network
         /// <param name="password">The password for the request.</param>
         public RequestData(string uri, string userId, string password)
         {
-            Validations.ValidateNullEmpty(uri, "RequestData.Uri");
-            Uri = uri;
+            Uri = uri ?? throw new ArgumentNullException();
+            UserId = userId;
+            Password = password;
             AllowAutoRedirect = true;
         }
         #endregion
