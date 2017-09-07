@@ -18,6 +18,25 @@ namespace Restless.Tools.Network
 
         /************************************************************************/
 
+        #region Public enumeration (RequestType)
+        /// <summary>
+        /// Enumerates the supported request types.
+        /// </summary>
+        public enum RequestType
+        {
+            /// <summary>
+            /// A GET request.
+            /// </summary>
+            Get,
+            /// <summary>
+            /// A POST request
+            /// </summary>
+            Post
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Public properties
         /// <summary>
         /// Gets the request data for this request
@@ -109,6 +128,7 @@ namespace Restless.Tools.Network
         /// Makes an asychonous network request.
         /// </summary>
         /// <param name="taskId">The task id for the async request</param>
+        /// <param name="requestType">The request type</param>
         /// <param name="receivedDataCallback">
         /// A callback method to use when the response has been received.
         /// The method parameter receives the response string.
@@ -125,6 +145,7 @@ namespace Restless.Tools.Network
         public void MakeAsyncRequest
             (
                 int taskId,
+                RequestType requestType,
                 Action<string> receivedDataCallback,
                 Action<Exception, HttpWebResponse> exceptionCallback,
                 Action<object> completeCallback,
@@ -135,9 +156,9 @@ namespace Restless.Tools.Network
 
             TaskManager.Instance.ExecuteTask(taskId, (token) =>
             {
-                var resp = SendPostRequest();
-                string respStr = GetResponseContent(resp);
-                receivedDataCallback(respStr);
+                HttpWebResponse response = GetResponse(requestType);
+                string responseStr = GetResponseContent(response);
+                receivedDataCallback(responseStr);
             }, null, null, false)
 
             .HandleExceptions((ex) =>
@@ -238,6 +259,17 @@ namespace Restless.Tools.Network
                 throw;
             }
             return response;
+        }
+
+        private HttpWebResponse GetResponse(RequestType type)
+        {
+            switch (type)
+            {
+                case RequestType.Post:
+                    return SendPostRequest();
+                default:
+                    return SendGetRequest();
+            }
         }
 
         private string GetCookieValue(Uri siteUri, string name)
