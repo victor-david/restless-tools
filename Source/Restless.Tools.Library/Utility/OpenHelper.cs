@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using Restless.Tools.Resources;
+using System;
 using System.ComponentModel;
-using Restless.Tools.Resources;
+using System.Diagnostics;
+using System.Text;
 
 namespace Restless.Tools.Utility
 {
@@ -89,14 +87,6 @@ namespace Restless.Tools.Utility
         public static void ExploreToFile(string fullPath)
         {
             OpenFile("explorer.exe", String.Format(@"/select,{0}", fullPath));
-        }
-
-        /// <summary>
-        /// Throws if the operating system is not at least Windows 7.
-        /// </summary>
-        public static void ThrowIfNotWindows7()
-        {
-            MS.WindowsAPICodePack.Internal.CoreHelpers.ThrowIfNotWin7();
         }
     }
 }

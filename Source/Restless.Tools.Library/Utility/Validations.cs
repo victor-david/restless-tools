@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Restless.Tools.Resources;
+﻿using Restless.Tools.Resources;
+using System;
 using System.Data;
 
 namespace Restless.Tools.Utility
@@ -12,6 +9,41 @@ namespace Restless.Tools.Utility
     /// </summary>
     public class Validations
     {
+
+        /// <summary>
+        /// Gets a boolean value that indicates if the platform is at least Windows 7.
+        /// </summary>
+        public static bool RunningOnWin7
+        {
+            get
+            {
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    return Environment.OSVersion.Version.CompareTo(new Version(6, 1)) >= 0;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Throws an exception if <see cref="RunningOnWin7"/> is false.
+        /// </summary>
+        public static void ThrowIfNotWin7()
+        {
+            if (!RunningOnWin7)
+            {
+                throw new PlatformNotSupportedException();
+            }
+        }
+
+        /// <summary>
+        /// Throws if the operating system is not at least Windows 7.
+        /// </summary>
+        public static void ThrowIfNotWindows7()
+        {
+            MS.WindowsAPICodePack.Internal.CoreHelpers.ThrowIfNotWin7();
+        }
+
         /// <summary>
         /// Throws an ArgumentNullException if the specified object is null.
         /// </summary>

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Restless.Tools.Win32
+namespace Restless.Tools.Utility
 {
-
     /// <summary>
     /// Provides file operations via Win32
     /// </summary>
