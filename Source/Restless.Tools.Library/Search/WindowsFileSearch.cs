@@ -92,7 +92,10 @@ namespace Restless.Tools.Search
 
             foreach (string scope in ExcludedScopes)
             {
-                sql.AppendFormat(" AND NOT scope='file:{0}'", scope);
+                if (!String.IsNullOrEmpty(scope))
+                {
+                    sql.AppendFormat(" AND NOT scope='file:{0}'", scope);
+                }
             }
 
             sql.AppendFormat(" AND CONTAINS(\"ALL\",'\"{0}*\"')", expression);
