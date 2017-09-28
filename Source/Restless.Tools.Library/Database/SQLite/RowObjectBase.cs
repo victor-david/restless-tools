@@ -177,6 +177,26 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
+        /// Sets an nullable Int64 value on the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <param name="value">The value.</param>
+        protected void SetValue(string colName, Int64? value)
+        {
+            if (!Row[colName].Equals(value))
+            {
+                if (value == null)
+                {
+                    Row[colName] = DBNull.Value;
+                }
+                else
+                {
+                    Row[colName] = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Sets a Decimal value on the specified column.
         /// </summary>
         /// <param name="colName">The column name.</param>
@@ -186,6 +206,26 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+            }
+        }
+
+        /// <summary>
+        /// Sets a nullable Decimal value on the specified column.
+        /// </summary>
+        /// <param name="colName">The column name.</param>
+        /// <param name="value">The value.</param>
+        protected void SetValue(string colName, Decimal? value)
+        {
+            if (!Row[colName].Equals(value))
+            {
+                if (value == null)
+                {
+                    Row[colName] = DBNull.Value;
+                }
+                else
+                {
+                    Row[colName] = value;
+                }
             }
         }
 

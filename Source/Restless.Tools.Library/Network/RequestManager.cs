@@ -163,23 +163,7 @@ namespace Restless.Tools.Network
 
             .HandleExceptions((ex) =>
             {
-                if (exceptionCallback != null)
-                {
-                    string msg = ex.Message;
-                    if (msg.StartsWith("The remote server returned an error:"))
-                    {
-                        msg = msg.Substring(36).Trim();
-                    }
-
-                    WebException wex = ex as WebException;
-                    HttpWebResponse resp = null;
-                    if (wex != null)
-                    {
-                        resp = wex.Response as HttpWebResponse;
-                    }
-
-                    exceptionCallback(new Exception(msg, ex.InnerException), resp);
-                }
+                HandleExceptionCallbackIf(exceptionCallback, ex);
             })
 
             .ContinueWith((t) =>
@@ -192,6 +176,51 @@ namespace Restless.Tools.Network
                     });
                 }
             });
+        }
+
+
+        /// <summary>
+        /// Makes a sychonous network request.
+        /// </summary>
+        /// <param name="requestType">The request type</param>
+        /// <param name="receivedDataCallback">
+        /// A callback method to use when the response has been received.
+        /// The method parameter receives the response string.
+        /// </param>
+        /// <param name="exceptionCallback">
+        /// A callback method to use if an exception occurs. Can be null if not needed.
+        /// </param>
+        /// <param name="completeCallback">
+        /// A callback method to use when complete. Can be null if not needed.
+        /// </param>
+        /// <param name="completeCallbackParm">A parameter to pass to <paramref name="completeCallback"/>.</param>
+        public void MakeSyncRequest
+            (
+                RequestType requestType,
+                Action<string> receivedDataCallback,
+                Action<Exception, HttpWebResponse> exceptionCallback,
+                Action<object> completeCallback,
+                object completeCallbackParm = null
+            )
+        {
+
+            Validations.ValidateNull(receivedDataCallback, " MakeSyncRequest.ReceivedDataCallback");
+
+            try
+            {
+                HttpWebResponse response = GetResponse(requestType);
+                string responseStr = GetResponseContent(response);
+                receivedDataCallback(responseStr);
+            }
+
+            catch (Exception ex)
+            {
+                HandleExceptionCallbackIf(exceptionCallback, ex);
+            }
+            finally
+            {
+                completeCallback?.Invoke(completeCallbackParm);
+            }
         }
         #endregion
 
@@ -276,6 +305,33 @@ namespace Restless.Tools.Network
         {
             Cookie cookie = cookies.GetCookies(siteUri)[name];
             return (cookie == null) ? null : cookie.Value;
+        }
+
+        /// <summary>
+        /// If <paramref name="exceptionCallback"/> is not null, sets up the exception message and calls the callback.
+        /// </summary>
+        /// <param name="exceptionCallback">The exception callback</param>
+        /// <param name="ex">The exception.</param>
+        private void HandleExceptionCallbackIf(Action<Exception, HttpWebResponse> exceptionCallback, Exception ex)
+        {
+            if (exceptionCallback != null)
+            {
+                string msg = ex.Message;
+                if (msg.StartsWith("The remote server returned an error:"))
+                {
+                    msg = msg.Substring(36).Trim();
+                }
+
+                HttpWebResponse resp = null;
+
+                if (ex is WebException wex)
+                {
+                    resp = wex.Response as HttpWebResponse;
+                }
+
+                exceptionCallback(new Exception(msg, ex.InnerException), resp);
+            }
+
         }
         #endregion
 
