@@ -179,6 +179,12 @@ namespace Restless.Tools.Database.SQLite
                 Transaction = null;
                 DatabaseFileName = null;
                 Initialized = false;
+                foreach (var table in DataSet.Tables.OfType<TableBase>())
+                {
+                    table.Constraints.Clear();
+                }
+                DataSet.Relations.Clear();
+                DataSet.Tables.Clear();
             }
         }
 
@@ -191,7 +197,7 @@ namespace Restless.Tools.Database.SQLite
         {
             try
             {
-                var table = this.DataSet.Tables.OfType<T>().First<T>();
+                var table = DataSet.Tables.OfType<T>().First();
                 return table;
             }
             catch
