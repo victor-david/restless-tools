@@ -98,7 +98,7 @@ namespace Restless.Tools.Database.SQLite
         /// </para>
         /// <para>
         /// In the <paramref name="updateCallback"/> method, you should perform whatever updates are needed. You must call each particpiating
-        /// table's <see cref="TableBase.Save(IDbTransaction)"/> method once during the callback, passing the transaction given in the callback.
+        /// table's <see cref="TableBase.Save(IDbTransaction)"/> method once (and only once) during the callback, passing the transaction given in the callback.
         /// </para>
         /// </remarks>
         public void ExecuteTransaction(Action<SQLiteTransaction> updateCallback, params TableBase[] tables)
