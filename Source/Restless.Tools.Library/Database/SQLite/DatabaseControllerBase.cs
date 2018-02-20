@@ -23,6 +23,23 @@ namespace Restless.Tools.Database.SQLite
 
         /************************************************************************/
 
+        #region Public fields
+        /// <summary>
+        /// Defines the name of the main schema.
+        /// This is the schema name used by the main database, that is:
+        /// the first database associated with a connection. This name is defined by Sqlite.
+        /// </summary>
+        public const string MainSchemaName = "main";
+
+        /// <summary>
+        /// Defines the name of the temporary schema. This is the schema name
+        /// defined by Sqlite for temporary tables.
+        /// </summary>
+        public const string TempSchemaName = "temp";
+        #endregion
+
+        /************************************************************************/
+
         #region Public properties
         /// <summary>
         /// Gets the DataSet object for this controller
@@ -47,10 +64,7 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         public bool DatabaseExists
         {
-            get
-            {
-                return (!String.IsNullOrEmpty(DatabaseFileName) && File.Exists(DatabaseFileName));
-            }
+            get => (!String.IsNullOrEmpty(DatabaseFileName) && File.Exists(DatabaseFileName));
         }
 
         /// <summary>
@@ -110,14 +124,15 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Constructor (protected)
-        #pragma warning disable 1591
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseControllerBase"/> class.
+        /// </summary>
         protected DatabaseControllerBase()
         {
             Initialized = false;
             Behavior = DatabaseControllerBehavior.All;
             DataSet = new DataSet(DataSetName);
         }
-        #pragma warning restore 1591
         #endregion
 
         /************************************************************************/
@@ -220,8 +235,7 @@ namespace Restless.Tools.Database.SQLite
             {
                 Validations.ValidateNullEmpty(databaseFileName, "Init.DatabaseFileName");
                 DatabaseFileName = databaseFileName;
-                Directory.CreateDirectory(Path.GetDirectoryName(databaseFileName));
-                CreateFile(databaseFileName);
+                PrepareDatabaseFileAsNeeded(databaseFileName);
                 Connection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFileName));
                 Connection.Open();
                 Execution = new ExecuteObject(Connection);
@@ -231,16 +245,55 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
-        /// Instansiates the specified table object and adds it to the Tables collection.
+        /// Attaches the specified database file.
+        /// </summary>
+        /// <param name="schemaName">The name of the schema</param>
+        /// <param name="databaseFileName">The full path and file name of the database file</param>
+        /// <param name="initAction">A callback method to initialize the attached schema; create tables, etc.</param>
+        protected void Attach(string schemaName, string databaseFileName, Action initAction)
+        {
+            Validations.ValidateNullEmpty(databaseFileName, "Attach.DatabaseFileName");
+            Validations.ValidateNullEmpty(schemaName, "Attach.SchemaName");
+            if (Initialized && Connection != null)
+            {
+
+                PrepareDatabaseFileAsNeeded(databaseFileName);
+                Execution.NonQuery($"ATTACH DATABASE \"{databaseFileName}\" AS {schemaName}");
+                initAction();
+            }
+        }
+
+        /// <summary>
+        /// Detaches the specified schema.
+        /// </summary>
+        /// <param name="schemaName"></param>
+        protected void Detach(string schemaName)
+        {
+            Validations.ValidateNullEmpty(schemaName, "Detach.SchemaName");
+            if (Initialized && Connection != null && schemaName != MainSchemaName && schemaName != TempSchemaName)
+            {
+                List<TableBase> schemaTables = DataSet.Tables.OfType<TableBase>().Where((table) => table.Namespace == schemaName).ToList();
+                foreach (var table in schemaTables)
+                {
+                    table.Save();
+                    table.Rows.Clear();
+                    DataSet.Tables.Remove(table);
+                }
+                Execution.NonQuery($"DETACH DATABASE {schemaName}");
+            }
+        }
+
+        /// <summary>
+        /// Instantiates the specified table object and adds it to the Tables collection.
         /// </summary>
         /// <typeparam name="T">The type derived from TableBase</typeparam>
         /// <returns>The table object</returns>
         /// <remarks>
         /// This method attempts to create the table structure within the database.
         /// </remarks>
-        protected T CreateAndRegisterTable<T>()
-            where T : TableBase, new()
+        protected T CreateAndRegisterTable<T>() where T : TableBase, new()
         {
+            var connection = Connection;
             var table = new T();
 
             if (!table.Exists() && Behavior.HasFlag(DatabaseControllerBehavior.AutoDdlCreation))
@@ -265,10 +318,14 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Enables a derived class to signal that table registration is complete, allowing the base controller to begin table post registration operations.
         /// </summary>
-        protected void TableRegistrationComplete()
+        /// <param name="schemaName">The schema name. Only tables in this namespace will be processed.</param>
+        protected void TableRegistrationComplete(string schemaName)
         {
             List<TableBase> failed = new List<TableBase>();
-            foreach (var table in DataSet.Tables.OfType<TableBase>())
+
+            IEnumerable<TableBase> tablesInSchema = DataSet.Tables.OfType<TableBase>().Where((table)=> table.Namespace == schemaName);
+
+            foreach (var table in tablesInSchema)
             {
                 table.SetDataRelations();
             }
@@ -280,7 +337,7 @@ namespace Restless.Tools.Database.SQLite
              * This removes the need to put tables in the DataSet in a certain order.
              * Without this, we'd need to put Table B in the set before Table A.
              */
-            foreach (var table in DataSet.Tables.OfType<TableBase>())
+            foreach (var table in tablesInSchema)
             {
                 try
                 {
@@ -298,11 +355,19 @@ namespace Restless.Tools.Database.SQLite
             }
 
 
-            foreach (var table in DataSet.Tables.OfType<TableBase>())
+            foreach (var table in tablesInSchema)
             {
                 table.OnInitializationComplete();
             }
+        }
 
+        /// <summary>
+        /// Enables a derived class to signal that table registration is complete, allowing the base controller to begin table post registration operations.
+        /// This overload uses <see cref="MainSchemaName"/>.
+        /// </summary>
+        protected void TableRegistrationComplete()
+        {
+            TableRegistrationComplete(MainSchemaName);
         }
 
         #endregion
@@ -311,13 +376,17 @@ namespace Restless.Tools.Database.SQLite
 
         #region Private methods
         /// <summary>
-        /// Creates the database file if it does not already exist.
+        /// Prepares for a database file. If the file doesn't exist, creates
+        /// both the directory to the file and the file itself. When this method
+        /// returns, the specified file exists, although it will be zero bytes
+        /// if it wasn't there before.
         /// </summary>
         /// <param name="databaseFileName"></param>
-        private void CreateFile(string databaseFileName)
+        private void PrepareDatabaseFileAsNeeded(string databaseFileName)
         {
             if (!File.Exists(databaseFileName))
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(databaseFileName));
                 SQLiteConnection.CreateFile(databaseFileName);
             }
         }

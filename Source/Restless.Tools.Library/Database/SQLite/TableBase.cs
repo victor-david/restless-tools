@@ -83,12 +83,15 @@ namespace Restless.Tools.Database.SQLite
         /// Initializes a new instance of the <see cref="TableBase"/> class.
         /// </summary>
         /// <param name="controller">The database controller object.</param>
+        /// <param name="schemaName">The name of the schema this table belongs to.</param>
         /// <param name="tableName">The name of the table.</param>
-        protected TableBase(DatabaseControllerBase controller, string tableName)
+        protected TableBase(DatabaseControllerBase controller, string schemaName, string tableName)
         {
             Validations.ValidateNull(controller, "TableBase.Controller");
+            Validations.ValidateNullEmpty(schemaName, "TableBase.SchemaName");
             Validations.ValidateNullEmpty(tableName, "TableBase.TableName");
             Controller = controller;
+            Namespace = schemaName;
             TableName = tableName;
             IsReadOnly = false;
             IsDeleteRestricted = false;
@@ -98,6 +101,16 @@ namespace Restless.Tools.Database.SQLite
             adapter.UpdateCommand = new SQLiteCommand(controller.Connection);
             adapter.DeleteCommand = new SQLiteCommand(controller.Connection);
             changedEligibleColumns = new Dictionary<DataRow, List<DataColumn>>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableBase"/> class.
+        /// </summary>
+        /// <param name="controller">The database controller object.</param>
+        /// <param name="tableName">The name of the table.</param>
+        protected TableBase(DatabaseControllerBase controller, string tableName)
+            : this(controller, DatabaseControllerBase.MainSchemaName, tableName)
+        {
         }
         #endregion
 
@@ -110,7 +123,7 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>true if the table exists within the database; otherwise, false.</returns>
         public bool Exists()
         {
-            string sql = String.Format("SELECT name FROM sqlite_master WHERE type='table' AND name='{0}'", TableName);
+            string sql = $"SELECT name FROM {Namespace}.sqlite_master WHERE type='table' AND name='{TableName}'";
             var obj = Controller.Execution.Scalar(sql);
             return (obj != null);
         }
@@ -118,10 +131,10 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Gets a boolean value that indicates if this table has any rows within the database.
         /// </summary>
-        /// <returns>true if the tabke has any rows within the database; otherwise, false.</returns>
+        /// <returns>true if the table has any rows within the database; otherwise, false.</returns>
         public bool HasRows()
         {
-            string sql = String.Format("SELECT COUNT(*) AS C FROM {0}", TableName);
+            string sql = $"SELECT COUNT(*) AS C FROM {Namespace}.{TableName}";
             Int64 count = (Int64)Controller.Execution.Scalar(sql);
             return count > 0;
         }
@@ -209,24 +222,23 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="fields">A list if database field names to load</param>
         protected void Load(string where, string orderBy, params string[] fields)
         {
-            StringBuilder sql = new StringBuilder(String.Format("SELECT {0} AS {1},", RowId, RowIdAlias), 512);
-            //StringBuilder sql = new StringBuilder("SELECT ", 512);
+            StringBuilder sql = new StringBuilder($"SELECT {RowId} AS {RowIdAlias},", 512);
 
             if (fields.Length == 0) sql.Append("*,");
             foreach (string field in fields)
             {
-                sql.Append(String.Format("{0},", field));
+                sql.Append($"{field},");
             }
             // get rid of the last comma
             sql.Remove(sql.Length - 1, 1);
-            sql.Append(String.Format(" FROM {0}", TableName));
+            sql.Append($" FROM {Namespace}.{TableName}");
             if (!String.IsNullOrEmpty(where))
             {
-                sql.Append(String.Format(" WHERE {0}", where));
+                sql.Append($" WHERE {where}");
             }
             if (!String.IsNullOrEmpty(orderBy))
             {
-                sql.Append(String.Format(" ORDER BY {0}", orderBy));
+                sql.Append($" ORDER BY {orderBy}");
             }
 
             Columns.Clear();
@@ -242,7 +254,7 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>The DDL used to create this table.</returns>
         protected string GetDdlByQuery()
         {
-            string sql = String.Format("SELECT sql FROM sqlite_master WHERE name='{0}'", TableName);
+            string sql = $"SELECT sql FROM {Namespace}.sqlite_master WHERE name='{TableName}'";
             return Controller.Execution.Scalar(sql).ToString();
         }
 
@@ -386,12 +398,11 @@ namespace Restless.Tools.Database.SQLite
         {
             Validations.ValidateNullEmpty(colName, "ColName");
             Validations.ValidateNullEmpty(colDefinition, "ColDefinition");
-            if (ColumnExists(colName))
+            if (!ColumnExists(colName))
             {
-                return;
+                string sql = $"ALTER TABLE {Namespace}.{TableName} ADD COLUMN `{colName}` {colDefinition}";
+                Controller.Execution.NonQuery(sql);
             }
-            string sql = String.Format("ALTER TABLE {0} ADD COLUMN `{1}` {2}", TableName, colName, colDefinition);
-            Controller.Execution.NonQuery(sql);
         }
 
         /// <summary>
@@ -566,7 +577,7 @@ namespace Restless.Tools.Database.SQLite
             {
                 if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromInsert))
                 {
-                    colList.Append(String.Format("{0},", col.ColumnName));
+                    colList.Append($"{col.ColumnName},");
                 }
             }
             // get rid of the last comma in the column list
@@ -576,13 +587,13 @@ namespace Restless.Tools.Database.SQLite
             {
                 adapter.InsertCommand.Parameters.Clear();
                 sql.Clear();
-                sql.Append(String.Format("INSERT INTO {0} ({1}) VALUES(", TableName, colList));
+                sql.Append($"INSERT INTO {Namespace}.{TableName} ({colList}) VALUES(");
 
                 foreach (DataColumn col in Columns)
                 {
                     if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromInsert))
                     {
-                        sql.Append(String.Format(":{0},", col.ColumnName));
+                        sql.Append($":{col.ColumnName},");
                         adapter.InsertCommand.Parameters.Add(col.ColumnName, TypeToDbType(col.DataType)).Value = row[col];
                     }
                 }
@@ -595,9 +606,7 @@ namespace Restless.Tools.Database.SQLite
                 sql.Append(")");
                 adapter.InsertCommand.CommandText = sql.ToString();
                 adapter.InsertCommand.ExecuteNonQuery();
-
                 InsertLastInsertId(row);
-
             }
         }
 
@@ -611,7 +620,7 @@ namespace Restless.Tools.Database.SQLite
             {
                 adapter.UpdateCommand.Parameters.Clear();
                 sql.Clear();
-                sql.Append(String.Format("UPDATE {0} SET ", TableName));
+                sql.Append($"UPDATE {Namespace}.{TableName} SET ");
                 foreach (DataColumn col in Columns)
                 {
                     if (IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate))
@@ -622,7 +631,7 @@ namespace Restless.Tools.Database.SQLite
                 }
                 // get rid of the last comma
                 sql.Remove(sql.Length - 1, 1);
-                sql.Append(String.Format(" WHERE {0}={1}", RowId, row[RowIdAlias]));
+                sql.Append($" WHERE {RowId}={row[RowIdAlias]}");
                 adapter.UpdateCommand.CommandText = sql.ToString();
                 adapter.UpdateCommand.ExecuteNonQuery();
             }
@@ -653,8 +662,8 @@ namespace Restless.Tools.Database.SQLite
             {
                 adapter.DeleteCommand.Parameters.Clear();
                 sql.Clear();
-                sql.Append(String.Format("DELETE FROM {0} ", TableName));
-                sql.Append(String.Format("WHERE {0}={1}", RowId, row[RowIdAlias, DataRowVersion.Original]));
+                sql.Append($"DELETE FROM {Namespace}.{TableName} ");
+                sql.Append($"WHERE {RowId}={row[RowIdAlias, DataRowVersion.Original]}");
                 adapter.DeleteCommand.CommandText = sql.ToString();
                 adapter.DeleteCommand.ExecuteNonQuery();
             }
@@ -682,11 +691,6 @@ namespace Restless.Tools.Database.SQLite
             );
         }
 
-        //private bool IsColumnEligible(DataRow row, DataColumn col)
-        //{
-        //    IsColumnEligible(col, DataColumnPropertyKey.ExcludeFromUpdate);
-        //}
-
         private void InsertLastInsertId(DataRow row)
         {
             adapter.InsertCommand.CommandText = "SELECT last_insert_rowid()";
@@ -708,7 +712,8 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>true if exists; otherwise, false.</returns>
         private bool ColumnExists(string colName)
         {
-            string sql = String.Format("PRAGMA table_info({0})", TableName);
+            string sql = $"PRAGMA {Namespace}.table_info({TableName})";
+
             using (var reader = Controller.Execution.Query(sql))
             {
                 int nameIndex = reader.GetOrdinal("name");
@@ -793,10 +798,10 @@ namespace Restless.Tools.Database.SQLite
 
             public UpdateStatus(TableBase table)
             {
-                Insert = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Added).ToList();
-                Delete = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.Deleted).ToList();
+                Insert = table.Select(null, null, DataViewRowState.Added).ToList();
+                Delete = table.Select(null, null, DataViewRowState.Deleted).ToList();
                 Update = new List<DataRow>();
-                DataRow[] update = table.Select("1=1", table.Columns[0].ColumnName, DataViewRowState.ModifiedOriginal);
+                DataRow[] update = table.Select(null, null, DataViewRowState.ModifiedOriginal);
                 foreach (DataRow row in update)
                 {
                     if (table.HaveChangedEligibleColumns(row))
