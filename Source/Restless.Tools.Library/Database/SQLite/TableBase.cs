@@ -95,11 +95,13 @@ namespace Restless.Tools.Database.SQLite
             TableName = tableName;
             IsReadOnly = false;
             IsDeleteRestricted = false;
-            adapter = new SQLiteDataAdapter();
-            adapter.SelectCommand = new SQLiteCommand(controller.Connection);
-            adapter.InsertCommand = new SQLiteCommand(controller.Connection);
-            adapter.UpdateCommand = new SQLiteCommand(controller.Connection);
-            adapter.DeleteCommand = new SQLiteCommand(controller.Connection);
+            adapter = new SQLiteDataAdapter
+            {
+                SelectCommand = new SQLiteCommand(controller.Connection),
+                InsertCommand = new SQLiteCommand(controller.Connection),
+                UpdateCommand = new SQLiteCommand(controller.Connection),
+                DeleteCommand = new SQLiteCommand(controller.Connection)
+            };
             changedEligibleColumns = new Dictionary<DataRow, List<DataColumn>>();
         }
 
@@ -504,6 +506,7 @@ namespace Restless.Tools.Database.SQLite
         {
             string sql = GetDdl();
             Validations.ValidateInvalidOperation(String.IsNullOrWhiteSpace(sql), Strings.InvalidOperation_EmptyDdl);
+            sql = SubstituteSchemaAndName(sql);
             Controller.Execution.NonQuery(sql);
         }
 
@@ -519,6 +522,7 @@ namespace Restless.Tools.Database.SQLite
             string sql = GetPopulateSql();
             if (!String.IsNullOrEmpty(sql))
             {
+                sql = SubstituteSchemaAndName(sql);
                 Controller.Execution.NonQuery(sql);
             }
         }
@@ -527,6 +531,18 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Private methods
+        /// <summary>
+        /// Performs substitution on <paramref name="input"/> by replacing
+        /// "{NS}" with the namespace of this table and "{NAME}" with the name of this table.
+        /// </summary>
+        /// <param name="input">The input string, typically a DDL statement</param>
+        /// <returns>The substituted string.</returns>
+        private string SubstituteSchemaAndName(string input)
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            return input.Replace("{NS}", Namespace).Replace("{NAME}", TableName);
+        }
+
         private void SavePrivate(IDbTransaction transaction)
         {
             if (IsReadOnly) return;

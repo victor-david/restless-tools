@@ -11,21 +11,31 @@ namespace Restless.Tools.Database.SQLite
     /// </summary>
     public abstract class MemoryTable : TableBase
     {
-        #region Constructor
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemoryTable"/> class.
+        /// </summary>
+        /// <param name="controller">The database controller object.</param>
+        /// <param name="schemaName">The name of the schema this table belongs to.</param>
+        /// <param name="tableName">The name of the table.</param>
+        protected MemoryTable (DatabaseControllerBase controller, string schemaName, string tableName)
+            : base(controller, schemaName, tableName)
+        {
+            IsReadOnly = true;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryTable"/> class.
         /// </summary>
         /// <param name="controller">The database controller object.</param>
         /// <param name="tableName">The name of the table.</param>
-        protected MemoryTable(DatabaseControllerBase controller, string tableName)
-            :base(controller, tableName)
+        protected MemoryTable(DatabaseControllerBase controller, string tableName) : this(controller, DatabaseControllerBase.MainSchemaName,tableName)
         {
-            IsReadOnly = true;
         }
         #endregion
 
         /************************************************************************/
-        
+
         #region Public methods
         /// <summary>
         /// Satisfies the implementation of <see cref="TableBase"/> but does nothing.

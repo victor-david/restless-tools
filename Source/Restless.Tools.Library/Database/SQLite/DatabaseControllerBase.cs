@@ -36,6 +36,12 @@ namespace Restless.Tools.Database.SQLite
         /// defined by Sqlite for temporary tables.
         /// </summary>
         public const string TempSchemaName = "temp";
+
+        /// <summary>
+        /// Defines the name of the database that may be used to create an in-memory database.
+        /// An in-memory database behaves like a disk-based database, but goes away when the connection is closed.
+        /// </summary>
+        public const string MemoryDatabase = ":memory:";
         #endregion
 
         /************************************************************************/
@@ -384,10 +390,13 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="databaseFileName"></param>
         private void PrepareDatabaseFileAsNeeded(string databaseFileName)
         {
-            if (!File.Exists(databaseFileName))
+            if (databaseFileName != MemoryDatabase)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(databaseFileName));
-                SQLiteConnection.CreateFile(databaseFileName);
+                if (!File.Exists(databaseFileName))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(databaseFileName));
+                    SQLiteConnection.CreateFile(databaseFileName);
+                }
             }
         }
         #endregion
