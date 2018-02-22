@@ -19,6 +19,7 @@ namespace Restless.Tools.Database.SQLite
     {
         #region Private
         private const string DataSetName = "Main";
+        private Dictionary<string, string> attached;
         #endregion
 
         /************************************************************************/
@@ -138,6 +139,7 @@ namespace Restless.Tools.Database.SQLite
             Initialized = false;
             Behavior = DatabaseControllerBehavior.All;
             DataSet = new DataSet(DataSetName);
+            attached = new Dictionary<string, string>();
         }
         #endregion
 
@@ -226,6 +228,32 @@ namespace Restless.Tools.Database.SQLite
                 throw new InvalidOperationException(Strings.InvalidOperation_DataTableNotRegistered);
             }
         }
+
+        /// <summary>
+        /// Gets a boolean value that indicates if the specified schema is currently attached.
+        /// </summary>
+        /// <param name="schemaName">The name of the schema</param>
+        /// <returns>true if <paramref name="schemaName"/> is currently attached; otherwise, false.</returns>
+        public bool IsAttached(string schemaName)
+        {
+            if (String.IsNullOrEmpty(schemaName)) throw new ArgumentNullException(nameof(schemaName));
+            return attached.ContainsKey(schemaName);
+        }
+
+        /// <summary>
+        /// Gets the name of the database file that is currently attached via the specified schema name.
+        /// </summary>
+        /// <param name="schemaName">The schema name.</param>
+        /// <returns>The name of the database file associated with <paramref name="schemaName"/> or null if the schema isn't attached.</returns>
+        public string GetAttachedFileName(string schemaName)
+        {
+            if (String.IsNullOrEmpty(schemaName)) throw new ArgumentNullException(nameof(schemaName));
+            if (attached.ContainsKey(schemaName))
+            {
+                return attached[schemaName];
+            }
+            return null;
+        }
         #endregion
 
         /************************************************************************/
@@ -251,41 +279,58 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
-        /// Attaches the specified database file.
+        /// Attaches the specified database file using the specified schema name if the schema is not already attached.
         /// </summary>
         /// <param name="schemaName">The name of the schema</param>
         /// <param name="databaseFileName">The full path and file name of the database file</param>
         /// <param name="initAction">A callback method to initialize the attached schema; create tables, etc.</param>
+        /// <remarks>
+        /// If <paramref name="schemaName"/> is already attached, this method does nothing.
+        /// </remarks>
         protected void Attach(string schemaName, string databaseFileName, Action initAction)
         {
             Validations.ValidateNullEmpty(databaseFileName, "Attach.DatabaseFileName");
             Validations.ValidateNullEmpty(schemaName, "Attach.SchemaName");
-            if (Initialized && Connection != null)
+            if (Initialized && Connection != null && !IsAttached(schemaName))
             {
-
                 PrepareDatabaseFileAsNeeded(databaseFileName);
                 Execution.NonQuery($"ATTACH DATABASE \"{databaseFileName}\" AS {schemaName}");
                 initAction();
+                attached.Add(schemaName, databaseFileName);
             }
         }
 
         /// <summary>
-        /// Detaches the specified schema.
+        /// Detaches the specified schema if it is attached.
         /// </summary>
-        /// <param name="schemaName"></param>
+        /// <param name="schemaName">The name of the schema.</param>
+        /// <remarks>
+        /// If <paramref name="schemaName"/> is not attached, this method does nothing.
+        /// </remarks>
         protected void Detach(string schemaName)
         {
             Validations.ValidateNullEmpty(schemaName, "Detach.SchemaName");
-            if (Initialized && Connection != null && schemaName != MainSchemaName && schemaName != TempSchemaName)
+            if (Initialized && Connection != null && IsAttached(schemaName))
             {
                 List<TableBase> schemaTables = DataSet.Tables.OfType<TableBase>().Where((table) => table.Namespace == schemaName).ToList();
                 foreach (var table in schemaTables)
                 {
                     table.Save();
-                    table.Rows.Clear();
+                    table.Constraints.Clear();
+                }
+
+                foreach (var relation in DataSet.Relations.OfType<DataRelation>().Where(r => r.ChildTable.Namespace == schemaName || r.ParentTable.Namespace == schemaName).ToList())
+                {
+                    DataSet.Relations.Remove(relation);
+                }
+
+                foreach (var table in schemaTables)
+                {
                     DataSet.Tables.Remove(table);
                 }
+
                 Execution.NonQuery($"DETACH DATABASE {schemaName}");
+                attached.Remove(schemaName);
             }
         }
 
