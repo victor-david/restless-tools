@@ -114,7 +114,9 @@
     <Compile Include="Controls\DragDrop\DropTargetBehavior.cs" />
     <Compile Include="Controls\DragDrop\IDragSource.cs" />
     <Compile Include="Controls\DragDrop\IDropTarget.cs" />
+    <Compile Include="Converters\BooleanToInverseBooleanConverter.cs" />
     <Compile Include="Converters\BooleanToBooleanConverter.cs" />
+    <Compile Include="Converters\BooleanToInverseVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityMultiConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityMultiConverterOptions.cs" />
     <Compile Include="Converters\Int64ToImageConverter.cs" />
