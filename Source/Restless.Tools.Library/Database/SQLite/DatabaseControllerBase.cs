@@ -105,6 +105,14 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
+        /// Gets a boolean value that indicates if a transaction is currently active on <see cref="Connection"/>.
+        /// </summary>
+        public bool IsTransactionActive
+        {
+            get => Connection != null && !Connection.AutoCommit;
+        }
+
+        /// <summary>
         /// Gets a value that indicates if the database controller has been initialized.
         /// This property is set to true when the <see cref="CreateAndOpen(string)"/> method is called.
         /// </summary>
