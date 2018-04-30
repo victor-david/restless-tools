@@ -168,12 +168,15 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, Int64 value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, Int64 value)
         {
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -181,7 +184,8 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, Int64? value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, Int64? value)
         {
             if (!Row[colName].Equals(value))
             {
@@ -193,7 +197,9 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -201,12 +207,15 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, Decimal value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, Decimal value)
         {
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -214,7 +223,8 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, Decimal? value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, Decimal? value)
         {
             if (!Row[colName].Equals(value))
             {
@@ -226,7 +236,9 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -234,7 +246,8 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, string value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, string value)
         {
             if (!Row[colName].Equals(value))
             {
@@ -246,7 +259,9 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -254,12 +269,15 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, DateTime value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, DateTime value)
         {
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -267,7 +285,8 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, DateTime? value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, DateTime? value)
         {
             if (!Row[colName].Equals(value))
             {
@@ -279,7 +298,9 @@ namespace Restless.Tools.Database.SQLite
                 { 
                     Row[colName] = value;
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -287,12 +308,15 @@ namespace Restless.Tools.Database.SQLite
         /// </summary>
         /// <param name="colName">The column name.</param>
         /// <param name="value">The value.</param>
-        protected void SetValue(string colName, bool value)
+        /// <returns>true if the column value was set; false if the column value was already the same as <paramref name="value"/>.</returns>
+        protected bool SetValue(string colName, bool value)
         {
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                return true;
             }
+            return false;
         }
         #endregion
     }

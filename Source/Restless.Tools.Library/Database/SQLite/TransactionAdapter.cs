@@ -134,9 +134,25 @@ namespace Restless.Tools.Database.SQLite
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    /*
+                     * Catch-22 here when a table has a self-relation.
+                     * Self-relation.AcceptRejectRule == None (the default)
+                     *      RejectChanges() throws with: cannot make this change because constraints are enforced
+                     *      
+                     * Self-relation.AcceptRejectRule == Cascade     
+                     *      RejectChanges() throws with: row has been removed, etc.
+                     *      
+                     * One thing that works is to have self-relation.AcceptRejectRule == None (the default)
+                     * and disable EnforceConstraints on the data set.
+                     * 
+                     * TODO: Investigate. Currently using .NET 4.5.2 - Possibly behavior is different in later version.
+                     */
                     foreach (var table in tables)
                     {
+                        bool enforce = table.DataSet.EnforceConstraints;
+                        table.DataSet.EnforceConstraints = false;
                         table.RejectChanges();
+                        table.DataSet.EnforceConstraints = enforce;
                     }
                     throw;
                 }

@@ -267,7 +267,7 @@ namespace Restless.Tools.Database.SQLite
         /// <param name="name">The name of the relation</param>
         /// <param name="parentColumnName">The parent column name, i.e. name of column in this table</param>
         /// <param name="childColumnName">The child column name, i.e. name of column in child table T</param>
-        protected void CreateParentChildRelation<T>(string name, string parentColumnName, string childColumnName) where T: TableBase
+        protected void CreateParentChildRelation<T>(string name, string parentColumnName, string childColumnName, AcceptRejectRule childRule = AcceptRejectRule.None) where T: TableBase
         {
             Validations.ValidateNullEmpty(name, "CreateParentChildRelation.Name");
             Validations.ValidateNullEmpty(parentColumnName, "CreateParentChildRelation.ParentColumnName");
@@ -275,6 +275,7 @@ namespace Restless.Tools.Database.SQLite
             var child = Controller.GetTable<T>();
             DataRelation r = new DataRelation(name, Columns[parentColumnName], child.Columns[childColumnName]);
             ChildRelations.Add(r);
+            r.ChildKeyConstraint.AcceptRejectRule = childRule;
         }
 
         /// <summary>
