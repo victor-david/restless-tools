@@ -20,20 +20,6 @@ namespace Restless.Tools.Database.SQLite
 
         /************************************************************************/
 
-        #region Public emumeration
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum RegistrationType
-        {
-            Insert,
-            Update,
-            Delete
-        }
-        #endregion
-
-        /************************************************************************/
-
         #region Constructor
         internal TransactionAdapter(SQLiteConnection connection)
         {
