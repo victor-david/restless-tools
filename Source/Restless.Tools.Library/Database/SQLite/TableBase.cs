@@ -172,13 +172,15 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Adds a new row to the table with default values, and calls the Save() method.
         /// </summary>
-        public void AddDefaultRow()
+        /// <returns>The newly created data row</returns>
+        public DataRow AddDefaultRow()
         {
             Validations.ValidateInvalidOperation(IsReadOnly, Strings.InvalidOperation_TableIsReadOnly);
             DataRow row = NewRow();
             PopulateDefaultRow(row);
             Rows.Add(row);
             Save();
+            return row;
         }
 
         /// <summary>
