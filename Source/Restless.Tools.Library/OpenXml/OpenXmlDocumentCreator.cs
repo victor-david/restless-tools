@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Restless.Tools.Utility;
-using System.IO.Packaging;
+using System;
 using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Restless.Tools.OpenXml
 {
@@ -21,6 +19,17 @@ namespace Restless.Tools.OpenXml
         /// Gets or sets the file name used for the create process.
         /// </summary>
         public string Filename
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the template file used for the create process.
+        /// If this file is specified and it exists, it will be used to copy styles
+        /// into the new document.
+        /// </summary>
+        public string TemplateFile
         {
             get;
             set;
@@ -138,6 +147,9 @@ namespace Restless.Tools.OpenXml
             AddSettingsToMainDocumentPart(mainPart);
             mainPart.Document = new Document();
 
+            // Add a style part
+            AddStylesToMainDocumentPart(mainPart);
+
             Body body = new Body();
 
             if (Paragraphs != null)
@@ -157,33 +169,38 @@ namespace Restless.Tools.OpenXml
                 (
                     new FooterReference() { Type = HeaderFooterValues.Default, Id = "rId1" },
                     new HeaderReference() { Type = HeaderFooterValues.Default, Id = "rId2" }
-                    // new TitlePage()
                 ));
 
-
             mainPart.Document.Append(body);
-
 
             /* Save and close */
             mainPart.Document.Save();
             doc.PackageProperties.Created = DateTime.UtcNow;
             doc.PackageProperties.Modified = DateTime.UtcNow;
-            if (!String.IsNullOrEmpty(Author))
+            if (!string.IsNullOrEmpty(Author))
             {
                 doc.PackageProperties.Creator = Author;
             }
 
-            if (!String.IsNullOrEmpty(Description))
+            if (!string.IsNullOrEmpty(Description))
             {
                 doc.PackageProperties.Description = Description;
             }
 
-            if (!String.IsNullOrEmpty(Title))
+            if (!string.IsNullOrEmpty(Title))
             {
                 doc.PackageProperties.Title = Title;
             }
 
             doc.Close();
+            if (!string.IsNullOrEmpty(TemplateFile) && File.Exists(TemplateFile))
+            {
+                try
+                {
+                    ReplaceStyles(TemplateFile, Filename);
+                }
+                catch { }
+            }
         }
 
         /// <summary>
@@ -284,7 +301,111 @@ namespace Restless.Tools.OpenXml
                 r.Append(new Text(" p.") { Space = SpaceProcessingModeValues.Preserve }, new PageNumber());
             }
             return r;
+        }
 
+        /// <summary>
+        /// Adds a style definition part if it doesn't exist.
+        /// </summary>
+        /// <param name="mainPart">The document main part</param>
+        /// <remarks>
+        /// In this context (document creation), the style does not exist.
+        /// When a document is created programatically, it does not automatically
+        /// add a style part such as when creating with MS Word.
+        /// </remarks>
+        private void AddStylesToMainDocumentPart(MainDocumentPart mainPart)
+        {
+            StyleDefinitionsPart part = mainPart.StyleDefinitionsPart;
+            if (part == null)
+            {
+                part = mainPart.AddNewPart<StyleDefinitionsPart>();
+                Styles root = new Styles();
+                root.Save(part);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to replace the styles in <paramref name="dest"/> with those in <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The source document.</param>
+        /// <param name="dest">The destination document</param>
+        private void ReplaceStyles(string source, string dest)
+        {
+            // Extract and replace the styles part.
+            var node = ExtractStylesPart(source, false);
+            if (node != null)
+            {
+                ReplaceStylesPart(dest, node, false);
+            }
+
+            // Extract and replace the stylesWithEffects part. To fully support 
+            // round-tripping from Word 2010 to Word 2007, you should 
+            // replace this part, as well.
+            node = ExtractStylesPart(source, true);
+            if (node != null)
+            {
+                ReplaceStylesPart(dest, node, true);
+            }
+        }
+
+
+        // Given a file and an XDocument instance that contains the content of 
+        // a styles or stylesWithEffects part, replace the styles in the file 
+        // with the styles in the XDocument.
+        private void ReplaceStylesPart(string fileName, XDocument newStyles, bool setStylesWithEffectsPart)
+        {
+            // Open the document for write access and get a reference.
+            using (var document = WordprocessingDocument.Open(fileName, true))
+            {
+                // Get a reference to the main document part.
+                var docPart = document.MainDocumentPart;
+
+                // Assign a reference to the appropriate part to the
+                // stylesPart variable.
+                StylesPart stylesPart = null;
+                if (setStylesWithEffectsPart)
+                    stylesPart = docPart.StylesWithEffectsPart;
+                else
+                    stylesPart = docPart.StyleDefinitionsPart;
+
+                // If the part exists, populate it with the new styles.
+                if (stylesPart != null)
+                {
+                    newStyles.Save(new StreamWriter(stylesPart.GetStream(FileMode.Create, FileAccess.Write)));
+                }
+            }
+        }
+
+        // Extract the styles or stylesWithEffects part from a 
+        // word processing document as an XDocument instance.
+        private XDocument ExtractStylesPart(string fileName, bool getStylesWithEffectsPart)
+        {
+            XDocument styles = null;
+
+            // Open the document for read access and get a reference.
+            using (var document = WordprocessingDocument.Open(fileName, false))
+            {
+                // Get a reference to the main document part.
+                var docPart = document.MainDocumentPart;
+
+                // Assign a reference to the appropriate part to the
+                // stylesPart variable.
+                StylesPart stylesPart = null;
+
+                if (getStylesWithEffectsPart)
+                    stylesPart = docPart.StylesWithEffectsPart;
+                else
+                    stylesPart = docPart.StyleDefinitionsPart;
+
+                // If the part exists, read it into the XDocument.
+                if (stylesPart != null)
+                {
+                    using (var reader = XmlNodeReader.Create(stylesPart.GetStream(FileMode.Open, FileAccess.Read)))
+                    {
+                        styles = XDocument.Load(reader);
+                    }
+                }
+            }
+            return styles;
         }
         #endregion
     }
