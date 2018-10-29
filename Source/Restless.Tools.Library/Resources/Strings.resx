@@ -184,12 +184,11 @@
   <data name="UnhandledExceptionCaption" xml:space="preserve">
     <value>Unhandled Exception</value>
   </data>
-  <data name="UnhandledExceptionMessageFormat" xml:space="preserve">
-    <value>An unhandled exception occurred.
-
-{0}
-
-The application will now attempt to shutdown gracefully.</value>
+  <data name="UnhandledExceptionMessageFooter" xml:space="preserve">
+    <value>The application will now attempt to shutdown gracefully.</value>
+  </data>
+  <data name="UnhandledExceptionMessageHeader" xml:space="preserve">
+    <value>An unhandled exception occurred.</value>
   </data>
   <data name="UnspecifiedName" xml:space="preserve">
     <value>(unspecified)</value>

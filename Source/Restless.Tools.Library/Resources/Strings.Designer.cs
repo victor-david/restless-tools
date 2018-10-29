@@ -19,7 +19,7 @@ namespace Restless.Tools.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -232,15 +232,20 @@ namespace Restless.Tools.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An unhandled exception occurred.
-        ///
-        ///{0}
-        ///
-        ///The application will now attempt to shutdown gracefully..
+        ///   Looks up a localized string similar to The application will now attempt to shutdown gracefully..
         /// </summary>
-        internal static string UnhandledExceptionMessageFormat {
+        internal static string UnhandledExceptionMessageFooter {
             get {
-                return ResourceManager.GetString("UnhandledExceptionMessageFormat", resourceCulture);
+                return ResourceManager.GetString("UnhandledExceptionMessageFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unhandled exception occurred..
+        /// </summary>
+        internal static string UnhandledExceptionMessageHeader {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessageHeader", resourceCulture);
             }
         }
         

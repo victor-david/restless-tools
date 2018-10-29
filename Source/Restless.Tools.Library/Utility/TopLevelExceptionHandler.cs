@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +25,9 @@ namespace Restless.Tools.Utility
         /// Initializes the TopLevelExceptionHandler object.
         /// </summary>
         /// <remarks>
-        /// <para>
         /// By calling this static method, any exception that is not handled
-        /// in another portion of code is handled by this object. If the unhandled
-        /// exception occurs in the application thread, a dialog box is displayed
-        /// with the exception information and a choice to continue running the application
-        /// or to stop it. 
-        /// </para>
-        /// <para>
-        /// If the unhandled exception occurs in the current domain, a dialog box is displayed
-        /// with the exception information, and the application is then forced to terminate.
-        /// </para>
+        /// in another portion of code is handled by this object. Unhandled
+        /// exceptions are logged to the application's directory.
         /// </remarks>
         public static void Initialize()
         {
@@ -68,7 +61,7 @@ namespace Restless.Tools.Utility
         /// <param name="e">The event arguments.</param>
         private void CurrentDomainFirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            MessageBox.Show(String.Format("1. CurrentDomain_FirstChanceException {0}", e.Exception.Message));
+            MessageBox.Show(string.Format("1. CurrentDomain_FirstChanceException {0}", e.Exception.Message));
             //ProcessError(e.Exception);   - This could be used here to log ALL errors, even those caught by a Try/Catch block
         }
 
@@ -80,25 +73,25 @@ namespace Restless.Tools.Utility
         private void AppDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-            MessageBox.Show(String.Format(Strings.UnhandledExceptionMessageFormat, e.Exception.Message), Strings.UnhandledExceptionCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            HandleExceptionFully("AppDispatcher", e.Exception, true);
             Application.Current.Shutdown();
         }
 
         /// <summary>
-        /// 
+        /// Handles an otherwise unhandled exception in the current domain.
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">The event args.</param>
         private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Exception ex = e.ExceptionObject as Exception;
-            string msg = "An unknown error occurred.";
-            if (ex != null)
+            if (e.ExceptionObject is Exception ex)
             {
-                msg = ex.Message;
+                HandleExceptionFully("CurrentDomain", ex, e.IsTerminating);
             }
-
-            MessageBox.Show(msg, "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+            {
+                MessageBox.Show("An unknown error occured in the current domain", Strings.UnhandledExceptionCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             if (e.IsTerminating)
             {
@@ -106,7 +99,7 @@ namespace Restless.Tools.Utility
             }
         }
 
-        // Example 4
+        // Example 4 (not implemented)
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             MessageBox.Show("4. TaskScheduler_UnobservedTaskException");
@@ -121,8 +114,70 @@ namespace Restless.Tools.Utility
             //log.ProcessError(e.Exception);
         }
 
+        private void HandleExceptionFully(string caller, Exception ex, bool isTerminating)
+        {
+            string fileName = GetExceptionLogFileName();
+            string logFileMsg = $"Details in {fileName}";
+            try
+            {
+                LogException(caller, ex, fileName);
+            }
+            catch (Exception logException)
+            {
+                logFileMsg = $"Could not write to log file ({logException.Message})";
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Strings.UnhandledExceptionMessageHeader);
+            sb.AppendLine(ex.Message);
+            sb.AppendLine();
+            sb.AppendLine(logFileMsg);
+            sb.AppendLine();
+            if (isTerminating)
+            {
+                sb.AppendLine(Strings.UnhandledExceptionMessageFooter);
+            }
+            MessageBox.Show(sb.ToString(), Strings.UnhandledExceptionCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
 
+        private string GetExceptionLogFileName()
+        {
+            var a = new AssemblyInfo(AssemblyInfoType.Entry);
+            string dir = Path.GetDirectoryName(a.Location);
+            return Path.Combine(dir, "exception.log");
+        }
 
+        private void LogException(string caller, Exception ex, string fileName)
+        {
+            StringBuilder sb = new StringBuilder();
+            string header = $"{caller} unhandled exception: {DateTime.Now} local time";
+            sb.AppendLine(header);
+            sb.AppendLine(string.Empty.PadLeft(header.Length, '='));
+            sb.Append(GetExceptionMessage(ex, 0));
+            sb.AppendLine("Stack trace:");
+            sb.AppendLine(ex.StackTrace);
+            sb.AppendLine("===END");
+            sb.AppendLine();
+            File.AppendAllText(fileName, sb.ToString());
+        }
+
+        /// <summary>
+        /// Recursively gets messages from all nested exceptions.
+        /// </summary>
+        /// <param name="ex">The exception.</param>
+        /// <param name="level">The nesting level.</param>
+        /// <returns>The exception message(s)</returns>
+        private string GetExceptionMessage(Exception ex, int level)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Level {level} => {ex.GetType().FullName}");
+            sb.AppendLine(ex.Message);
+            sb.AppendLine();
+            if (ex.InnerException != null)
+            {
+                sb.Append(GetExceptionMessage(ex.InnerException, level+1));
+            }
+            return sb.ToString();
+        }
         #endregion
 
     }
