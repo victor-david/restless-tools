@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 
 namespace Restless.Tools.Utility
@@ -39,15 +36,20 @@ namespace Restless.Tools.Utility
         }
 
         /// <summary>
-        /// Gets the full version of the assembly.
+        /// Gets the raw version property for the assmebly.
+        /// </summary>
+        public Version VersionRaw
+        {
+            get => assembly.GetName().Version;
+        }
+
+
+        /// <summary>
+        /// Gets the full version of the assembly as a string.
         /// </summary>
         public string Version
         {
-            get
-            {
-                var version = assembly.GetName().Version;
-                return version.ToString();
-            }
+            get => VersionRaw.ToString();
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace Restless.Tools.Utility
             get
             {
                 var version = assembly.GetName().Version;
-                return String.Format("{0}.{1}", version.Major, version.Minor);
+                return string.Format("{0}.{1}", version.Major, version.Minor);
             }
         }
 
@@ -67,10 +69,7 @@ namespace Restless.Tools.Utility
         /// </summary>
         public string FrameworkVersion
         {
-            get
-            {
-                return assembly.ImageRuntimeVersion;
-            }
+            get => assembly.ImageRuntimeVersion;
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace Restless.Tools.Utility
                 object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return ((AssemblyDescriptionAttribute)attributes[0]).Description;
             }
@@ -94,7 +93,7 @@ namespace Restless.Tools.Utility
         /// </summary>
         public string Location
         {
-            get { return assembly.Location; }
+            get => assembly.Location;
         }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace Restless.Tools.Utility
                 object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return ((AssemblyProductAttribute)attributes[0]).Product;
             }
@@ -123,7 +122,7 @@ namespace Restless.Tools.Utility
                 object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
@@ -139,7 +138,7 @@ namespace Restless.Tools.Utility
                 object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 if (attributes.Length == 0)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
