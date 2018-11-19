@@ -17,7 +17,7 @@ namespace Restless.Tools.Utility
         /// </summary>
         /// <param name="window">The window to get the position and size for.</param>
         /// <returns>A Rect structure that describes the current position and size of the window.</returns>
-        public static System.Windows.Rect GetWindowRectangle(this Window window)
+        public static Rect GetWindowRectangle(this Window window)
         {
             RECT nativeRect;
             var ih = new WindowInteropHelper(window);

@@ -37,7 +37,7 @@ namespace Restless.Tools.Utility
             {
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Restless.Tools.Utility
         {
             try
             {
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     var xmlSerializer = new XmlSerializer(typeof(T));
                     using (var stringReader = new StringReader(value))

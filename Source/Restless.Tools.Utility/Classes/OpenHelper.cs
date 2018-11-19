@@ -26,7 +26,7 @@ namespace Restless.Tools.Utility
             {
                 string url = Format.MakeHttp(urlToOpen);
                 Process process = new Process();
-                if (!String.IsNullOrEmpty(browserPath))
+                if (!string.IsNullOrEmpty(browserPath))
                 {
                     process.StartInfo.FileName = browserPath;
                     process.StartInfo.Arguments = url;
@@ -77,7 +77,7 @@ namespace Restless.Tools.Utility
         /// <param name="path">The path.</param>
         public static void Explore(string path)
         {
-            OpenFile("explorer.exe", String.Format(@"/e /root,{0}", path));
+            OpenFile("explorer.exe", string.Format(@"/e /root,{0}", path));
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Restless.Tools.Utility
         /// <param name="fullPath">The full path that indcludes the file name.</param>
         public static void ExploreToFile(string fullPath)
         {
-            OpenFile("explorer.exe", String.Format(@"/select,{0}", fullPath));
+            OpenFile("explorer.exe", string.Format(@"/select,{0}", fullPath));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Restless.Tools.Utility
     /// <summary>
     /// Represents a list of integer 64 values.
     /// </summary>
-    public class Integer64List : List<Int64>
+    public class Integer64List : List<long>
     {
         #region Public Fields
         /// <summary>
@@ -52,11 +52,11 @@ namespace Restless.Tools.Utility
         /// <param name="delimeter">The delimeter</param>
         public void AddValuesFromDelimitedString(string value, char delimeter = DefaultDelimter)
         {
-            Int64 id;
+            long id;
             string[] temp = value.Split(delimeter);
             foreach (string cid in temp)
             {
-                if (Int64.TryParse(cid, out id))
+                if (long.TryParse(cid, out id))
                 {
                     Add(id);
                 }
@@ -71,10 +71,10 @@ namespace Restless.Tools.Utility
         /// <returns>The string.</returns>
         public string ToString(char delimeter = DefaultDelimter, ToStringDisposition final = ToStringDisposition.Default)
         {
-            string idStr = String.Empty;
-            foreach (Int64 id in this)
+            string idStr = string.Empty;
+            foreach (long id in this)
             {
-                idStr += String.Format("{0}{1}", id, delimeter);
+                idStr += string.Format("{0}{1}", id, delimeter);
             }
 
             if (idStr.Length == 0)
@@ -85,7 +85,7 @@ namespace Restless.Tools.Utility
                     case ToStringDisposition.AddNegativeOneEvenIfEmpty:
                         return "-1";
                     default:
-                        return String.Empty;
+                        return string.Empty;
                 }
             }
 

@@ -14,7 +14,7 @@ namespace Restless.Tools.Utility
         /// <returns>A string with http://</returns>
         public static string MakeHttp(string s)
         {
-            s = ((s.IndexOf("://") == -1) ? "http://" : String.Empty) + s;
+            s = ((s.IndexOf("://") == -1) ? "http://" : string.Empty) + s;
             return s;
         }
 
@@ -64,7 +64,7 @@ namespace Restless.Tools.Utility
         /// <returns>A string formatted according to value and singular / plur.al</returns>
         public static string Plural(int value, string singular, string plural)
         {
-            return String.Format("{0} {1}", value, (value != 1) ? plural : singular);
+            return string.Format("{0} {1}", value, (value != 1) ? plural : singular);
         }
 
         /// <summary>

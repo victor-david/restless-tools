@@ -55,7 +55,7 @@ namespace Restless.Tools.Utility
             if (obj == null)
             {
                 name = GetObjectName(name);
-                message = (!String.IsNullOrEmpty(message)) ? message : String.Format(Strings.ArgumentNullValidateNull, name);
+                message = (!string.IsNullOrEmpty(message)) ? message : string.Format(Strings.ArgumentNullValidateNull, name);
                 throw new ArgumentNullException(name, message);
             }
         }
@@ -68,10 +68,10 @@ namespace Restless.Tools.Utility
         /// <param name="message">The message to use in the exception, or null to use the default message.</param>
         public static void ValidateNullEmpty(string s, string name, string message = null)
         {
-            if (String.IsNullOrEmpty(s))
+            if (string.IsNullOrEmpty(s))
             {
                 name = GetObjectName(name);
-                message = (!String.IsNullOrEmpty(message)) ? message : String.Format(Strings.ArgumentNullValidateNullOrEmpty, name);
+                message = (!string.IsNullOrEmpty(message)) ? message : string.Format(Strings.ArgumentNullValidateNullOrEmpty, name);
                 ValidateNull(null, name, message);
             }
         }
@@ -113,7 +113,7 @@ namespace Restless.Tools.Utility
         {
             if (value < min || value > max)
             {
-                throw new ArgumentOutOfRangeException(String.Format(Strings.ArgumentOutOfRangeValidateInteger, GetObjectName(name), min, max), innerException:null);
+                throw new ArgumentOutOfRangeException(string.Format(Strings.ArgumentOutOfRangeValidateInteger, GetObjectName(name), min, max), innerException:null);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Restless.Tools.Utility
         public static void ValidateDataRow(DataRow row, string tableName)
         {
             ValidateNullEmpty(tableName, "ValidateDataRow.TableName");
-            ValidateInvalidOperation(row == null || row.Table.TableName != tableName, String.Format(Strings.InvalidOperationDataRowMustBeTable, tableName));
+            ValidateInvalidOperation(row == null || row.Table.TableName != tableName, string.Format(Strings.InvalidOperationDataRowMustBeTable, tableName));
         }
 
         /// <summary>
@@ -141,13 +141,13 @@ namespace Restless.Tools.Utility
             ValidateNull(array, name);
             if (array.Length < minSize)
             {
-                throw new ArgumentException(String.Format(Strings.ArgumentValidateArray, name, minSize));
+                throw new ArgumentException(string.Format(Strings.ArgumentValidateArray, name, minSize));
             }
         }
 
         private static string GetObjectName(string passedName)
         {
-            return (!String.IsNullOrEmpty(passedName)) ? passedName : Strings.UnspecifiedName;
+            return (!string.IsNullOrEmpty(passedName)) ? passedName : Strings.UnspecifiedName;
         }
     }
 }
