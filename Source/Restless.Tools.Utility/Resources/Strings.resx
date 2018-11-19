@@ -140,6 +140,9 @@
     <value>The row does not belong to the {0} table</value>
     <comment>Used when a data row does not belong to the specified table</comment>
   </data>
+  <data name="InvalidOperationNoSearchScopeSpecified" xml:space="preserve">
+    <value>No search scope has been specified.</value>
+  </data>
   <data name="UnhandledExceptionCaption" xml:space="preserve">
     <value>Unhandled Exception</value>
   </data>

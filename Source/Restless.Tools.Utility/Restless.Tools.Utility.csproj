@@ -50,6 +50,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Search\SearchItemTypes.cs" />
+    <Compile Include="Classes\Search\SearchResultEventArgs.cs" />
+    <Compile Include="Classes\Search\SearchValueCollection.cs" />
+    <Compile Include="Classes\Search\WindowsFileSearch.cs" />
+    <Compile Include="Classes\Search\WindowsMapiSearch.cs" />
+    <Compile Include="Classes\Search\WindowsSearchBase.cs" />
+    <Compile Include="Classes\Search\WindowsSearchResult.cs" />
+    <Compile Include="Classes\Search\WindowsSearchResultCollection.cs" />
     <Compile Include="Classes\TaskManager.cs" />
     <Compile Include="Classes\TaskManagerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

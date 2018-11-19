@@ -115,6 +115,15 @@ namespace Restless.Tools.Utility.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No search scope has been specified..
+        /// </summary>
+        internal static string InvalidOperationNoSearchScopeSpecified {
+            get {
+                return ResourceManager.GetString("InvalidOperationNoSearchScopeSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled Exception.
         /// </summary>
         internal static string UnhandledExceptionCaption {
