@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.ComponentModel;
 using System.Data.OleDb;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using Restless.Tools.Utility;
 using PropSystem = Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using SysProps = Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
-using System.ComponentModel;
 
 namespace Restless.Tools.Utility.Search
 {

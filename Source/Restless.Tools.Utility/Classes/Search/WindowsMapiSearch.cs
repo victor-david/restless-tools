@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using Restless.Tools.Utility;
-using PropSystem = Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using SysProps = Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
 
 namespace Restless.Tools.Utility.Search
@@ -28,19 +21,19 @@ namespace Restless.Tools.Utility.Search
         public List<string> IncludedTypes
         {
             get;
-            private set;
         }
         #endregion
 
         /************************************************************************/
 
         #region Constructor
-        #pragma warning disable 1591
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WindowsMapiSearch"/> class.
+        /// </summary>
         public WindowsMapiSearch()
         {
             IncludedTypes = new List<string>();
         }
-        #pragma warning restore 1591
         #endregion
 
         /************************************************************************/
