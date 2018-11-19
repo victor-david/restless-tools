@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A4CE6B3-AEEF-41DD-A3FB-422380879F7A}</ProjectGuid>
+    <ProjectGuid>{470B2BA0-766D-4A3D-9950-466720171028}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restless.Tools.OpenXml</RootNamespace>
-    <AssemblyName>Restless.Tools.OpenXml</AssemblyName>
+    <RootNamespace>Restless.Tools.Converters</RootNamespace>
+    <AssemblyName>Restless.Tools.Converters</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,15 +29,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Restless.Tools.OpenXml.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Restless.Tools.Converters.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,26 +46,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CoreProperties.cs" />
-    <Compile Include="Classes\ExtendedProperties.cs" />
-    <Compile Include="Classes\OpenXmlDocument.cs" />
-    <Compile Include="Classes\OpenXmlDocumentCreator.cs" />
-    <Compile Include="Classes\PropertiesAdapter.cs" />
+    <Compile Include="Classes\BooleanToInverseBooleanConverter.cs" />
+    <Compile Include="Classes\BooleanToInverseVisibilityConverter.cs" />
+    <Compile Include="Classes\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Classes\BooleanToVisibilityMultiConverter.cs" />
+    <Compile Include="Classes\BooleanToVisibilityMultiConverterOptions.cs" />
+    <Compile Include="Classes\Int64ToImageConverter.cs" />
+    <Compile Include="Classes\Int64ToVisibilityConverter.cs" />
+    <Compile Include="Classes\NegativeIntegerToString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
