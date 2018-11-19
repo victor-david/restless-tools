@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Restless Animal Tool Library (Utility)")]
-[assembly: AssemblyDescription("Provide various utility classes")]
+[assembly: AssemblyDescription("Provide various utility classes; converters, validation helpers, windows search, task helpers")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Restless Animal Development")]
 [assembly: AssemblyProduct("Restless Animal Tool Library (Utility)")]

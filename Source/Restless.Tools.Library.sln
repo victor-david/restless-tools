@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Library", "Restless.Tools.Library\Restless.Tools.Library.csproj", "{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.OfficeAutomation", "Restless.Tools.OfficeAutomation\Restless.Tools.OfficeAutomation.csproj", "{6DB76CAD-D35A-4BDF-9A01-DD0DB96C4019}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Utility", "Restless.Tools.Utility\Restless.Tools.Utility.csproj", "{24162F48-2D5B-4667-9456-B312447E0481}"
@@ -12,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.OpenXml", "Restless.Tools.OpenXml\Restless.Tools.OpenXml.csproj", "{5A4CE6B3-AEEF-41DD-A3FB-422380879F7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Database", "Restless.Tools.Database\Restless.Tools.Database.csproj", "{C55B1F15-54C6-4CC3-B261-E7BC7FB1C4D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Converters", "Restless.Tools.Converters\Restless.Tools.Converters.csproj", "{470B2BA0-766D-4A3D-9950-466720171028}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,18 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|x64.ActiveCfg = Debug|x64
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|x64.Build.0 = Debug|x64
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|x86.ActiveCfg = Debug|x86
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Debug|x86.Build.0 = Debug|x86
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|x64.ActiveCfg = Release|x64
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|x64.Build.0 = Release|x64
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|x86.ActiveCfg = Release|x86
-		{CF1B74A1-7817-424C-85FA-05EB47DCBB4C}.Release|x86.Build.0 = Release|x86
 		{6DB76CAD-D35A-4BDF-9A01-DD0DB96C4019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DB76CAD-D35A-4BDF-9A01-DD0DB96C4019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DB76CAD-D35A-4BDF-9A01-DD0DB96C4019}.Debug|x64.ActiveCfg = Debug|x64
@@ -85,18 +69,6 @@ Global
 		{C55B1F15-54C6-4CC3-B261-E7BC7FB1C4D3}.Release|x64.Build.0 = Release|Any CPU
 		{C55B1F15-54C6-4CC3-B261-E7BC7FB1C4D3}.Release|x86.ActiveCfg = Release|Any CPU
 		{C55B1F15-54C6-4CC3-B261-E7BC7FB1C4D3}.Release|x86.Build.0 = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|x64.Build.0 = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Debug|x86.Build.0 = Debug|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|Any CPU.Build.0 = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|x64.ActiveCfg = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|x64.Build.0 = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|x86.ActiveCfg = Release|Any CPU
-		{470B2BA0-766D-4A3D-9950-466720171028}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

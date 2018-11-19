@@ -38,9 +38,11 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +52,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Converters\BooleanToInverseBooleanConverter.cs" />
+    <Compile Include="Classes\Converters\BooleanToInverseVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\BooleanToVisibilityMultiConverter.cs" />
+    <Compile Include="Classes\Converters\BooleanToVisibilityMultiConverterOptions.cs" />
+    <Compile Include="Classes\Converters\Int64ToImageConverter.cs" />
+    <Compile Include="Classes\Converters\Int64ToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\NegativeIntegerToString.cs" />
     <Compile Include="Classes\Search\SearchItemTypes.cs" />
     <Compile Include="Classes\Search\SearchResultEventArgs.cs" />
     <Compile Include="Classes\Search\SearchValueCollection.cs" />
@@ -58,8 +68,8 @@
     <Compile Include="Classes\Search\WindowsSearchBase.cs" />
     <Compile Include="Classes\Search\WindowsSearchResult.cs" />
     <Compile Include="Classes\Search\WindowsSearchResultCollection.cs" />
-    <Compile Include="Classes\TaskManager.cs" />
-    <Compile Include="Classes\TaskManagerExtensions.cs" />
+    <Compile Include="Classes\Tasks\TaskManager.cs" />
+    <Compile Include="Classes\Tasks\TaskManagerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
