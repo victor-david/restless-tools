@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8A5D6E67-1248-41D4-8CD0-EBA919716210}</ProjectGuid>
+    <ProjectGuid>{9FBAA5EA-71BB-4548-8AC3-F10084F31C70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restless.Tools.Controls</RootNamespace>
-    <AssemblyName>Restless.Tools.Controls</AssemblyName>
+    <RootNamespace>Restless.Tools.Mvvm</RootNamespace>
+    <AssemblyName>Restless.Tools.Mvvm</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,14 +29,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Restless.Tools.Controls.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,32 +43,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calendar\RestlessCalendar.cs" />
-    <Compile Include="Converters\DateUtcToLocalConverter.cs" />
-    <Compile Include="Converters\StringToMaskedStringConverter.cs" />
-    <Compile Include="Converters\StringToSingleLineConverter.cs" />
-    <Compile Include="DataGrid\DataGridColumnCollection.cs" />
-    <Compile Include="DataGrid\DataGridColumnExtensions.cs" />
-    <Compile Include="DataGrid\DataGridColumns.cs" />
-    <Compile Include="DataGrid\DataGridColumnSortSpec.cs" />
-    <Compile Include="DataGrid\DataGridCustomSortBehavior.cs" />
-    <Compile Include="DataGrid\RestlessDataGrid.cs" />
-    <Compile Include="DragDrop\DragSource.cs" />
-    <Compile Include="DragDrop\DragSourceBehavior.cs" />
-    <Compile Include="DragDrop\DropTarget.cs" />
-    <Compile Include="DragDrop\DropTargetBehavior.cs" />
-    <Compile Include="DragDrop\IDragSource.cs" />
-    <Compile Include="DragDrop\IDropTarget.cs" />
-    <Compile Include="KeyValue\KeyValue.cs" />
-    <Compile Include="LinkedTextBlock\LinkedTextBlock.cs" />
+    <Compile Include="Classes\CommandDictionary.cs" />
+    <Compile Include="Classes\CommandSupported.cs" />
+    <Compile Include="Classes\ObservableObject.cs" />
+    <Compile Include="Classes\RelayCommand.cs" />
+    <Compile Include="Classes\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

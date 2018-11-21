@@ -4,43 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:Restless.Tools.App.Sample"
+    xmlns:l="clr-namespace:Restless.Tools.App.Sample"
     xmlns:con="clr-namespace:Restless.Tools.Controls;assembly=Restless.Tools.Controls"
     mc:Ignorable="d"
-    Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    Title="Restless Controls" Height="750" Width="1020">
+    <Grid Margin="6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <con:RestlessCalendar x:Name="cal"/>
-        <CheckBox
-            Grid.Row="1"
-            IsChecked="{Binding IsUtcMode,ElementName=cal}" 
-            Content="Utc Mode"/>
-        <ListBox 
-            Grid.Row="2" 
-            ItemsSource="{Binding Dates}"
-            SelectedItem="{Binding SelectedDateUtc, ElementName=cal}"/>
+        <Grid.Resources>
+            <Style TargetType="con:LinkedTextBlock">
+                <Setter Property="Margin" Value="0,4"/>
+            </Style>
+        </Grid.Resources>
 
-
-
-        <StackPanel Grid.Column="1" Margin="5">
-            <TextBlock Text="Display Date"/>
-            <TextBlock Text="Selected Date"/>
-            <TextBlock Text="Selected Date Utc"/>
+        <StackPanel Margin="6,4">
+            <con:LinkedTextBlock Text="Calendar" Command="{Binding Commands[S0]}"/>
+            <con:LinkedTextBlock Text="Key Value" Command="{Binding Commands[S1]}"/>
         </StackPanel>
-        <StackPanel Grid.Column="2" Margin="5">
-            <TextBlock Text="{Binding DisplayDate,ElementName=cal}"/>
-            <TextBlock Text="{Binding SelectedDate,ElementName=cal}"/>
-            <TextBlock Text="{Binding SelectedDateUtc,ElementName=cal}"/>
-        </StackPanel>
-        
+
+        <Border 
+            Grid.Column="1" 
+            Margin="5,0"
+            Width="2"
+            
+            Background="DarkBlue"/>
+        <l:CalendarDisplay Grid.Column="2" Visibility="{Binding Sections[0]}"/>
+        <l:KeyValueDisplay Grid.Column="2" Visibility="{Binding Sections[1]}"/>
+
+
     </Grid>
 </Window>

@@ -55,6 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\CalendarDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\KeyValueDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,6 +70,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\CalendarDisplay.xaml.cs">
+      <DependentUpon>CalendarDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\KeyValueDisplay.xaml.cs">
+      <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -98,6 +112,10 @@
     <ProjectReference Include="..\Restless.Tools.Controls\Restless.Tools.Controls.csproj">
       <Project>{8a5d6e67-1248-41d4-8cd0-eba919716210}</Project>
       <Name>Restless.Tools.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Restless.Tools.Mvvm\Restless.Tools.Mvvm.csproj">
+      <Project>{9fbaa5ea-71bb-4548-8ac3-f10084f31c70}</Project>
+      <Name>Restless.Tools.Mvvm</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
