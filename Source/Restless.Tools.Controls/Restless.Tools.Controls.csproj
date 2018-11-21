@@ -36,6 +36,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,12 +46,23 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\DragDrop\DragSource.cs" />
-    <Compile Include="Classes\DragDrop\DragSourceBehavior.cs" />
-    <Compile Include="Classes\DragDrop\DropTarget.cs" />
-    <Compile Include="Classes\DragDrop\DropTargetBehavior.cs" />
-    <Compile Include="Classes\DragDrop\IDragSource.cs" />
-    <Compile Include="Classes\DragDrop\IDropTarget.cs" />
+    <Compile Include="Calendar\RestlessCalendar.cs" />
+    <Compile Include="Converters\DateUtcToLocalConverter.cs" />
+    <Compile Include="Converters\StringToMaskedStringConverter.cs" />
+    <Compile Include="Converters\StringToSingleLineConverter.cs" />
+    <Compile Include="DataGrid\DataGridColumnCollection.cs" />
+    <Compile Include="DataGrid\DataGridColumnExtensions.cs" />
+    <Compile Include="DataGrid\DataGridColumns.cs" />
+    <Compile Include="DataGrid\DataGridColumnSortSpec.cs" />
+    <Compile Include="DataGrid\DataGridCustomSortBehavior.cs" />
+    <Compile Include="DataGrid\RestlessDataGrid.cs" />
+    <Compile Include="DragDrop\DragSource.cs" />
+    <Compile Include="DragDrop\DragSourceBehavior.cs" />
+    <Compile Include="DragDrop\DropTarget.cs" />
+    <Compile Include="DragDrop\DropTargetBehavior.cs" />
+    <Compile Include="DragDrop\IDragSource.cs" />
+    <Compile Include="DragDrop\IDropTarget.cs" />
+    <Compile Include="LinkedTextBlock\LinkedTextBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

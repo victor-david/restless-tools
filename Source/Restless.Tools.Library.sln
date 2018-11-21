@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Database", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.Controls", "Restless.Tools.Controls\Restless.Tools.Controls.csproj", "{8A5D6E67-1248-41D4-8CD0-EBA919716210}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restless.Tools.App.Sample", "Restless.Tools.App.Sample\Restless.Tools.App.Sample.csproj", "{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{8A5D6E67-1248-41D4-8CD0-EBA919716210}.Release|x64.Build.0 = Release|Any CPU
 		{8A5D6E67-1248-41D4-8CD0-EBA919716210}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A5D6E67-1248-41D4-8CD0-EBA919716210}.Release|x86.Build.0 = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|x64.Build.0 = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Debug|x86.Build.0 = Debug|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|x64.ActiveCfg = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|x64.Build.0 = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|x86.ActiveCfg = Release|Any CPU
+		{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

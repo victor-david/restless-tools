@@ -57,9 +57,13 @@
     <Compile Include="Classes\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Classes\Converters\BooleanToVisibilityMultiConverter.cs" />
     <Compile Include="Classes\Converters\BooleanToVisibilityMultiConverterOptions.cs" />
+    <Compile Include="Classes\Converters\DateUtcToLocalConverter.cs" />
     <Compile Include="Classes\Converters\Int64ToImageConverter.cs" />
     <Compile Include="Classes\Converters\Int64ToVisibilityConverter.cs" />
     <Compile Include="Classes\Converters\NegativeIntegerToString.cs" />
+    <Compile Include="Classes\Converters\StringToCleanStringConverter.cs" />
+    <Compile Include="Classes\Converters\StringToCleanStringOptions.cs" />
+    <Compile Include="Classes\Converters\StringToMaskedStringConverter.cs" />
     <Compile Include="Classes\Search\SearchItemTypes.cs" />
     <Compile Include="Classes\Search\SearchResultEventArgs.cs" />
     <Compile Include="Classes\Search\SearchValueCollection.cs" />
