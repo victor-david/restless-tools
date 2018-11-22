@@ -67,10 +67,8 @@ namespace Restless.Tools.Controls
 
         private static void OnDataGridColumnsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d.GetType() == typeof(DataGrid)) //  TODO:Investigate / bring Extended here || d.GetType() == typeof(DataGridExtended))
+            if (d is DataGrid myGrid) 
             {
-                DataGrid myGrid = d as DataGrid;
-
                 ObservableCollection<DataGridColumn> Columns = (ObservableCollection<DataGridColumn>)e.NewValue;
                 var prop = typeof(DataGridColumn).GetProperty("DataGridOwner", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (Columns != null)
@@ -88,7 +86,6 @@ namespace Restless.Tools.Controls
                             myGrid.Columns.Add(col);
                         }
                     }
-
 
                     Columns.CollectionChanged += delegate(object sender, NotifyCollectionChangedEventArgs args)
                     {
@@ -111,8 +108,6 @@ namespace Restless.Tools.Controls
                 }
             }
         }
-
         #endregion
-
     }
 }

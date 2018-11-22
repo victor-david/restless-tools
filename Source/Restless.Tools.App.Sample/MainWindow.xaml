@@ -26,16 +26,18 @@
         <StackPanel Margin="6,4">
             <con:LinkedTextBlock Text="Calendar" Command="{Binding Commands[S0]}"/>
             <con:LinkedTextBlock Text="Key Value" Command="{Binding Commands[S1]}"/>
+            <con:LinkedTextBlock Text="Data Grid" Command="{Binding Commands[S2]}"/>
         </StackPanel>
 
         <Border 
             Grid.Column="1" 
             Margin="5,0"
             Width="2"
-            
             Background="DarkBlue"/>
+        
         <l:CalendarDisplay Grid.Column="2" Visibility="{Binding Sections[0]}"/>
         <l:KeyValueDisplay Grid.Column="2" Visibility="{Binding Sections[1]}"/>
+        <l:DataGridDisplay Grid.Column="2" Visibility="{Binding Sections[2]}"/>
 
 
     </Grid>

@@ -41,10 +41,6 @@ namespace Restless.Tools.Controls
            );
 
 
-
-
-
-
         /// <summary>
         /// Gets or sets a command to be executed when a context menu associated with the data grid is opening as defined by <see cref="ContextMenuOpeningCommandProperty"/>.
         /// </summary>
@@ -95,16 +91,6 @@ namespace Restless.Tools.Controls
             (
                 nameof(SelectedItemsList), typeof(IList), typeof(RestlessDataGrid), new PropertyMetadata(null)
             );
-        #endregion
-
-        /************************************************************************/
-
-        #region Public properties
-
-
-
-
-
         #endregion
 
         /************************************************************************/

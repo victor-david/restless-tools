@@ -59,6 +59,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DataGridDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\KeyValueDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,9 +78,13 @@
     <Compile Include="Controls\CalendarDisplay.xaml.cs">
       <DependentUpon>CalendarDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataGridDisplay.xaml.cs">
+      <DependentUpon>DataGridDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\KeyValueDisplay.xaml.cs">
       <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper\Person.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
