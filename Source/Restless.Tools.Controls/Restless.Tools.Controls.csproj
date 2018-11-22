@@ -36,6 +36,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calendar\RestlessCalendar.cs" />
+    <Compile Include="ColorPicker\ColorItem.cs" />
+    <Compile Include="ColorPicker\ColorPicker.cs" />
+    <Compile Include="ColorPicker\ColorSorter.cs" />
+    <Compile Include="ColorPicker\ColorSortingMode.cs" />
+    <Compile Include="ColorPicker\ColorToBrushConverter.cs" />
+    <Compile Include="ColorPicker\ColorUtilities.cs" />
     <Compile Include="Converters\DateUtcToLocalConverter.cs" />
     <Compile Include="Converters\StringToMaskedStringConverter.cs" />
     <Compile Include="Converters\StringToSingleLineConverter.cs" />
