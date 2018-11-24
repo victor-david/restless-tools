@@ -7,7 +7,12 @@
     xmlns:l="clr-namespace:Restless.Tools.App.Sample"
     xmlns:con="clr-namespace:Restless.Tools.Controls;assembly=Restless.Tools.Controls"
     mc:Ignorable="d"
-    Title="Restless Controls" Height="750" Width="1020">
+    Title="Restless Controls" Height="750" Width="1220">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type l:Person}">
+            <l:PersonView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid Margin="6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -28,6 +33,8 @@
             <con:LinkedTextBlock Text="Key Value" Command="{Binding Commands[S1]}"/>
             <con:LinkedTextBlock Text="Data Grid" Command="{Binding Commands[S2]}"/>
             <con:LinkedTextBlock Text="Color Picker" Command="{Binding Commands[S3]}"/>
+            <con:LinkedTextBlock Text="Tab Control (Fixed)" Command="{Binding Commands[S4]}"/>
+            <con:LinkedTextBlock Text="Tab Control (Dynamic)" Command="{Binding Commands[S5]}"/>
         </StackPanel>
 
         <Border 
@@ -40,5 +47,7 @@
         <l:KeyValueDisplay Grid.Column="2" Visibility="{Binding Sections[1]}"/>
         <l:DataGridDisplay Grid.Column="2" Visibility="{Binding Sections[2]}"/>
         <l:ColorPickerDisplay Grid.Column="2" Visibility="{Binding Sections[3]}" />
+        <l:TabDisplayFixed Grid.Column="2" Visibility="{Binding Sections[4]}" />
+        <l:TabDisplayDynamic Grid.Column="2" Visibility="{Binding Sections[5]}" />
     </Grid>
 </Window>

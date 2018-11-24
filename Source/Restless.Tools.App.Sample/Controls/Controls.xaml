@@ -1,0 +1,63 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Style for a tool bar style button. -->
+    <Style TargetType="Button" x:Key="ToolBarButton" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,0,-2,0" />
+        <Setter Property="FontFamily" Value="Courier" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Foreground" Value="DarkGray" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="MaxWidth" Value="32" />
+        <Setter Property="MaxHeight" Value="32" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="2">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Teal"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <DataTemplate x:Key="ClosableTabItemTemplate">
+        <DockPanel Width="116" Height="20">
+            <Button
+                Command="{Binding Path=CloseCommand}"
+                Content="X"
+                DockPanel.Dock="Right"
+                Width="16" Height="16"
+                VerticalAlignment="Top"
+                Style="{StaticResource ToolBarButton}">
+            </Button>
+            <ContentPresenter Content="{Binding Path=FirstName}" />
+        </DockPanel>
+    </DataTemplate>
+
+    <Style TargetType="TabItem">
+        <Setter Property="Padding" Value="6,4"/>
+        <!--<Setter Property="Height" Value="64"/>-->
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="ForestGreen" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="False">
+                <Setter Property="Foreground" Value="DarkGray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

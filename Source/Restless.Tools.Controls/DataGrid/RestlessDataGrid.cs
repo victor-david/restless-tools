@@ -120,12 +120,14 @@ namespace Restless.Tools.Controls
         /************************************************************************/
 
         #region Constructor
-        #pragma warning disable 1591
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RestlessDataGrid"/> class.
+        /// </summary>
         public RestlessDataGrid()
         {
             // nothing yet. May need something here later.
         }
-        #pragma warning restore 1591
         #endregion
 
         /************************************************************************/

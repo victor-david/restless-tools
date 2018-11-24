@@ -63,11 +63,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DataGridDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\KeyValueDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PersonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabDisplayFixed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TabDisplayDynamic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,7 +107,18 @@
     <Compile Include="Controls\KeyValueDisplay.xaml.cs">
       <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PersonView.xaml.cs">
+      <DependentUpon>PersonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabDisplayFixed.xaml.cs">
+      <DependentUpon>TabDisplayFixed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabDisplayDynamic.xaml.cs">
+      <DependentUpon>TabDisplayDynamic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper\Person.cs" />
+    <Compile Include="Helper\PersonCollection.cs" />
+    <Compile Include="Helper\TabPersonController.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

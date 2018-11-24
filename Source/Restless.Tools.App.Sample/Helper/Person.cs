@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Restless.Tools.Mvvm;
+using System;
+using System.Windows.Input;
 
 namespace Restless.Tools.App.Sample
 {
     /// <summary>
     /// Represents a single person.
     /// </summary>
-    public class Person
+    public class Person : ObservableObject
     {
+        public event EventHandler Closed;
+
+        public int Id
+        {
+            get;
+        }
+
         public string FirstName
         {
             get;
@@ -26,11 +31,21 @@ namespace Restless.Tools.App.Sample
             get;
         }
 
-        public Person(string firstName, string lastName, string position)
+        public ICommand CloseCommand
         {
+            get;
+        }
+
+        public Person(int id, string firstName, string lastName, string position)
+        {
+            Id = id;
             FirstName = firstName;
             LastName = lastName;
             Position = position;
+            CloseCommand = RelayCommand.Create((o) =>
+            {
+                Closed?.Invoke(this, EventArgs.Empty);
+            });
         }
     }
 }

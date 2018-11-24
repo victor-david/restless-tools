@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using Restless.Tools.Controls;
@@ -50,12 +51,16 @@ namespace Restless.Tools.App.Sample
             private set;
         }
 
-        public ObservableCollection<Person> Persons
+        public PersonCollection Persons
         {
             get;
             private set;
         }
 
+        public TabPersonController TabPerson
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/
@@ -65,6 +70,7 @@ namespace Restless.Tools.App.Sample
         {
             InitializeComponent();
             DataContext = this;
+            TabPerson = new TabPersonController();
             InitializeCommands();
             InitializeSections();
             InitializeDates();
@@ -84,7 +90,10 @@ namespace Restless.Tools.App.Sample
             Commands.Add("S1", (o) => ActivateSection(1));
             Commands.Add("S2", (o) => ActivateSection(2));
             Commands.Add("S3", (o) => ActivateSection(3));
+            Commands.Add("S4", (o) => ActivateSection(4));
+            Commands.Add("S5", (o) => ActivateSection(5));
             Commands.Add("Open", (o) => MessageBox.Show("This is the row double click action."));
+            Commands.Add("AddTabPerson", RunAddTabPerson, CanRunAddTabPerson);
         }
 
         private void InitializeSections()
@@ -95,8 +104,9 @@ namespace Restless.Tools.App.Sample
                 Visibility.Collapsed,
                 Visibility.Collapsed,
                 Visibility.Collapsed,
+                Visibility.Collapsed,
+                Visibility.Collapsed,
             };
-
         }
 
         private void InitializeDates()
@@ -123,16 +133,21 @@ namespace Restless.Tools.App.Sample
 
         private void InitializePersons()
         {
-            Persons = new ObservableCollection<Person>
+            Persons = new PersonCollection()
             {
-                new Person("Gail", "Ludwig", "VP Of Earth"),
-                new Person("Mike", "Popeye", "Developer"),
-                new Person("Kate", "Peabody", "Undersecretary of Secrets"),
-                new Person("James", "Rascal", "All around helper guy"),
-                new Person("Michael", "Post", "VP Of Other Planets"),
-                new Person("Nancy", "West", "California Sales Rep"),
-                new Person("Pao", "Sween", "Senior Lead"),
+                new Person(1, "Gail", "Ludwig", "VP Of Earth"),
+                new Person(2, "Mike", "Popeye", "Developer"),
+                new Person(3, "Kate", "Peabody", "Undersecretary of Secrets"),
+                new Person(4, "James", "Rascal", "All around helper guy"),
+                new Person(5, "Michael", "Post", "VP Of Other Planets"),
+                new Person(6, "Nancy", "West", "California Sales Rep"),
+                new Person(7, "Pao", "Sween", "Senior Lead"),
             };
+
+            foreach (var person in Persons)
+            {
+                person.Closed += PersonClosed;
+            }
         }
 
         private void ActivateSection(int section)
@@ -140,6 +155,34 @@ namespace Restless.Tools.App.Sample
             for (int k=0; k < Sections.Count; k++)
             {
                 Sections[k] = (k == section) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private void RunAddTabPerson(object parm)
+        {
+            if (CanRunAddTabPerson(null))
+            {
+                for (int id=1; id <=7; id++)
+                {
+                    if (!TabPerson.Persons.Contains(id))
+                    {
+                        TabPerson.AddPerson(Persons.GetWithId(id));
+                        return;
+                    }
+                }
+            }
+        }
+
+        private bool CanRunAddTabPerson(object parm)
+        {
+            return TabPerson.Persons.Count < 7;
+        }
+
+        private void PersonClosed(object sender, EventArgs e)
+        {
+            if (sender is Person person)
+            {
+                TabPerson.ClosePerson(person);
             }
         }
         #endregion
