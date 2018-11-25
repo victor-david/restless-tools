@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calendar\RestlessCalendar.cs" />
+    <Compile Include="Calendar\RestlessPopupCalendar.cs" />
     <Compile Include="ColorPicker\ColorItem.cs" />
     <Compile Include="ColorPicker\ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorSorter.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="DragDrop\IDropTarget.cs" />
     <Compile Include="KeyValue\KeyValue.cs" />
     <Compile Include="LinkedTextBlock\LinkedTextBlock.cs" />
+    <Compile Include="Other\Default.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tab\RestlessTabControl.cs" />
     <Compile Include="Tab\TabItemDragDrop.cs" />

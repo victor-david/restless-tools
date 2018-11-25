@@ -15,25 +15,25 @@ namespace Restless.Tools.Controls
         /// </summary>
         public const int DefaultWidth = 100;
 
-        /// <summary>
-        /// Gets or sets the default date format to use with the <see cref="MakeDate(DataGridBoundColumn, string, int, bool)"/> extension.
-        /// </summary>
-        public static string DefaultDateFormat = "MMM dd, yyyy";
+        ///// <summary>
+        ///// Gets or sets the default date format to use with the <see cref="MakeDate(DataGridBoundColumn, string, int, bool)"/> extension.
+        ///// </summary>
+        //public static string DefaultDateFormat = "MMM dd, yyyy";
 
-        /// <summary>
-        /// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
-        /// </summary>
-        public static string StyleDataGridHeaderDefault = "DataGridHeaderDefault";
+        ///// <summary>
+        ///// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
+        ///// </summary>
+        //public static string StyleDataGridHeaderDefault = "DataGridHeaderDefault";
 
-        /// <summary>
-        /// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
-        /// </summary>
-        public static string StyleDataGridHeaderCenter = "DataGridHeaderCenter";
+        ///// <summary>
+        ///// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
+        ///// </summary>
+        //public static string StyleDataGridHeaderCenter = "DataGridHeaderCenter";
 
-        /// <summary>
-        /// Defines the name of a style that may be applied to TextBlock in order to center it.
-        /// </summary>
-        public static string StyleTextBlockCenter = "TextBlockCenter";
+        ///// <summary>
+        ///// Defines the name of a style that may be applied to TextBlock in order to center it.
+        ///// </summary>
+        //public static string StyleTextBlockCenter = "TextBlockCenter";
 
         /// <summary>
         /// Formats the column to display a date and makes the column fixed width.
@@ -51,7 +51,7 @@ namespace Restless.Tools.Controls
                 col.Binding.TargetNullValue = "--";
             }
 
-            col.Binding.StringFormat = !string.IsNullOrEmpty(dateFormat) ? dateFormat : DefaultDateFormat;
+            col.Binding.StringFormat = !string.IsNullOrEmpty(dateFormat) ? dateFormat : Default.Format.DataGridDate;
             col.MakeFixedWidth(width);
             return col;
         }
@@ -118,8 +118,8 @@ namespace Restless.Tools.Controls
         /// </remarks>
         public static DataGridBoundColumn MakeCentered(this DataGridBoundColumn col, string headerStyle = null, string cellStyle = null)
         {
-            Style s1 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(headerStyle) ? headerStyle : StyleDataGridHeaderCenter); 
-            Style s2 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(cellStyle) ? cellStyle : StyleTextBlockCenter);
+            Style s1 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(headerStyle) ? headerStyle : Default.Style.DataGridHeaderCenter); 
+            Style s2 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(cellStyle) ? cellStyle : Default.Style.TextBlockCenter);
             return col.AddHeaderStyle(s1).AddCellStyle(s2);
         }
 
@@ -208,7 +208,7 @@ namespace Restless.Tools.Controls
                     var obj = col.Header;
                     if (col.HeaderStyle == null)
                     {
-                        col.HeaderStyle = new Style(typeof(DataGridColumnHeader), (Style)Application.Current.TryFindResource(StyleDataGridHeaderDefault));
+                        col.HeaderStyle = new Style(typeof(DataGridColumnHeader), (Style)Application.Current.TryFindResource(Default.Style.DataGridHeader));
                     }
 
                     if (!col.HeaderStyle.Setters.IsSealed)

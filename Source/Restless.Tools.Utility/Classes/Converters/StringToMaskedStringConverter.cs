@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Restless.App.Panama.Converters
+namespace Restless.Tools.Converters
 {
     /// <summary>
     /// Provides a converter that accepts a string value and returns a masked string value.

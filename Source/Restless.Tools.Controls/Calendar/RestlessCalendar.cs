@@ -44,7 +44,7 @@ namespace Restless.Tools.Controls
 
         #region Properties
         /// <summary>
-        /// Gets or sets a boolean value that determines if the calendar peration is UTC mode.
+        /// Gets or sets a boolean value that determines if the calendar operates in UTC mode.
         /// </summary>
         public bool IsUtcMode
         {
@@ -165,6 +165,13 @@ namespace Restless.Tools.Controls
 
         /************************************************************************/
 
+        #region Private methods
+        /// <summary>
+        /// Converts the specified date if <see cref="IsUtcMode"/> is true.
+        /// </summary>
+        /// <param name="dt">The date to convert</param>
+        /// <param name="toLocal">true to convert to local, false to convert to UTC</param>
+        /// <returns>The converted date if <see cref="IsUtcMode"/> is true; otherwise, <paramref name="dt"/> unaltered</returns>
         private DateTime ConvertIf(DateTime dt, bool toLocal)
         {
             if (IsUtcMode)
@@ -176,6 +183,7 @@ namespace Restless.Tools.Controls
             }
             return dt;
         }
+        #endregion
 
     }
 }
