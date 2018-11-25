@@ -44,12 +44,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CommandDictionary.cs" />
-    <Compile Include="Classes\CommandSupported.cs" />
-    <Compile Include="Classes\ObservableObject.cs" />
-    <Compile Include="Classes\RelayCommand.cs" />
-    <Compile Include="Classes\ViewModelBase.cs" />
+    <Compile Include="Collections\GeneralOption.cs" />
+    <Compile Include="Collections\GeneralOptionList.cs" />
+    <Compile Include="Collections\SelectableItem.cs" />
+    <Compile Include="Collections\SelectableItemList.cs" />
+    <Compile Include="Mvvm\CommandDictionary.cs" />
+    <Compile Include="Mvvm\CommandSupported.cs" />
+    <Compile Include="Mvvm\ObservableObject.cs" />
+    <Compile Include="Mvvm\RelayCommand.cs" />
+    <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
