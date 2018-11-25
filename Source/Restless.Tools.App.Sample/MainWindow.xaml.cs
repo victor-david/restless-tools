@@ -81,7 +81,6 @@ namespace Restless.Tools.App.Sample
 
         /************************************************************************/
 
-
         #region Private methods
         private void InitializeCommands()
         {

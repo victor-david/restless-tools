@@ -123,7 +123,6 @@ namespace Restless.Tools.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            
             itemsHolderPanel = GetTemplateChild(PartItemsHolder) as Panel;
             UpdateSelectedItem();
         }

@@ -6,7 +6,9 @@
 
     <Geometry x:Key="DownArrowGeometry">M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z</Geometry>
     
-    <!-- Simple solid color brushes -->
+    <!-- ::::::::::::::::: -->
+    <!-- :::: BRUSHES :::: -->
+    <!-- ::::::::::::::::: -->
     <SolidColorBrush x:Key="ButtonHover" Color="#C2E0FF" />
     <SolidColorBrush x:Key="ButtonHoverBorder" Color="#3399FF" />
     <SolidColorBrush x:Key="ButtonChecked" Color="#FF82BFFF" />
@@ -69,9 +71,9 @@
     </DrawingBrush>
 
 
-    <!-- ********* -->
-    <!-- KEY VALUE -->
-    <!-- ********* -->
+    <!-- ::::::::::::::::::: -->
+    <!-- :::: KEY VALUE :::: -->
+    <!-- ::::::::::::::::::: -->
     <Style TargetType="con:KeyValue">
         <Setter Property="Template">
             <Setter.Value>
@@ -107,12 +109,9 @@
         </Setter>
     </Style>
 
-
-    <!-- ************ -->
-    <!-- COLOR PICKER -->
-    <!-- ************ -->
-
-    <!-- Color Picker Toggle Button -->
+    <!-- :::::::::::::::::::::: -->
+    <!-- :::: COLOR PICKER :::: -->
+    <!-- :::::::::::::::::::::: -->
     <Style x:Key="ColorPickerToggleButtonStyle" TargetType="ToggleButton">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
@@ -288,9 +287,9 @@
         </Setter>
     </Style>
 
-    <!-- *********** -->
-    <!-- TAB CONTROL -->
-    <!-- *********** -->
+    <!-- :::::::::::::::::::::::::::::: -->
+    <!-- :::: RESTLESS TAB CONTROL :::: -->
+    <!-- :::::::::::::::::::::::::::::: -->    
     <Style TargetType="con:RestlessTabControl">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">

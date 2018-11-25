@@ -10,6 +10,12 @@ namespace Restless.Tools.Controls
     /// </summary>
     public class KeyValue : ContentControl
     {
+        #region Private
+        private const double DefaultHeaderWidth = 120.0;
+        #endregion
+        
+        /************************************************************************/
+
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyValue"/> class.
@@ -23,6 +29,28 @@ namespace Restless.Tools.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(KeyValue), new FrameworkPropertyMetadata(typeof(KeyValue)));
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region ValueChanged routed event
+        /// <summary>
+        /// Occurs when the <see cref="Value"/> property changes.
+        /// </summary>
+        public event RoutedEventHandler ValueChanged
+        {
+            add => AddHandler(ValueChangedEvent, value);
+            remove => RemoveHandler(ValueChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ValueChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(ValueChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(KeyValue)
+            );
+
         #endregion
 
         /************************************************************************/
@@ -63,14 +91,14 @@ namespace Restless.Tools.Controls
         /// </summary>
         public static readonly DependencyProperty HeaderWidthProperty = DependencyProperty.Register
             (
-                nameof(HeaderWidth), typeof(double), typeof(KeyValue), new UIPropertyMetadata(120.0, HeaderWidthChanged, CoerceHeaderWidth)
+                nameof(HeaderWidth), typeof(double), typeof(KeyValue), new UIPropertyMetadata(DefaultHeaderWidth, HeaderWidthChanged, CoerceHeaderWidth)
             );
 
         private static void HeaderWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is KeyValue kv)
+            if (d is KeyValue control)
             {
-                kv.HeaderGridWidthInternal = new GridLength((double)e.NewValue);
+                control.HeaderGridWidthInternal = new GridLength((double)e.NewValue);
             }
         }
 
@@ -91,11 +119,10 @@ namespace Restless.Tools.Controls
             get => (GridLength)GetValue(HeaderGridWidthInternalProperty);
             set => SetValue(HeaderGridWidthInternalProperty, value);
         }
-
         
         internal static readonly DependencyProperty HeaderGridWidthInternalProperty = DependencyProperty.Register
             (
-                nameof(HeaderGridWidthInternal), typeof(GridLength), typeof(KeyValue), new PropertyMetadata(new GridLength(120.0))
+                nameof(HeaderGridWidthInternal), typeof(GridLength), typeof(KeyValue), new PropertyMetadata(new GridLength(DefaultHeaderWidth))
             );
 
         /// <summary>
@@ -183,9 +210,9 @@ namespace Restless.Tools.Controls
         /// <summary>
         /// Gets or sets the display value.
         /// </summary>
-        public string Value
+        public object Value
         {
-            get => (string)GetValue(ValueProperty);
+            get => GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
@@ -194,8 +221,16 @@ namespace Restless.Tools.Controls
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register
             (
-                nameof(Value), typeof(string), typeof(KeyValue), new UIPropertyMetadata(null)
+                nameof(Value), typeof(object), typeof(KeyValue), new UIPropertyMetadata(null, OnValueChanged)
             );
+
+        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is KeyValue control)
+            {
+                control.OnValueChanged(new RoutedEventArgs(ValueChangedEvent));
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -304,6 +339,19 @@ namespace Restless.Tools.Controls
             return baseValue;
         }
 
+        #endregion
+
+        /************************************************************************/
+
+        #region Protected methods
+            /// <summary>
+            /// Raises the <see cref="ValueChangedEvent"/>.
+            /// </summary>
+            /// <param name="e"></param>
+        protected virtual void OnValueChanged(RoutedEventArgs e)
+        {
+            RaiseEvent(e);
+        }
         #endregion
     }
 }

@@ -12,7 +12,7 @@
             <Style TargetType="con:KeyValue">
                 <Setter Property="HeaderWidth" Value="180"/>
                 <Setter Property="HeaderForeground" Value="Red"/>
-                <Setter Property="HeaderFontSize" Value="14.5"/>
+                <Setter Property="HeaderFontSize" Value="13"/>
                 <Setter Property="HeaderVerticalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="0,4"/>
                 <Setter Property="ValueFontSize" Value="12.5"/>
