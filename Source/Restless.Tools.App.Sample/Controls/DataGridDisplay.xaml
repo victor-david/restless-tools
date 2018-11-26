@@ -21,6 +21,7 @@
         HeadersVisibility="Column"
         AlternationCount="2"
         AlternatingRowBackground="LightGray"
+        RestoreStateBehavior="SelectEnd"
         ItemsSource="{Binding Persons}"
         con:DataGridColumns.Columns="{Binding Columns}">
         <DataGrid.RowStyle>

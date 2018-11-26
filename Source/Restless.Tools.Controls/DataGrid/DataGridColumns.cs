@@ -16,7 +16,7 @@ namespace Restless.Tools.Controls
     /// </remarks>
     public static class DataGridColumns
     {
-        #region Dependency properties
+        #region Columns (attached property)
         /// <summary>
         /// Defines an attached dependency property that enables the consumer to manipulate the data columns from a view model.
         /// </summary>
@@ -29,17 +29,12 @@ namespace Restless.Tools.Controls
         /// This attached property provides access to the data columns.
         /// </summary>
         /// </AttachedPropertyComments>
-        public static readonly DependencyProperty ColumnsProperty =
-            DependencyProperty.RegisterAttached
+        public static readonly DependencyProperty ColumnsProperty = DependencyProperty.RegisterAttached
             (
                 "Columns", typeof(ObservableCollection<DataGridColumn>), typeof(DataGridColumns),
                 new UIPropertyMetadata(new ObservableCollection<DataGridColumn>(), OnDataGridColumnsPropertyChanged)
             );
-        #endregion
 
-        /************************************************************************/
-
-        #region Public methods (Get / Set ColumnsProperty)
         /// <summary>
         /// Gets the <see cref="ColumnsProperty"/> for the specified element.
         /// </summary>

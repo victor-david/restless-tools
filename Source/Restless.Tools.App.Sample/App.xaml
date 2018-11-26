@@ -13,7 +13,13 @@
                 </GradientStopCollection>
             </GradientBrush.GradientStops>
         </LinearGradientBrush>
+        
+        <!-- Defines the color used to highlight grid rows -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF79ABBB"/>
 
+        <!-- This enables the selected row to retain a highlight when the data grid loses focus. Needs .Net 4.5 to work correctly -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FF79ABBB"/>
+        
         <!-- Defines a style to use for HeaderedContentControl Border elements -->
         <Style TargetType="Border" x:Key="HCCHeaderBorder">
             <Setter Property="BorderBrush" Value="DarkGray" />

@@ -65,6 +65,16 @@ namespace Restless.Tools.Controls
             /// Defines the name of a style that may be applied to TextBlock in order to center it.
             /// </summary>
             public static string TextBlockCenter = "TextBlockCenter";
+
+            /// <summary>
+            /// Defines the name of a style that may be applied to DataGridColumnHeader in order to right align it.
+            /// </summary>
+            public static string DataGridHeaderRight = "DataGridHeaderRight";
+
+            /// <summary>
+            /// Defines the name of a style that may be applied to TextBlock in order to right align it.
+            /// </summary>
+            public static string TextBlockRight = "TextBlockRight";
         }
     }
 }

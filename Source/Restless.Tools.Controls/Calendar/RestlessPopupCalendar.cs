@@ -22,8 +22,6 @@ namespace Restless.Tools.Controls
         private ToggleButton toggleButton;
         private Popup popup;
         private RestlessCalendar calendar;
-
-        //private static DateToFormattedDateConverter dateConverter = new DateToFormattedDateConverter();
         #endregion
 
         /************************************************************************/
@@ -106,10 +104,11 @@ namespace Restless.Tools.Controls
         {
             if (d is RestlessPopupCalendar control)
             {
-                if (control.toggleButton != null)
+                if (e.NewValue is DateTime dt)
                 {
-                    control.toggleButton.Content = e.NewValue;
+                    control.SetToggleButtonContent(dt);
                 }
+
                 if (control.popup != null)
                 {
                     control.popup.IsOpen = false;
@@ -226,16 +225,21 @@ namespace Restless.Tools.Controls
             {
                 if (e.AddedDate.HasValue)
                 {
-                    toggleButton.Content = e.AddedDate.Value.ToString(Default.Format.PopupCalendarDate);
+                    SetToggleButtonContent(e.AddedDate.Value);
                 }
                 else
                 {
                     toggleButton.Content = "(no date)";
                 }
-
             }
         }
-
+        private void SetToggleButtonContent(DateTime date)
+        {
+            if (toggleButton != null)
+            {
+                toggleButton.Content = date.ToString(Default.Format.PopupCalendarDate);
+            }
+        }
         #endregion
     }
 }

@@ -15,26 +15,6 @@ namespace Restless.Tools.Controls
         /// </summary>
         public const int DefaultWidth = 100;
 
-        ///// <summary>
-        ///// Gets or sets the default date format to use with the <see cref="MakeDate(DataGridBoundColumn, string, int, bool)"/> extension.
-        ///// </summary>
-        //public static string DefaultDateFormat = "MMM dd, yyyy";
-
-        ///// <summary>
-        ///// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
-        ///// </summary>
-        //public static string StyleDataGridHeaderDefault = "DataGridHeaderDefault";
-
-        ///// <summary>
-        ///// Defines the name of a style that may be applied to DataGridColumnHeader in order to center it.
-        ///// </summary>
-        //public static string StyleDataGridHeaderCenter = "DataGridHeaderCenter";
-
-        ///// <summary>
-        ///// Defines the name of a style that may be applied to TextBlock in order to center it.
-        ///// </summary>
-        //public static string StyleTextBlockCenter = "TextBlockCenter";
-
         /// <summary>
         /// Formats the column to display a date and makes the column fixed width.
         /// </summary>
@@ -48,7 +28,6 @@ namespace Restless.Tools.Controls
             if (toLocal)
             {
                 ((DataBinding)col.Binding).Converter = new DateUtcToLocalConverter();
-                col.Binding.TargetNullValue = "--";
             }
 
             col.Binding.StringFormat = !string.IsNullOrEmpty(dateFormat) ? dateFormat : Default.Format.DataGridDate;
@@ -97,7 +76,6 @@ namespace Restless.Tools.Controls
         /// <returns>The column.</returns>
         public static DataGridBoundColumn AddHeaderStyle(this DataGridBoundColumn col, Style style)
         {
-
             if (style != null && style.TargetType == typeof(DataGridColumnHeader))
             {
                 col.HeaderStyle = style;
@@ -109,17 +87,35 @@ namespace Restless.Tools.Controls
         /// Makes the column header and the cell style centered.
         /// </summary>
         /// <param name="col">The column.</param>
-        /// <param name="headerStyle">The name of the style to apply to the header, or null to use <see cref="StyleDataGridHeaderCenter"/></param>
-        /// <param name="cellStyle">The name of the style to apply to the cells, or null to use <see cref="StyleTextBlockCenter"/></param>
+        /// <param name="headerStyle">The name of the style to apply to the header, or null to use <see cref="Default.Style.DataGridHeaderCenter"/></param>
+        /// <param name="cellStyle">The name of the style to apply to the cells, or null to use <see cref="Default.Style.TextBlockCenter"/></param>
         /// <returns>The column.</returns>
         /// <remarks>
         /// For this method to work, two styles must be available, you must pass <paramref name="headerStyle"/> and <paramref name="cellStyle"/>
-        /// or set <see cref="StyleDataGridHeaderCenter"/> and <see cref="StyleTextBlockCenter"/> before calling this method.
+        /// or set <see cref="Default.Style.DataGridHeaderCenter"/> and <see cref="Default.Style.TextBlockCenter"/> before calling this method.
         /// </remarks>
         public static DataGridBoundColumn MakeCentered(this DataGridBoundColumn col, string headerStyle = null, string cellStyle = null)
         {
             Style s1 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(headerStyle) ? headerStyle : Default.Style.DataGridHeaderCenter); 
             Style s2 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(cellStyle) ? cellStyle : Default.Style.TextBlockCenter);
+            return col.AddHeaderStyle(s1).AddCellStyle(s2);
+        }
+
+        /// <summary>
+        /// Makes the column header and the cell style right aligned.
+        /// </summary>
+        /// <param name="col">The column.</param>
+        /// <param name="headerStyle">The name of the style to apply to the header, or null to use <see cref="Default.Style.DataGridHeaderRight"/></param>
+        /// <param name="cellStyle">The name of the style to apply to the cells, or null to use <see cref="Default.Style.TextBlockRight"/></param>
+        /// <returns>The column.</returns>
+        /// <remarks>
+        /// For this method to work, two styles must be available, you must pass <paramref name="headerStyle"/> and <paramref name="cellStyle"/>
+        /// or set <see cref="Default.Style.DataGridHeaderRight"/> and <see cref="Default.Style.TextBlockRight"/> before calling this method.
+        /// </remarks>
+        public static DataGridBoundColumn MakeRightAligned(this DataGridBoundColumn col, string headerStyle = null, string cellStyle = null)
+        {
+            Style s1 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(headerStyle) ? headerStyle : Default.Style.DataGridHeaderRight);
+            Style s2 = (Style)Application.Current.TryFindResource(!string.IsNullOrEmpty(cellStyle) ? cellStyle : Default.Style.TextBlockRight);
             return col.AddHeaderStyle(s1).AddCellStyle(s2);
         }
 
@@ -145,6 +141,17 @@ namespace Restless.Tools.Controls
         public static DataGridBoundColumn MakeFlexWidth(this DataGridBoundColumn col, double width)
         {
             col.Width = new DataGridLength(width, DataGridLengthUnitType.Star);
+            return col;
+        }
+
+        /// <summary>
+        /// Makes the column read only.
+        /// </summary>
+        /// <param name="col">The column</param>
+        /// <returns>The column</returns>
+        public static DataGridColumn MakeReadOnly(this DataGridColumn col)
+        {
+            col.IsReadOnly = true;
             return col;
         }
 

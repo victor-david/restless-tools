@@ -25,8 +25,9 @@ namespace Restless.Tools.Controls
         /// </summary>
         /// <param name="header">The header for the column</param>
         /// <param name="bindingName">The name that the column should bind to.</param>
+        /// <param name="targetNullValue">The value to use when the bound value is null</param>
         /// <returns>The newly created column</returns>
-        public DataGridBoundColumn Create(string header, string bindingName)
+        public DataGridBoundColumn Create(string header, string bindingName, string targetNullValue = "--")
         {
             if (string.IsNullOrEmpty(header)) throw new ArgumentNullException(nameof(header));
             if (string.IsNullOrEmpty(bindingName)) throw new ArgumentNullException(nameof(bindingName));
@@ -36,7 +37,7 @@ namespace Restless.Tools.Controls
                 Header = MakeTextBlockHeader(header),
                 Binding = new Binding(bindingName)
                 {
-                    TargetNullValue = "--"
+                    TargetNullValue = targetNullValue
                 }
             };
             Add(col);
@@ -49,8 +50,9 @@ namespace Restless.Tools.Controls
         /// <typeparam name="T">The converter type</typeparam>
         /// <param name="header">The header for the column</param>
         /// <param name="bindingName">The name that the column should bind to.</param>
+        /// <param name="targetNullValue">The value to use when the bound value is null</param>
         /// <returns>The newly created column.</returns>
-        public DataGridBoundColumn Create<T>(string header, string bindingName) where T: IValueConverter, new()
+        public DataGridBoundColumn Create<T>(string header, string bindingName, string targetNullValue = "--") where T: IValueConverter, new()
         {
             if (string.IsNullOrEmpty(header)) throw new ArgumentNullException(nameof(header));
             if (string.IsNullOrEmpty(bindingName)) throw new ArgumentNullException(nameof(bindingName));
@@ -61,7 +63,7 @@ namespace Restless.Tools.Controls
                 Binding = new Binding(bindingName)
                 {
                     Converter = new T(),
-                    TargetNullValue = "--",
+                    TargetNullValue = targetNullValue,
                 }
             };
             Add(col);

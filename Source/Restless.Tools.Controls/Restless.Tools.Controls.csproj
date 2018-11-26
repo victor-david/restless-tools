@@ -64,6 +64,7 @@
     <Compile Include="DataGrid\DataGridColumnSortSpec.cs" />
     <Compile Include="DataGrid\DataGridCustomSortBehavior.cs" />
     <Compile Include="DataGrid\RestlessDataGrid.cs" />
+    <Compile Include="DataGrid\RestoreStateGridBehavior.cs" />
     <Compile Include="DragDrop\DragSource.cs" />
     <Compile Include="DragDrop\DragSourceBehavior.cs" />
     <Compile Include="DragDrop\DropTarget.cs" />

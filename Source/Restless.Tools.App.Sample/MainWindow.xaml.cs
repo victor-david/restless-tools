@@ -141,6 +141,21 @@ namespace Restless.Tools.App.Sample
                 new Person(5, "Michael", "Post", "VP Of Other Planets"),
                 new Person(6, "Nancy", "West", "California Sales Rep"),
                 new Person(7, "Pao", "Sween", "Senior Lead"),
+                new Person(8, "Jack", "Bailey", "VP of Doughnuts"),
+                new Person(9, "Sally", "Frost", "Rally Lead"),
+                new Person(10, "Betty", "Smitherson", "Senior Lead"),
+                new Person(11, "George", "Pal", "All Around"),
+                new Person(12, "Freedy", "Haliburton", "Secratary of Interior"),
+                new Person(13, "Nick", "Blast", "Head Tester"),
+                new Person(14, "Velma", "Jackson", "Another VP"),
+                new Person(15, "Hellen", "Wait", "Account Exec"),
+                new Person(16, "Mikey", "York", "Friend of the Family"),
+                new Person(17, "Boss", "Chuck", "Senior Lead"),
+                new Person(18, "Charles", "Benson", "Poet"),
+                new Person(19, "Wally", "Kruger", "Lead Dev"),
+                new Person(20, "Max", "Boat", "Fellowship Cooridinator"),
+                new Person(21, "Mary", "Lemberstein", "Office Boss"),
+
             };
 
             foreach (var person in Persons)
