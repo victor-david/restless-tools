@@ -7,40 +7,47 @@
     xmlns:con="clr-namespace:Restless.Tools.Controls;assembly=Restless.Tools.Controls"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
-    
-    <con:RestlessDataGrid 
-        x:Name="MyDataGrid"
-        FontSize="11"
-        ColumnWidth="*"
-        IsReadOnly="True"
-        GridLinesVisibility="None"
-        MinRowHeight="28"
-        AutoGenerateColumns="False"
-        SelectionMode="Single"
-        SelectionUnit="FullRow"
-        HeadersVisibility="Column"
-        AlternationCount="2"
-        AlternatingRowBackground="LightGray"
-        RestoreStateBehavior="SelectEnd"
-        ItemsSource="{Binding Persons}"
-        con:DataGridColumns.Columns="{Binding Columns}">
-        <DataGrid.RowStyle>
-            <Style TargetType="DataGridRow">
-                <Setter Property="con:RestlessDataGrid.DoubleClickCommand" Value="{Binding ElementName=MyDataGrid, Path=DataContext.Commands[Open]}"/>
-            </Style>
-        </DataGrid.RowStyle>
-        <DataGrid.CellStyle>
-            <Style TargetType="DataGridCell">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                            <Grid Background="{TemplateBinding Background}">
-                                <ContentPresenter VerticalAlignment="Center" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </DataGrid.CellStyle>
-    </con:RestlessDataGrid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+       
+        <con:RestlessDataGrid 
+            x:Name="MyDataGrid"
+            Grid.Row="1"
+            FontSize="11"
+            ColumnWidth="*"
+            IsReadOnly="True"
+            GridLinesVisibility="None"
+            MinRowHeight="28"
+            AutoGenerateColumns="False"
+            SelectionMode="Single"
+            SelectionUnit="FullRow"
+            HeadersVisibility="Column"
+            AlternationCount="2"
+            AlternatingRowBackground="LightGray"
+            RestoreStateBehavior="SelectLastAndRestore"
+            ItemsSource="{Binding Persons}"
+            con:DataGridColumns.Columns="{Binding Columns}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="con:RestlessDataGrid.DoubleClickCommand" Value="{Binding ElementName=MyDataGrid, Path=DataContext.Commands[Open]}"/>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.CellStyle>
+        </con:RestlessDataGrid>
+    </Grid>
+
 </UserControl>

@@ -22,6 +22,7 @@ namespace Restless.Tools.Controls
         private ToggleButton toggleButton;
         private Popup popup;
         private RestlessCalendar calendar;
+        private object deferedUtcValue;
         #endregion
 
         /************************************************************************/
@@ -61,8 +62,19 @@ namespace Restless.Tools.Controls
         /// </summary>
         public static readonly DependencyProperty IsUtcModeProperty = DependencyProperty.Register
             (
-                nameof(IsUtcMode), typeof(bool), typeof(RestlessPopupCalendar), new PropertyMetadata(RestlessCalendar.IsUtcModeProperty.DefaultMetadata.DefaultValue)
+                nameof(IsUtcMode), typeof(bool), typeof(RestlessPopupCalendar), new PropertyMetadata(RestlessCalendar.IsUtcModeProperty.DefaultMetadata.DefaultValue, OnIsUtcModePropertyChanged)
             );
+
+        private static void OnIsUtcModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RestlessPopupCalendar control)
+            {
+                if (control.calendar != null)
+                {
+                    control.calendar.IsUtcMode = (bool)e.NewValue;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the selected date in UTC.
@@ -79,42 +91,28 @@ namespace Restless.Tools.Controls
         public static readonly DependencyProperty SelectedDateUtcProperty = DependencyProperty.Register
             (
                 nameof(SelectedDateUtc), typeof(DateTime?), typeof(RestlessPopupCalendar),
-                new FrameworkPropertyMetadata(default(DateTime?), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+                new FrameworkPropertyMetadata(default(DateTime?), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedDateUtcPropertyChanged)
             );
 
-        /// <summary>
-        /// Gets or sets the selected date
-        /// </summary>
-        public DateTime? SelectedDate
-        {
-            get => (DateTime?)GetValue(SelectedDateProperty);
-            set => SetValue(SelectedDateProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="SelectedDate"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectedDateProperty = DependencyProperty.Register
-            (
-                nameof(SelectedDate), typeof(DateTime?), typeof(RestlessPopupCalendar), 
-                new FrameworkPropertyMetadata(DateTime.Now, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedDateChange)
-            );
-
-        private static void OnSelectedDateChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectedDateUtcPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is RestlessPopupCalendar control)
             {
-                if (e.NewValue is DateTime dt)
+                if (control.calendar != null)
                 {
-                    control.SetToggleButtonContent(dt);
+                    // Debug.WriteLine($"STATIC UTC CHANGED {e.NewValue}");
+                    control.UpdateCalendarControls((DateTime?)e.NewValue);
                 }
-
-                if (control.popup != null)
+                else
                 {
-                    control.popup.IsOpen = false;
+                    // Save value until template is ready.
+                    control.deferedUtcValue = e.NewValue;
                 }
             }
         }
+
+
 
         /// <summary>
         /// Gets or sets the placement mode for the popup
@@ -182,7 +180,8 @@ namespace Restless.Tools.Controls
             if (calendar != null)
             {
                 calendar.KeyUp -= CalendarKeyUp;
-                calendar.DisplayDateChanged -= CalendarDisplayDateChanged;
+                calendar.SelectedDatesChanged -= CalendarSelectedDatesChanged;
+                calendar.SelectedDateUtcChanged -= CalendarSelectedDateUtcChanged;
             }
 
             toggleButton = GetTemplateChild(PartButton) as ToggleButton;
@@ -193,12 +192,27 @@ namespace Restless.Tools.Controls
             if (calendar != null)
             {
                 calendar.KeyUp += CalendarKeyUp;
-                calendar.DisplayDateChanged += CalendarDisplayDateChanged;
-                // Bit of a hack to get our event handler to fire the first time around.
-                DateTime orig = calendar.DisplayDate;
-                calendar.DisplayDate = DateTime.MinValue.AddYears(21);
-                calendar.DisplayDate = orig;
+                calendar.SelectedDatesChanged += CalendarSelectedDatesChanged;
+                calendar.SelectedDateUtcChanged += CalendarSelectedDateUtcChanged;
+                if (deferedUtcValue != null)
+                {
+                    UpdateCalendarControls((DateTime?)deferedUtcValue);
+                    deferedUtcValue = null;
+                }
+                else
+                {
+                    SetToggleButtonContent(calendar.DisplayDate);
+                }
             }
+        }
+       
+        /// <summary>
+        /// Gets a string representation of this instance.
+        /// </summary>
+        /// <returns>A string that displays the type, SelectedDate, SelectedDateUtc, and DisplayDate</returns>
+        public override string ToString()
+        {
+            return $"{GetType()} SelectedDateUtc: {SelectedDateUtc}";
         }
         #endregion
 
@@ -219,25 +233,37 @@ namespace Restless.Tools.Controls
             }
         }
 
-        private void CalendarDisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        private void CalendarSelectedDateUtcChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+            SelectedDateUtc = e.ChangedDate;
+        }
+
+        private void CalendarSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (popup != null)
+            {
+                popup.IsOpen = false;
+            }
+        }
+
+        private void UpdateCalendarControls(DateTime? value)
+        {
+            calendar.SelectedDateUtc = value;
+            SetToggleButtonContent(calendar.SelectedDate);
+        }
+
+        private void SetToggleButtonContent(DateTime? date)
         {
             if (toggleButton != null)
             {
-                if (e.AddedDate.HasValue)
+                if (date.HasValue)
                 {
-                    SetToggleButtonContent(e.AddedDate.Value);
+                    toggleButton.Content = date.Value.ToString(Default.Format.PopupCalendarDate);
                 }
                 else
                 {
-                    toggleButton.Content = "(no date)";
+                    toggleButton.Content = "(select a date)";
                 }
-            }
-        }
-        private void SetToggleButtonContent(DateTime date)
-        {
-            if (toggleButton != null)
-            {
-                toggleButton.Content = date.ToString(Default.Format.PopupCalendarDate);
             }
         }
         #endregion

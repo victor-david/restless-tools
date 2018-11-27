@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Restless.Tools.Controls;
+using Restless.Tools.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Input;
-using Restless.Tools.Controls;
-using Restless.Tools.Mvvm;
 
 namespace Restless.Tools.App.Sample
 {
@@ -76,6 +74,7 @@ namespace Restless.Tools.App.Sample
             InitializeDates();
             InitializeColumns();
             InitializePersons();
+            Default.Format.PopupCalendarDate = "g";
         }
         #endregion
 

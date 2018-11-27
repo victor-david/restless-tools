@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -32,8 +31,6 @@ namespace Restless.Tools.Controls
             AddHandler(LoadedEvent, new RoutedEventHandler(OnLoaded));
         }
         #endregion
-
-
 
         /************************************************************************/
 
@@ -100,6 +97,18 @@ namespace Restless.Tools.Controls
                 else
                 {
                     element.RemoveHandler(MouseDoubleClickEvent, new RoutedEventHandler(DataGridMouseDoubleClick));
+                }
+            }
+        }
+
+        private static void DataGridMouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is DataGridRow element)
+            {
+                var cmd = GetDoubleClickCommand(element);
+                if (cmd.CanExecute(element.Item))
+                {
+                    cmd.Execute(element.Item);
                 }
             }
         }
@@ -215,9 +224,9 @@ namespace Restless.Tools.Controls
         /// <summary>
         /// Gets or sets a value that determines which actions will be taken to restore the control state as defined by the <see cref="RestoreStateBehaviorProperty"/>.
         /// </summary>
-        public RestoreGridStateBehavior RestoreStateBehavior
+        public RestoreDataGridState RestoreStateBehavior
         {
-            get => (RestoreGridStateBehavior)GetValue(RestoreStateBehaviorProperty);
+            get => (RestoreDataGridState)GetValue(RestoreStateBehaviorProperty);
             set => SetValue(RestoreStateBehaviorProperty, value);
         }
 
@@ -226,7 +235,7 @@ namespace Restless.Tools.Controls
         /// </summary>
         public static readonly DependencyProperty RestoreStateBehaviorProperty = DependencyProperty.Register
             (
-                nameof(RestoreStateBehavior), typeof(RestoreGridStateBehavior), typeof(RestlessDataGrid), new PropertyMetadata(RestoreGridStateBehavior.None)
+                nameof(RestoreStateBehavior), typeof(RestoreDataGridState), typeof(RestlessDataGrid), new PropertyMetadata(RestoreDataGridState.None)
             );
         #endregion
 
@@ -253,12 +262,12 @@ namespace Restless.Tools.Controls
 
         private static void OnScrollViewerVerticalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is RestlessDataGrid grid)
+            if (d is RestlessDataGrid control)
             {
-                var info = new ScrollInfo(grid, (double)e.NewValue);
-                if (grid.scrollViewer == null)
+                var info = new ScrollInfo(control, (double)e.NewValue);
+                if (control.scrollViewer == null)
                 {
-                    grid.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback(PerformScroll), info);
+                    control.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback(PerformScroll), info);
                 }
                 else
                 {
@@ -472,6 +481,8 @@ namespace Restless.Tools.Controls
             {
                 scrollViewer.ScrollChanged += OnScrollChanged;
             }
+
+            DispatcherRestoreState();
         }
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -481,51 +492,54 @@ namespace Restless.Tools.Controls
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (RestoreStateBehavior != RestoreGridStateBehavior.None)
+            DispatcherRestoreState();
+        }
+
+        private void DispatcherRestoreState()
+        {
+            if (RestoreStateBehavior != RestoreDataGridState.None)
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback(RestoreGridState), null);
+                Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback((p) =>
+                {
+                    RestoreState();
+                    return null;
+                }), null);
             }
         }
 
-        private object RestoreGridState(object item)
+        /// <summary>
+        /// Restores the state. This must be run from the Disptacher callback
+        /// </summary>
+        private void RestoreState()
         {
-            var temp = SelectedItem;
+            object temp = SelectedItem;
             var b = RestoreStateBehavior;
 
             //  no item selected previously. 
             if (temp == null)
             {
-                if (b.HasFlag(RestoreGridStateBehavior.SelectStart))
+                if (b.HasFlag(RestoreDataGridState.SelectFirst))
                 {
                     Items.MoveCurrentToFirst();
                     temp = Items.CurrentItem;
                 }
 
-                if (b.HasFlag(RestoreGridStateBehavior.SelectEnd))
+                if (b.HasFlag(RestoreDataGridState.SelectLast))
                 {
                     Items.MoveCurrentToLast();
                     temp = Items.CurrentItem;
                 }
+
                 if (SelectionMode == DataGridSelectionMode.Extended)
                 {
                     SelectedItems.Clear();
                 }
-                SelectedItem = temp;
 
-                if (temp != null && scrollViewer != null && b.HasFlag(RestoreGridStateBehavior.ScrollIntoView))
-                {
-                    if (b.HasFlag(RestoreGridStateBehavior.SelectStart))
-                    {
-                        scrollViewer.ScrollToTop();
-                    }
-                    else if (b.HasFlag(RestoreGridStateBehavior.SelectEnd))
-                    {
-                        scrollViewer.ScrollToEnd();
-                    }
-                }
+                SelectedItem = temp;
             }
+
             // item selected previously
-            else if (b.HasFlag(RestoreGridStateBehavior.RestoreLastSelection))
+            else if (b.HasFlag(RestoreDataGridState.RestoreLastSelection))
             {
                 if (SelectionMode == DataGridSelectionMode.Extended)
                 {
@@ -534,9 +548,13 @@ namespace Restless.Tools.Controls
                 SelectedItem = null;
                 SelectedItem = temp;
             }
-            return null;
-        }
 
+            // Now. If we have a selected item, scroll it into view
+            if (SelectedItem != null)
+            {
+                ScrollIntoView(SelectedItem);
+            }
+        }
 
         private T GetVisualChild<T>(Visual parent) where T : Visual
         {
@@ -554,18 +572,6 @@ namespace Restless.Tools.Controls
             }
 
             return child;
-        }
-
-        private static void DataGridMouseDoubleClick(object sender, RoutedEventArgs e)
-        {
-            if (sender is DataGridRow element)
-            {
-                var cmd = GetDoubleClickCommand(element);
-                if (cmd.CanExecute(element.Item))
-                {
-                    cmd.Execute(element.Item);
-                }
-            }
         }
         #endregion
 

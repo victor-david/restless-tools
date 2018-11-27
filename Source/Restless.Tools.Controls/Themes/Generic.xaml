@@ -125,12 +125,14 @@
                                     Background="Transparent"
                                     BorderBrush="{Binding BorderBrush,RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}" 
                                     BorderThickness="{Binding BorderThickness,RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}">
-                                    <con:RestlessCalendar 
+                                    
+                                    <con:RestlessCalendar x:Name="PART_Calendar" Margin="0,-3"/>
+                                    <!--<con:RestlessCalendar 
                                         x:Name="PART_Calendar"
                                         Margin="0,-3"
                                         IsUtcMode="{Binding IsUtcMode, RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}"
                                         SelectedDate="{Binding SelectedDate, RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}"
-                                        SelectedDateUtc="{Binding SelectedDateUtc, RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}" />
+                                        SelectedDateUtc="{Binding SelectedDateUtc, RelativeSource={RelativeSource AncestorType=con:RestlessPopupCalendar}}" />-->
                                 </Border>
                             </Border>
                         </Popup>

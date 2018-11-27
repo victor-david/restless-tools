@@ -13,6 +13,8 @@ namespace Restless.Tools.Controls
     /// This class extends System.Windows.Controls.Calendar to provide the ability to use 
     /// UTC dates as the backing while presenting the calendar controls using the local date.
     /// To activate, set <see cref="IsUtcMode"/> to true, and bind your date property to <see cref="SelectedDateUtc"/>.
+    /// This class only permits <see cref=" CalendarSelectionMode.SingleDate"/>. Any attempt to set <see cref="Calendar.SelectionMode"/>
+    /// to another value will be ignored.
     /// </remarks>
     public class RestlessCalendar : Calendar
     {
@@ -37,12 +39,39 @@ namespace Restless.Tools.Controls
         /// </summary>
         static RestlessCalendar()
         {
+            SelectionModeProperty.OverrideMetadata(typeof(RestlessCalendar), new FrameworkPropertyMetadata(CalendarSelectionMode.SingleDate, null, CoerceSelectionModeProperty));
+        }
+
+        private static object CoerceSelectionModeProperty(DependencyObject d, object baseValue)
+        {
+            return CalendarSelectionMode.SingleDate;
         }
         #endregion
 
         /************************************************************************/
 
-        #region Properties
+        #region SelectedDateUtcChanged Routed Event
+        /// <summary>
+        /// Occurs when the <see cref="SelectedDateUtcChanged"/> property changes.
+        /// </summary>
+        public event CalendarDateChangedEventHandler SelectedDateUtcChanged
+        {
+            add => AddHandler(SelectedDateUtcChangedEvent, value);
+            remove => RemoveHandler(SelectedDateUtcChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="SelectedDateUtcChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent SelectedDateUtcChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(SelectedDateUtcChanged), RoutingStrategy.Bubble, typeof(CalendarDateChangedEventHandler), typeof(RestlessCalendar)
+            );
+        #endregion
+
+        /************************************************************************/
+
+        #region IsUtcMode
         /// <summary>
         /// Gets or sets a boolean value that determines if the calendar operates in UTC mode.
         /// </summary>
@@ -60,6 +89,11 @@ namespace Restless.Tools.Controls
                 nameof(IsUtcMode), typeof(bool), typeof(RestlessCalendar), new PropertyMetadata(true)
             );
 
+        #endregion
+
+        /************************************************************************/
+
+        #region SelectedDateUtc
         /// <summary>
         /// Gets or sets the selected date in UTC.
         /// </summary>
@@ -80,26 +114,41 @@ namespace Restless.Tools.Controls
 
         private static void OnSelectedDateUtcChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is RestlessCalendar c)
+            if (d is RestlessCalendar control)
             {
                 if (e.NewValue is DateTime dt)
                 {
-                    DateTime dtLocal = c.ConvertIf(dt, toLocal: true);
-                    c.SelectedDate = dtLocal;
-                    if (!c.inSelectedDateChanged)
+                    DateTime dtLocal = control.ConvertIf(dt, toLocal: true);
+                    control.SelectedDate = dtLocal;
+                    if (!control.inSelectedDateChanged)
                     {
-                        c.DisplayDate = dtLocal;
+                        control.DisplayDate = dtLocal;
                     }
                 }
                 else
                 {
-                    c.SelectedDate = null;
-                    if (!c.inSelectedDateChanged)
+                    control.SelectedDate = null;
+                    if (!control.inSelectedDateChanged)
                     {
-                        c.DisplayDate = DateTime.Now;
+                        control.DisplayDate = DateTime.Now;
                     }
                 }
+                
+                control.RaiseEvent(new CalendarDateChangedEventArgs(SelectedDateUtcChangedEvent, control.SelectedDateUtc));
             }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Gets a string representation of this instance.
+        /// </summary>
+        /// <returns>A string that displays the type, SelectedDate, SelectedDateUtc, and DisplayDate</returns>
+        public override string ToString()
+        {
+            return $"{GetType()} SelectedDate: {SelectedDate} SelectedDateUtc: {SelectedDateUtc} DisplayDate: {DisplayDate}";
         }
         #endregion
 
@@ -112,16 +161,6 @@ namespace Restless.Tools.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-        }
-
-        /// <summary>
-        /// Called when the SelectionMode property changes
-        /// </summary>
-        /// <param name="e">The event args</param>
-        protected override void OnSelectionModeChanged(EventArgs e)
-        {
-            base.OnSelectionModeChanged(e);
-            SelectionMode = CalendarSelectionMode.SingleDate;
         }
 
         /// <summary>
@@ -144,22 +183,20 @@ namespace Restless.Tools.Controls
         /// <param name="e">The event args.</param>
         protected override void OnSelectedDatesChanged(SelectionChangedEventArgs e)
         {
-            base.OnSelectedDatesChanged(e);
             inSelectedDateChanged = true;
 
-            if (SelectionMode == CalendarSelectionMode.SingleDate)
+            if (e.AddedItems.Count == 0)
             {
-                if (e.AddedItems.Count == 0)
-                {
-                    SelectedDateUtc = null;
-                }
-                else
-                {
-                    DateTime added = (DateTime)e.AddedItems[0];
-                    SelectedDateUtc = ConvertIf(added, toLocal: false);
-                }
+                SelectedDateUtc = null;
             }
+            else
+            {
+                DateTime added = (DateTime)e.AddedItems[0];
+                SelectedDateUtc = ConvertIf(added, toLocal: false);
+            }
+
             inSelectedDateChanged = false;
+            base.OnSelectedDatesChanged(e);
         }
         #endregion
 
