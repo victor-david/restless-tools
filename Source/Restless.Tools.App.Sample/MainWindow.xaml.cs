@@ -90,6 +90,7 @@ namespace Restless.Tools.App.Sample
             Commands.Add("S3", (o) => ActivateSection(3));
             Commands.Add("S4", (o) => ActivateSection(4));
             Commands.Add("S5", (o) => ActivateSection(5));
+            Commands.Add("S6", (o) => ActivateSection(6));
             Commands.Add("Open", (o) => MessageBox.Show("This is the row double click action."));
             Commands.Add("AddTabPerson", RunAddTabPerson, CanRunAddTabPerson);
         }
@@ -99,6 +100,7 @@ namespace Restless.Tools.App.Sample
             Sections = new ObservableCollection<Visibility>
             {
                 Visibility.Visible,
+                Visibility.Collapsed,
                 Visibility.Collapsed,
                 Visibility.Collapsed,
                 Visibility.Collapsed,

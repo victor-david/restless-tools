@@ -477,7 +477,7 @@ namespace Restless.Tools.Controls
             }
             if (e.OriginalSource is DependencyObject dp)
             {
-                return GetValidatedChildTabItem(GetParent<TabItem>(dp));
+                return GetValidatedChildTabItem(CoreHelper.GetVisualParent<TabItem>(dp));
             }
             return null;
         }
@@ -489,22 +489,11 @@ namespace Restless.Tools.Controls
         /// <returns><paramref name="tab"/> if it belongs to this instance of the tab control</returns>
         private TabItem GetValidatedChildTabItem(TabItem tab)
         {
-            if (GetParent<RestlessTabControl>(tab) == this)
+            if (CoreHelper.GetVisualParent<RestlessTabControl>(tab) == this)
             {
                 return tab;
             }
             return null;
-        }
-
-        private T GetParent<T>(DependencyObject child) where T:DependencyObject
-        {
-            if (child == null) return null;
-            var parent = VisualTreeHelper.GetParent(child);
-            if (parent is T)
-            {
-                return parent as T;
-            }
-            return GetParent<T>(parent);
         }
         #endregion
 

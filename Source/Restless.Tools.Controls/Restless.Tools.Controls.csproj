@@ -59,6 +59,7 @@
     <Compile Include="Converters\DateUtcToLocalConverter.cs" />
     <Compile Include="Converters\StringToMaskedStringConverter.cs" />
     <Compile Include="Converters\StringToSingleLineConverter.cs" />
+    <Compile Include="Core\CoreHelper.cs" />
     <Compile Include="DataGrid\DataGridColumnCollection.cs" />
     <Compile Include="DataGrid\DataGridColumnExtensions.cs" />
     <Compile Include="DataGrid\DataGridColumns.cs" />
@@ -76,6 +77,8 @@
     <Compile Include="LinkedTextBlock\LinkedTextBlock.cs" />
     <Compile Include="Core\Default.cs" />
     <Compile Include="Core\ExecuteCommand.cs" />
+    <Compile Include="ListBox\RestlessListBox.cs" />
+    <Compile Include="ListBox\ListBoxItemOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tab\RestlessTabControl.cs" />
     <Compile Include="Tab\TabItemDragDrop.cs" />

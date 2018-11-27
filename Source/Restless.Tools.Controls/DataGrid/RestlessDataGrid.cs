@@ -475,7 +475,7 @@ namespace Restless.Tools.Controls
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            scrollViewer = GetVisualChild<ScrollViewer>(this);
+            scrollViewer = CoreHelper.GetVisualChild<ScrollViewer>(this);
 
             if (scrollViewer != null)
             {
@@ -554,24 +554,6 @@ namespace Restless.Tools.Controls
             {
                 ScrollIntoView(SelectedItem);
             }
-        }
-
-        private T GetVisualChild<T>(Visual parent) where T : Visual
-        {
-            T child = default(T);
-
-            int numvisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numvisuals; ++i)
-            {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                    child = GetVisualChild<T>(v);
-                else
-                    break;
-            }
-
-            return child;
         }
         #endregion
 

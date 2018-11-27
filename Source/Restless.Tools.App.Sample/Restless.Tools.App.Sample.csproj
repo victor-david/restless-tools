@@ -75,6 +75,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ListBoxDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PersonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +110,9 @@
     </Compile>
     <Compile Include="Controls\KeyValueDisplay.xaml.cs">
       <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ListBoxDisplay.xaml.cs">
+      <DependentUpon>ListBoxDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PersonView.xaml.cs">
       <DependentUpon>PersonView.xaml</DependentUpon>
