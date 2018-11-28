@@ -36,6 +36,7 @@
             <con:LinkedTextBlock Text="Tab Control (Fixed)" Command="{Binding Commands[S4]}"/>
             <con:LinkedTextBlock Text="Tab Control (Dynamic)" Command="{Binding Commands[S5]}"/>
             <con:LinkedTextBlock Text="List Box" Command="{Binding Commands[S6]}"/>
+            <con:LinkedTextBlock Text="Doc Conversion" Command="{Binding Commands[S7]}"/>
         </StackPanel>
 
         <Border 
@@ -51,5 +52,6 @@
         <l:TabDisplayFixed Grid.Column="2" Visibility="{Binding Sections[4]}" />
         <l:TabDisplayDynamic Grid.Column="2" Visibility="{Binding Sections[5]}" />
         <l:ListBoxDisplay Grid.Column="2" Visibility="{Binding Sections[6]}" />
+        <l:DocumentConversionDisplay Grid.Column="2" Visibility="{Binding Sections[7]}" />
     </Grid>
 </Window>

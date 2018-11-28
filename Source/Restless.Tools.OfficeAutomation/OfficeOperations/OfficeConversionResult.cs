@@ -43,7 +43,7 @@ namespace Restless.Tools.OfficeAutomation
         internal OfficeConversionResult(string origFileName, string newFileName, Exception exception)
             : base(origFileName, exception)
         {
-            if (!String.IsNullOrEmpty(newFileName))
+            if (!string.IsNullOrEmpty(newFileName))
             {
                 ConvertedInfo = new FileInfo(newFileName);
             }

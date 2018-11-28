@@ -71,6 +71,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DocumentConversionDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\KeyValueDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +111,9 @@
     </Compile>
     <Compile Include="Controls\DataGridDisplay.xaml.cs">
       <DependentUpon>DataGridDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DocumentConversionDisplay.xaml.cs">
+      <DependentUpon>DocumentConversionDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\KeyValueDisplay.xaml.cs">
       <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
@@ -165,6 +172,10 @@
     <ProjectReference Include="..\Restless.Tools.Mvvm\Restless.Tools.Mvvm.csproj">
       <Project>{9fbaa5ea-71bb-4548-8ac3-f10084f31c70}</Project>
       <Name>Restless.Tools.Mvvm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Restless.Tools.OfficeAutomation\Restless.Tools.OfficeAutomation.csproj">
+      <Project>{6db76cad-d35a-4bdf-9a01-dd0db96c4019}</Project>
+      <Name>Restless.Tools.OfficeAutomation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Restless.Tools.OfficeAutomation.Resources;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.Office.Core;
 using Word = Microsoft.Office.Interop.Word;
-using Restless.Tools.OfficeAutomation.Resources;
 
 namespace Restless.Tools.OfficeAutomation
 {
@@ -16,11 +12,10 @@ namespace Restless.Tools.OfficeAutomation
     public sealed class OfficeOperation
     {
         #region Private Members
-        private static OfficeOperation instance;
         private Word.Application wordApplication;
         private Word.Document wordDocument;
         private object isFalse = false;
-        private object isTrue = true;
+        private readonly object isTrue = true;
         private object m = System.Reflection.Missing.Value;
         private List<string> extensions;
         #endregion
@@ -50,29 +45,28 @@ namespace Restless.Tools.OfficeAutomation
 
         /************************************************************************/
 
-        #region Singleton Access, Constructor, Destructor
+        #region Singleton access and constructor
         /// <summary>
         /// Gets the singleton instance of this class.
         /// </summary>
-        public static OfficeOperation Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new OfficeOperation();
-                }
-                return instance;
-            }
-        }
+        public static OfficeOperation Instance { get; } = new OfficeOperation();
 
         private OfficeOperation()
         {
             PrepareApplication();
             wordDocument = null;
-            extensions = new List<string>();
-            extensions.Add(".doc");
-            extensions.Add(".docx");
+            extensions = new List<string>
+            {
+                ".doc",
+                ".docx"
+            };
+        }
+
+        /// <summary>
+        /// Static constructor for <see cref="OfficeOperation"/>.
+        /// </summary>
+        static OfficeOperation()
+        {
         }
         #endregion
 
@@ -107,15 +101,16 @@ namespace Restless.Tools.OfficeAutomation
         /// Converts the specified document to .docx
         /// </summary>
         /// <param name="fileName">The original file name</param>
+        /// <param name="deleteOriginal">true (the default) to delete the original .doc file after a successful conversion.</param>
         /// <returns>an object that describes the result of the conversion operation</returns>
-        public OfficeConversionResult ConvertToXmlDocument(string fileName)
+        public OfficeConversionResult ConvertToXmlDocument(string fileName, bool deleteOriginal = true)
         {
             #pragma warning disable 0467
             Exception opException = null;
             string newFileName = fileName;
             try
             {
-                if (String.IsNullOrEmpty(fileName))
+                if (string.IsNullOrEmpty(fileName))
                 {
                     throw new ArgumentNullException("ConvertToXmlDocument.FileName");
                 }
@@ -137,9 +132,13 @@ namespace Restless.Tools.OfficeAutomation
                     CloseFile();
                     File.SetCreationTimeUtc(newFileName, origFile.Info.CreationTimeUtc.AddSeconds(SecondsToAdd));
                     File.SetLastWriteTimeUtc(newFileName, origFile.Info.LastWriteTimeUtc.AddSeconds(SecondsToAdd));
-                    // TODO: Like to send to Recycle, but don't want the dependency on the other library.
-                    File.Delete(origFile.Info.FullName);
-                    // Restless.Tools.Win32.FileOperations.SendToRecycleSilent(origFile.Info.FullName);
+
+                    if (deleteOriginal)
+                    {
+                        // TODO: Like to send to Recycle, but don't want the dependency on the other library.
+                        // Restless.Tools.Win32.FileOperations.SendToRecycleSilent(origFile.Info.FullName);
+                        File.Delete(origFile.Info.FullName);
+                    }
                 }
             }
 
@@ -177,7 +176,7 @@ namespace Restless.Tools.OfficeAutomation
             Exception opException = null;
             try
             {
-                if (String.IsNullOrEmpty(fileName))
+                if (string.IsNullOrEmpty(fileName))
                 {
                     throw new ArgumentNullException("OpenFile.FileName");
                 }
