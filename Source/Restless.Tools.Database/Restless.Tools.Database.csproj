@@ -47,22 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Sqlite\ActionDataColumn.cs">
+    <Compile Include="Sqlite\ActionDataColumn.cs">
       <SubType>foo</SubType>
     </Compile>
-    <Compile Include="Classes\Sqlite\DatabaseControllerBase.cs" />
-    <Compile Include="Classes\Sqlite\DatabaseControllerBehavior.cs" />
-    <Compile Include="Classes\Sqlite\DataColumnPropertyKey.cs" />
-    <Compile Include="Classes\Sqlite\ExecuteObject.cs" />
-    <Compile Include="Classes\Sqlite\MemoryTable.cs">
+    <Compile Include="Sqlite\DatabaseControllerBase.cs" />
+    <Compile Include="Sqlite\DatabaseControllerBehavior.cs" />
+    <Compile Include="Sqlite\DataColumnPropertyKey.cs" />
+    <Compile Include="Sqlite\ExecuteObject.cs" />
+    <Compile Include="Sqlite\MemoryTable.cs">
       <SubType>foo</SubType>
     </Compile>
-    <Compile Include="Classes\Sqlite\RowObjectBase.cs" />
-    <Compile Include="Classes\Sqlite\TableBase.cs">
+    <Compile Include="Sqlite\RowObjectBase.cs" />
+    <Compile Include="Sqlite\TableBase.cs">
       <SubType>foo</SubType>
     </Compile>
-    <Compile Include="Classes\Sqlite\TableStatisticBase.cs" />
-    <Compile Include="Classes\Sqlite\TransactionAdapter.cs" />
+    <Compile Include="Sqlite\TableStatisticBase.cs" />
+    <Compile Include="Sqlite\TransactionAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
