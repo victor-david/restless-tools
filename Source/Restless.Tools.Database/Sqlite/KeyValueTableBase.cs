@@ -20,7 +20,7 @@ namespace Restless.Tools.Database.SQLite
     /// When a value is set, this class first checks to make sure that the incoming value
     /// is different from the value that currently exists. If they are the same, the data
     /// row for that value remains unchanged. If the incoming value is different, then the
-    /// data row is updated and the <see cref="OnPropertyChanged(string)"/> virtual method
+    /// data row is updated and the <see cref="OnRowValueChanged(string)"/> virtual method
     /// is called. A derived class cam override this method to receive notification,
     /// for instance, to implement INotifyPropertyChanged.
     /// </para>
@@ -177,6 +177,16 @@ namespace Restless.Tools.Database.SQLite
         }
 
         /// <summary>
+        /// Sets the specified double value in <see cref="Table"/>
+        /// </summary>
+        /// <param name="value">The value to set</param>
+        /// <param name="id">The id. Pass null (the default) to use CallerMemberName</param>
+        protected void SetItem(double value, [CallerMemberName] string id = null)
+        {
+            SetRowValueIf(id, value.ToString());
+        }
+
+        /// <summary>
         /// Sets the specified bool value in <see cref="Table"/>
         /// </summary>
         /// <param name="value">The value to set</param>
@@ -191,13 +201,13 @@ namespace Restless.Tools.Database.SQLite
 
         #region Protected methods (other)
         /// <summary>
-        /// Called when a property value changes.
+        /// Called when a property value changes on a row.
         /// Override this method in a derived class if you need
         /// notification, for instance to implement INotifyPropertyChanged.
         /// The base implementation does nothing.
         /// </summary>
-        /// <param name="propertyId">The name of the property.</param>
-        protected virtual void OnPropertyChanged(string propertyId)
+        /// <param name="propertyId">The id of the property from the <see cref="ColumnNameId"/> column.</param>
+        protected virtual void OnRowValueChanged(string propertyId)
         {
         }
         #endregion
@@ -239,7 +249,7 @@ namespace Restless.Tools.Database.SQLite
             if (currentValue != value)
             {
                 row[ColumnNameValue] = value;
-                OnPropertyChanged(id);
+                OnRowValueChanged(id);
             }
         }
 
