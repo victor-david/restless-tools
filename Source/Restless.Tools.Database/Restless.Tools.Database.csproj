@@ -50,6 +50,7 @@
     <Compile Include="Sqlite\ActionDataColumn.cs">
       <SubType>foo</SubType>
     </Compile>
+    <Compile Include="Sqlite\KeyValueTableBase.cs" />
     <Compile Include="Sqlite\DatabaseControllerBase.cs" />
     <Compile Include="Sqlite\DatabaseControllerBehavior.cs" />
     <Compile Include="Sqlite\DataColumnPropertyKey.cs" />
