@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace Restless.Tools.Controls
 {
@@ -22,12 +18,22 @@ namespace Restless.Tools.Controls
         public static T GetVisualParent<T>(DependencyObject child) where T : DependencyObject
         {
             if (child == null) return null;
-            var parent = VisualTreeHelper.GetParent(child);
-            if (parent is T)
+
+            // If child is not either a Visual or a Visual3D, we can't use VisualTreeHelper; it will throw.
+            // Instead, we use LogicalTreeHelper and proceed up the tree.
+            if (!(child is Visual) && !(child is Visual3D))
             {
-                return parent as T;
+                var logicalParent = LogicalTreeHelper.GetParent(child);
+                return GetVisualParent<T>(logicalParent);
             }
-            return GetVisualParent<T>(parent);
+
+            var visualParent = VisualTreeHelper.GetParent(child);
+
+            if (visualParent is T)
+            {
+                return visualParent as T;
+            }
+            return GetVisualParent<T>(visualParent);
         }
 
         /// <summary>

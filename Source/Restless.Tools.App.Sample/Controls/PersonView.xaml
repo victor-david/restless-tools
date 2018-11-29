@@ -7,11 +7,26 @@
     mc:Ignorable="d" 
     d:DesignHeight="150" d:DesignWidth="200">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <TextBlock 
             Foreground="Red"
             FontSize="48"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             Text="{Binding LastName}"/>
+
+        <Label Grid.Row="1" Margin="12" HorizontalAlignment="Center" FontSize="16">
+            <Hyperlink  ToolTip="This is a test of hyperlink">
+                <TextBlock>
+                    <Run Text="{Binding FirstName, Mode=OneWay}"/>
+                    <Run Text="{Binding LastName, Mode=OneWay}"/>
+                </TextBlock>
+            </Hyperlink>
+        </Label>
+
+
     </Grid>
 </UserControl>
