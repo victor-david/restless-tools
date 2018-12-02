@@ -106,6 +106,7 @@ namespace Restless.Tools.Controls
             ItemContainerGenerator.StatusChanged += ItemContainerGeneratorStatusChanged;
             BorderThickness = new Thickness(1);
             BorderBrush = new SolidColorBrush(Colors.Gray);
+            IsSynchronizedWithCurrentItem = true;
         }
 
         static RestlessTabControl()
