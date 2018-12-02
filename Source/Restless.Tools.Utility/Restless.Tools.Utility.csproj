@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Converters\BooleanToInverseBooleanConverter.cs" />
     <Compile Include="Converters\BooleanToInverseVisibilityConverter.cs" />
+    <Compile Include="Converters\BooleanToTextWrappingConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityMultiConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityMultiConverterOptions.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Converters\Int64ToImageConverter.cs" />
     <Compile Include="Converters\Int64ToVisibilityConverter.cs" />
     <Compile Include="Converters\NegativeIntegerToString.cs" />
+    <Compile Include="Converters\StringConcatenationMultiConverter.cs" />
     <Compile Include="Converters\StringToCleanStringConverter.cs" />
     <Compile Include="Converters\StringToCleanStringOptions.cs" />
     <Compile Include="Converters\StringToMaskedStringConverter.cs" />
