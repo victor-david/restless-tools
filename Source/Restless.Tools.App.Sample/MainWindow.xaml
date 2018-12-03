@@ -32,11 +32,13 @@
             <con:LinkedTextBlock Text="Calendar" Command="{Binding Commands[S0]}"/>
             <con:LinkedTextBlock Text="Key Value" Command="{Binding Commands[S1]}"/>
             <con:LinkedTextBlock Text="Data Grid" Command="{Binding Commands[S2]}"/>
-            <con:LinkedTextBlock Text="Color Picker" Command="{Binding Commands[S3]}"/>
-            <con:LinkedTextBlock Text="Tab Control (Fixed)" Command="{Binding Commands[S4]}"/>
-            <con:LinkedTextBlock Text="Tab Control (Dynamic)" Command="{Binding Commands[S5]}"/>
-            <con:LinkedTextBlock Text="List Box" Command="{Binding Commands[S6]}"/>
-            <con:LinkedTextBlock Text="Doc Conversion" Command="{Binding Commands[S7]}"/>
+            <con:LinkedTextBlock Text="Data Grid (Scroll)" Command="{Binding Commands[S3]}"/>
+
+            <con:LinkedTextBlock Text="Color Picker" Command="{Binding Commands[S4]}"/>
+            <con:LinkedTextBlock Text="Tab Control (Fixed)" Command="{Binding Commands[S5]}"/>
+            <con:LinkedTextBlock Text="Tab Control (Dynamic)" Command="{Binding Commands[S6]}"/>
+            <con:LinkedTextBlock Text="List Box" Command="{Binding Commands[S7]}"/>
+            <con:LinkedTextBlock Text="Doc Conversion" Command="{Binding Commands[S8]}"/>
         </StackPanel>
 
         <Border 
@@ -48,10 +50,11 @@
         <l:CalendarDisplay Grid.Column="2" Visibility="{Binding Sections[0]}"/>
         <l:KeyValueDisplay Grid.Column="2" Visibility="{Binding Sections[1]}"/>
         <l:DataGridDisplay Grid.Column="2" Visibility="{Binding Sections[2]}"/>
-        <l:ColorPickerDisplay Grid.Column="2" Visibility="{Binding Sections[3]}" />
-        <l:TabDisplayFixed Grid.Column="2" Visibility="{Binding Sections[4]}" />
-        <l:TabDisplayDynamic Grid.Column="2" Visibility="{Binding Sections[5]}" />
-        <l:ListBoxDisplay Grid.Column="2" Visibility="{Binding Sections[6]}" />
-        <l:DocumentConversionDisplay Grid.Column="2" Visibility="{Binding Sections[7]}" />
+        <l:DataGridScrollDisplay Grid.Column="2" Visibility="{Binding Sections[3]}"/>
+        <l:ColorPickerDisplay Grid.Column="2" Visibility="{Binding Sections[4]}"/>
+        <l:TabDisplayFixed Grid.Column="2" Visibility="{Binding Sections[5]}"/>
+        <l:TabDisplayDynamic Grid.Column="2" Visibility="{Binding Sections[6]}"/>
+        <l:ListBoxDisplay Grid.Column="2" Visibility="{Binding Sections[7]}"/>
+        <l:DocumentConversionDisplay Grid.Column="2" Visibility="{Binding Sections[8]}"/>
     </Grid>
 </Window>

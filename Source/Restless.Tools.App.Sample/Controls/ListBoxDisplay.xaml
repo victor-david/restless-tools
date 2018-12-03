@@ -10,13 +10,17 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <CheckBox
             Margin="2,5"
             IsChecked="{Binding UseOuterScrollViewer,ElementName=MyListBox}"
             Content="Use outer scroll viewer"/>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+        
+        <Separator Grid.Row="1" Margin="0,10"/>
+        
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
@@ -38,7 +42,7 @@
                     <TextBlock.Text>
                         A RestlessListBox can interecept the mouse wheel movement and forward the
                         movement to the outer ScrollViewer. This is acomplished by setting the
-                        UseOuterScrollViewer to True. Once set, you can scroll everything with
+                        UseOuterScrollViewer property to True. Once set, you can scroll everything with
                         the mouse wheel whether the mouse is inside or outside the list box.
                     </TextBlock.Text>
                 </TextBlock>

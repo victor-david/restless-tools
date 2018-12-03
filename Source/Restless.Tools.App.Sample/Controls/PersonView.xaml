@@ -18,9 +18,9 @@
             HorizontalAlignment="Center"
             Text="{Binding LastName}"/>
 
-        <Label Grid.Row="1" Margin="12" HorizontalAlignment="Center" FontSize="16">
+        <Label Grid.Row="1" Margin="12" HorizontalAlignment="Center">
             <Hyperlink  ToolTip="This is a test of hyperlink">
-                <TextBlock>
+                <TextBlock FontSize="24">
                     <Run Text="{Binding FirstName, Mode=OneWay}"/>
                     <Run Text="{Binding LastName, Mode=OneWay}"/>
                 </TextBlock>

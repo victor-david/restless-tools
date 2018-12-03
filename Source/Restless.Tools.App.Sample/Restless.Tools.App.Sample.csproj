@@ -67,6 +67,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\DataGridScrollDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DataGridDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -108,6 +112,9 @@
     </Compile>
     <Compile Include="Controls\ColorPickerDisplay.xaml.cs">
       <DependentUpon>ColorPickerDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataGridScrollDisplay.xaml.cs">
+      <DependentUpon>DataGridScrollDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGridDisplay.xaml.cs">
       <DependentUpon>DataGridDisplay.xaml</DependentUpon>

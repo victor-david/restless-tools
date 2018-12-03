@@ -17,6 +17,7 @@ namespace Restless.Tools.Controls
     {
         #region Private
         private ScrollViewer scrollViewer;
+        private ScrollViewer outerScrollViewer;
         #endregion
 
         /************************************************************************/
@@ -242,6 +243,7 @@ namespace Restless.Tools.Controls
         /************************************************************************/
 
         #region ScrollViewerVerticalOffset
+#if VERTOFFSET
         /// <summary>
         /// Gets or sets a value that determines the vertical offset of the data grid scroll viewer
         /// </summary>
@@ -289,6 +291,42 @@ namespace Restless.Tools.Controls
             }
             return null;
         }
+#endif
+        #endregion
+
+        /************************************************************************/
+
+        #region UseOuterScrollViewer
+        /// <summary>
+        /// Gets or sets a boolean value that determines if the mouse wheel movement
+        /// is handled by an outer scroll viewer. The default is false.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If <see cref="RestlessDataGrid"/> is contained within an outer scroll viewer
+        /// with other content to scroll as a unit, the mouse wheel has no effect when the mouse
+        /// is within the list box. Set this property to true to allow mouse wheel movement
+        /// within the list box to manage the outer scroll viewer.
+        /// </para>
+        /// <para>
+        /// If the data grid has its Height property set to a value that does not allow all of its
+        /// items to display, or is otherwise constrained, it will activate its built in scroll viewer.
+        /// In these cases, you should not set this property to true.
+        /// </para>
+        /// </remarks>
+        public bool UseOuterScrollViewer
+        {
+            get => (bool)GetValue(UseOuterScrollViewerProperty);
+            set => SetValue(UseOuterScrollViewerProperty, value);
+        }
+
+        /// <summary>
+        /// Dependency property for <see cref="UseOuterScrollViewer"/>
+        /// </summary>
+        public static readonly DependencyProperty UseOuterScrollViewerProperty = DependencyProperty.Register
+            (
+                nameof(UseOuterScrollViewer), typeof(bool), typeof(RestlessDataGrid), new PropertyMetadata(false)
+            );
         #endregion
 
         /************************************************************************/
@@ -354,6 +392,28 @@ namespace Restless.Tools.Controls
         }
 
         /// <summary>
+        /// Invoked when an unhandled System.Windows.Input.Mouse.PreviewMouseWheel attached
+        /// event reaches an element in its route that is derived from this class.
+        /// </summary>
+        /// <param name="e">The System.Windows.Input.MouseWheelEventArgs that contains the event data.</param>
+        /// <remarks>
+        /// This method is used to implement the behavior described by <see cref="UseOuterScrollViewer"/>.
+        /// </remarks>
+        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnPreviewMouseWheel(e);
+            if (UseOuterScrollViewer)
+            {
+                var sv = GetOuterScrollViewer();
+                if (sv != null)
+                {
+                    sv.ScrollToVerticalOffset(sv.VerticalOffset - e.Delta);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Occurs when the selected item changes, raises the SelectionChanged event.
         /// </summary>
         /// <param name="e">The event arguments.</param>
@@ -388,7 +448,6 @@ namespace Restless.Tools.Controls
                 SortingCommand.Execute(e.Column);
                 e.Handled = view.SortDescriptions.Count > 0;
             }
-
             
             if (colSort != null)
             {
@@ -476,18 +535,16 @@ namespace Restless.Tools.Controls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             scrollViewer = CoreHelper.GetVisualChild<ScrollViewer>(this);
-
+#if VERTOFFSET
             if (scrollViewer != null)
             {
-                scrollViewer.ScrollChanged += OnScrollChanged;
+                scrollViewer.ScrollChanged += (s, e2) =>
+                {
+                    SetValue(ScrollViewerVerticalOffsetProperty, e2.VerticalOffset);
+                };
             }
-
+#endif
             DispatcherRestoreState();
-        }
-
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            SetValue(ScrollViewerVerticalOffsetProperty, e.VerticalOffset);
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -555,11 +612,25 @@ namespace Restless.Tools.Controls
                 ScrollIntoView(SelectedItem);
             }
         }
+
+        /// <summary>
+        /// Gets the outer scroll viewer. If cached, returns the cached object. Otherwise, looks it up.
+        /// </summary>
+        /// <returns>The scroll viewer, or null if none.</returns>
+        private ScrollViewer GetOuterScrollViewer()
+        {
+            if (outerScrollViewer == null)
+            {
+                outerScrollViewer = CoreHelper.GetVisualParent<ScrollViewer>(this);
+            }
+            return outerScrollViewer;
+        }
         #endregion
 
         /************************************************************************/
 
         #region Private helper class (ScrollInfo)
+#if VERTOFFSET
         private class ScrollInfo
         {
             public RestlessDataGrid Grid { get; private set; }
@@ -570,6 +641,7 @@ namespace Restless.Tools.Controls
                 VerticalOffset = verticalOffset;
             }
         }
+#endif
         #endregion
     }
 }
