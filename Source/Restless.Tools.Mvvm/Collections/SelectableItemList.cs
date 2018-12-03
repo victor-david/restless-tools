@@ -6,6 +6,7 @@ namespace Restless.Tools.Mvvm.Collections
     /// <summary>
     /// Represents a list of <see cref="SelectableItem"/> objects.
     /// </summary>
+    /// <typeparam name="T">The that the collection holds.</typeparam>
     public class SelectableItemList<T> : ObservableCollection<T> where T : SelectableItem
     {
         #region Private

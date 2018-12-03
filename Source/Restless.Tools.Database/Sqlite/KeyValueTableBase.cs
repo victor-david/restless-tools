@@ -21,7 +21,7 @@ namespace Restless.Tools.Database.SQLite
     /// is different from the value that currently exists. If they are the same, the data
     /// row for that value remains unchanged. If the incoming value is different, then the
     /// data row is updated and the <see cref="OnRowValueChanged(string)"/> virtual method
-    /// is called. A derived class cam override this method to receive notification,
+    /// is called. A derived class can override this method to receive notification,
     /// for instance, to implement INotifyPropertyChanged.
     /// </para>
     /// <para>
@@ -64,6 +64,10 @@ namespace Restless.Tools.Database.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyValueTableBase"/> class
         /// </summary>
+        /// <param name="configTable">
+        /// The configuration table.
+        /// This table must meet certain requirements. See <see cref="KeyValueTableBase"/> for more.
+        /// </param>
         protected KeyValueTableBase(TableBase configTable)
         {
             Table = configTable ?? throw new ArgumentNullException(nameof(configTable));

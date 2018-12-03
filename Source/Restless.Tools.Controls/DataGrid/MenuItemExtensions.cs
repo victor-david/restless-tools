@@ -24,11 +24,11 @@ namespace Restless.Tools.Controls
         }
 
         /// <summary>
-        /// Adds a tag to the menu item
+        /// Adds a command parameter to the menu item
         /// </summary>
         /// <param name="item"></param>
         /// <param name="parm"></param>
-        /// <returns></returns>
+        /// <returns>The item</returns>
         public static MenuItem AddCommandParm(this MenuItem item, object parm)
         {
             item.CommandParameter = parm;
@@ -40,7 +40,7 @@ namespace Restless.Tools.Controls
         /// </summary>
         /// <param name="item"></param>
         /// <param name="tag"></param>
-        /// <returns></returns>
+        /// <returns>The item</returns>
         public static MenuItem AddTag(this MenuItem item, object tag)
         {
             item.Tag = tag;

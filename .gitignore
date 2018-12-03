@@ -1,7 +1,9 @@
 obj/
 bin/
 packages/
+Help/
 .vs/
 *.cmd
 *.nupkg
 *.nuspec
+*.shfbproj

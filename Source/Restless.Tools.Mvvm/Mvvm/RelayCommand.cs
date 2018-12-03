@@ -73,6 +73,7 @@ namespace Restless.Tools.Mvvm
         /// </summary>
         /// <param name="execute">The method that executes the command.</param>
         /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
+        /// <returns>A <see cref="RelayCommand"/> object.</returns>
         /// <remarks>This overload creates a command that is marked as supported.</remarks>
         public static RelayCommand Create(Action<object> execute, Predicate<object> canExecute)
         {
@@ -83,6 +84,7 @@ namespace Restless.Tools.Mvvm
         /// Creates and returns an instance of <see cref="RelayCommand"/>.
         /// </summary>
         /// <param name="execute">The method that executes the command.</param>
+        /// <returns>A <see cref="RelayCommand"/> object.</returns>
         /// <remarks>This overload creates a command that has no corresponding command predicate and is marked as supported.</remarks>
         public static RelayCommand Create(Action<object> execute)
         {

@@ -116,7 +116,7 @@ namespace Restless.Tools.Mvvm
         /// <summary>
         /// Toggles the specifed view model between activated and deactivated.
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="vm">The <see cref="ViewModelBase"/> to toggle activation for.</param>
         public void ToggleActivation(ViewModelBase vm)
         {
             if (vm != null)
@@ -171,6 +171,7 @@ namespace Restless.Tools.Mvvm
         /// A derived class can override this method to perform update actions.
         /// The base implementation does nothing.
         /// </summary>
+        /// <param name="vm">The <see cref="ViewModelBase"/> that was toggled.</param>
         protected virtual void OnActivationToggled(ViewModelBase vm)
         {
         }
