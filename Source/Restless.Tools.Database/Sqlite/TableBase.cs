@@ -315,7 +315,6 @@ namespace Restless.Tools.Database.SQLite
             CreateChildToParentColumn<string>(colName, relationName, parentColName);
         }
 
-
         /// <summary>
         /// Creates an expression column using a caller defined expression.
         /// </summary>
@@ -359,6 +358,45 @@ namespace Restless.Tools.Database.SQLite
                 var col = new ActionDataColumn(colName, typeof(T), updateAction);
                 col.SetDependentTable(dependentTable, dependentColumns);
                 Columns.Add(col);
+            }
+        }
+
+        /// <summary>
+        /// Provides a generic IEnumerable for the data rows of this table.
+        /// </summary>
+        /// <returns>An IEnumerable of <see cref="DataRow"/>.</returns>
+        protected IEnumerable<DataRow> EnumerateRows()
+        {
+            foreach (DataRow row in Rows)
+            {
+                yield return row;
+            }
+        }
+
+        /// <summary>
+        /// Provides a generic IEnumerable for the data rows of this table.
+        /// </summary>
+        /// <param name="filter">An expression that determines which rows will be selected.</param>
+        /// <returns>An IEnumerable of <see cref="DataRow"/>.</returns>
+        protected IEnumerable<DataRow> EnumerateRows(string filter)
+        {
+            foreach (DataRow row in Select(filter))
+            {
+                yield return row;
+            }
+        }
+
+        /// <summary>
+        /// Provides a generic IEnumerable for the data rows of this table.
+        /// </summary>
+        /// <param name="filter">An expression that determines which rows will be selected.</param>
+        /// <param name="orderBy">An expression that determines how the rows will be ordered.</param>
+        /// <returns>An IEnumerable of <see cref="DataRow"/>.</returns>
+        protected IEnumerable<DataRow> EnumerateRows(string filter, string orderBy)
+        {
+            foreach (DataRow row in Select(filter, orderBy))
+            {
+                yield return row;
             }
         }
 
