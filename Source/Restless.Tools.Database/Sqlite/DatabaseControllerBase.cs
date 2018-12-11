@@ -341,7 +341,6 @@ namespace Restless.Tools.Database.SQLite
         /// </remarks>
         protected T CreateAndRegisterTable<T>() where T : TableBase, new()
         {
-            var connection = Connection;
             var table = new T();
 
             if (!table.Exists())
