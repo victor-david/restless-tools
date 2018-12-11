@@ -122,14 +122,6 @@ namespace Restless.Tools.Database.SQLite
         /************************************************************************/
 
         #region Protected properties
-        /// <summary>
-        /// Gets or sets the flags that affect how the controller operates
-        /// </summary>
-        protected DatabaseControllerBehavior Behavior
-        {
-            get;
-            set;
-        }
         #endregion
 
         /************************************************************************/
@@ -141,7 +133,6 @@ namespace Restless.Tools.Database.SQLite
         protected DatabaseControllerBase()
         {
             Initialized = false;
-            Behavior = DatabaseControllerBehavior.All;
             DataSet = new DataSet(DataSetName);
             attached = new Dictionary<string, string>();
         }
@@ -353,17 +344,17 @@ namespace Restless.Tools.Database.SQLite
             var connection = Connection;
             var table = new T();
 
-            if (!table.Exists() && Behavior.HasFlag(DatabaseControllerBehavior.AutoDdlCreation))
+            if (!table.Exists())
             {
                 table.CreateFromDdl();
             }
 
-            if (table.Exists() && !table.HasRows() && Behavior.HasFlag(DatabaseControllerBehavior.AutoPopulate))
+            if (table.Exists() && !table.HasRows())
             {
                 table.Populate();
             }
 
-            if (table.Exists() && Behavior.HasFlag(DatabaseControllerBehavior.AutoDataLoad))
+            if (table.Exists())
             {
                 table.Load();
             }

@@ -53,7 +53,6 @@
     </Compile>
     <Compile Include="Sqlite\KeyValueTableBase.cs" />
     <Compile Include="Sqlite\DatabaseControllerBase.cs" />
-    <Compile Include="Sqlite\DatabaseControllerBehavior.cs" />
     <Compile Include="Sqlite\DataColumnPropertyKey.cs" />
     <Compile Include="Sqlite\ExecuteObject.cs" />
     <Compile Include="Sqlite\MemoryTable.cs">
