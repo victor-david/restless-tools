@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="Restless.Tools.App.Sample.ListBoxDisplay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:con="clr-namespace:Restless.Tools.Controls;assembly=Restless.Tools.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="450" d:DesignWidth="280">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <CheckBox
+            Margin="2,5"
+            IsChecked="{Binding UseOuterScrollViewer,ElementName=MyListBox}"
+            Content="Use outer scroll viewer"/>
+        
+        <Separator Grid.Row="1" Margin="0,10"/>
+        
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="2,6"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock>
+                    <TextBlock.Text>
+                        This text and the RestlessListBox below are within a ScrollViewer.
+                        The ListBox is not constrained in its size, so its built in ScrollViewer
+                        does not activate. Normally, this means that in order to scroll, you need to either
+                        use the scroll bar directly, or position the mouse in the small margin
+                        outside of the list box and use the mouse wheel.
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock>
+                    <TextBlock.Text>
+                        A RestlessListBox can interecept the mouse wheel movement and forward the
+                        movement to the outer ScrollViewer. This is acomplished by setting the
+                        UseOuterScrollViewer property to True. Once set, you can scroll everything with
+                        the mouse wheel whether the mouse is inside or outside the list box.
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <con:RestlessListBox 
+                    x:Name="MyListBox"
+                    Margin="10"
+                    ItemsSource="{Binding Persons}"/>
+            </StackPanel>
+
+
+        </ScrollViewer>
+    </Grid>
+</UserControl>
