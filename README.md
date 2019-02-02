@@ -1,19 +1,12 @@
-﻿# Restless Animal Tools Library
+﻿# Restless Tools
 Provides various support and helper classes for applications.
 
-## Namespace Summary
-|Namespace|Description|
+## Assembly Summary
+|Assembly|Description|
 |:---|:---|
-|Restless.Tools.Database.SQLite|Low level database abstraction for databases and tables|
+|Restless.Tools.Controls|Various custom controls such as drag and drop tabs, enhanced data grid, custom calendars, and more|
+|Restless.Tools.Database|Database wrappers and custom table base classes (Sqlite)|
+|Restless.Tools.Mvvm|Simple support classes for MVVM apps|
+|Restless.Tools.OfficeAutomation|Provides .doc to docx conversion|
 |Restless.Tools.OpenXml|Helper classes for creating and manipulating Open XML documents|
-|Restless.Tools.Threading|Classes and extensions to manage creation and execution of background tasks|
-|Restless.Tools.Search|Helper classes to search and retrieve results via Windows Search|
-|Restless.Tools.Utility|Various utility classes to aid with validation, serialization, and code execution|
-|Restless.Tools.Win32|Helper classes to access Win 32 functionality|
-|Restless.Tools.OfficeAutomation|Provides .doc to docx conversion (separate .dll)|
-
-## Used By
-This library is used by the following GitHub respositories:
-
-- [Panama ∑en](https://github.com/victor-david/panama)
-- [Network Tools](https://github.com/victor-david/network-tools)
+|Restless.Tools.Utility|Various utility classes to aid with validation, serialization, threading, search, and code execution|
