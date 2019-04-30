@@ -19,7 +19,7 @@ namespace Restless.Tools.Controls
 
         #region Public properties
         /// <summary>
-        /// Gets or sets the command.
+        /// Gets or sets the command. This is a dependency property.
         /// </summary>
         public ICommand Command
         {
@@ -28,7 +28,7 @@ namespace Restless.Tools.Controls
         }
 
         /// <summary>
-        /// Defines a dependency property for the command.
+        /// Identifies the <see cref="Command"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandProperty = DependencyProperty.Register
             (
@@ -36,7 +36,7 @@ namespace Restless.Tools.Controls
             );
 
         /// <summary>
-        /// Gets or sets the command parameter
+        /// Gets or sets the command parameter. This is a dependency property.
         /// </summary>
         public object CommandParameter
         {
@@ -45,7 +45,7 @@ namespace Restless.Tools.Controls
         }
 
         /// <summary>
-        /// Defines a dependency property for the command parameter.
+        /// Identifies the <see cref="CommandParameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register
             (
@@ -53,16 +53,8 @@ namespace Restless.Tools.Controls
             );
 
         /// <summary>
-        /// Gets or sets the brush used for rollover.
-        /// </summary>
-        public Brush RolloverBrush
-        {
-            get => (Brush)GetValue(RolloverBrushProperty);
-            set => SetValue(RolloverBrushProperty, value);
-        }
-
-        /// <summary>
-        /// The target element on which to fire the command.
+        /// Gets or sets the target element on which to fire the command.
+        /// This is a dependency property.
         /// </summary>
         public IInputElement CommandTarget
         {
@@ -71,7 +63,7 @@ namespace Restless.Tools.Controls
         }
 
         /// <summary>
-        /// The DependencyProperty for Target property
+        /// Identifies the <see cref="CommandTarget"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandTargetProperty = DependencyProperty.Register
             (
@@ -79,11 +71,20 @@ namespace Restless.Tools.Controls
             );
 
         /// <summary>
-        /// Defines a dependency property for the rollover brush
+        /// Gets or sets the brush used for rollover. This is a dependency property.
+        /// </summary>
+        public Brush RolloverBrush
+        {
+            get => (Brush)GetValue(RolloverBrushProperty);
+            set => SetValue(RolloverBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="RolloverBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RolloverBrushProperty = DependencyProperty.Register
             (
-                nameof(RolloverBrush), typeof(Brush), typeof(LinkedTextBlock), new PropertyMetadata(null)
+                nameof(RolloverBrush), typeof(Brush), typeof(LinkedTextBlock), new PropertyMetadata(Brushes.DarkRed)
             );
         #endregion
 
@@ -95,7 +96,6 @@ namespace Restless.Tools.Controls
         /// </summary>
         public LinkedTextBlock()
         {
-            RolloverBrush = new SolidColorBrush(Colors.DarkRed);
             Cursor = Cursors.Hand;
             TextDecorations = System.Windows.TextDecorations.Underline;
         }
