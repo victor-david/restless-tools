@@ -28,6 +28,15 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets an integer value associated with this option.
+        /// </summary>
+        public long IntValue2
+        {
+            get;
+            set;
+        }
         #endregion
 
         /************************************************************************/
