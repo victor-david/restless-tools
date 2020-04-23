@@ -12,16 +12,15 @@ namespace Restless.Tools.Database.SQLite
     public class TransactionAdapter
     {
         #region Private
-        private SQLiteConnection connection;
+        private readonly DatabaseControllerBase controller;
         #endregion
 
         /************************************************************************/
 
         #region Constructor
-        internal TransactionAdapter(SQLiteConnection connection)
+        internal TransactionAdapter(DatabaseControllerBase controller)
         {
-
-            this.connection = connection ?? throw new ArgumentNullException("TransactionAdapter.Connection");
+            this.controller = controller ?? throw new ArgumentNullException("TransactionAdapter.Controller");
         }
         #endregion
 
@@ -41,24 +40,28 @@ namespace Restless.Tools.Database.SQLite
         {
             sqlList = sqlList ?? throw new ArgumentNullException("ExecuteTransaction.SqlList");
 
-            using (var transaction = connection.BeginTransaction())
+            // See comments on TableBase.SavePrivate() for use of lock.
+            lock (controller.TransactionLockObject)
             {
-                try
+                using (var transaction = controller.Connection.BeginTransaction())
                 {
-                    foreach (var sql in sqlList)
+                    try
                     {
-                        using (var cmd = new SQLiteCommand(sql, connection, transaction))
+                        foreach (var sql in sqlList)
                         {
-                            cmd.ExecuteNonQuery();
+                            using (var cmd = new SQLiteCommand(sql, controller.Connection, transaction))
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
                         }
-                    }
 
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -103,44 +106,48 @@ namespace Restless.Tools.Database.SQLite
                 table.Save();
             }
 
-            using (var transaction = connection.BeginTransaction())
+            // See comments on TableBase.SavePrivate() for use of lock.
+            lock (controller.TransactionLockObject)
             {
-                try
+                using (var transaction = controller.Connection.BeginTransaction())
                 {
-                    updateCallback(transaction);
-                    transaction.Commit();
-                    foreach (var table in tables)
+                    try
                     {
-                        table.AcceptChanges();
+                        updateCallback(transaction);
+                        transaction.Commit();
+                        foreach (var table in tables)
+                        {
+                            table.AcceptChanges();
+                        }
                     }
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    /*
-                     * Catch-22 here when a table has a self-relation.
-                     * Self-relation.AcceptRejectRule == None (the default)
-                     *      RejectChanges() throws with: cannot make this change because constraints are enforced
-                     *      
-                     * Self-relation.AcceptRejectRule == Cascade     
-                     *      RejectChanges() throws with: row has been removed, etc.
-                     *      
-                     * One thing that works is to have self-relation.AcceptRejectRule == None (the default)
-                     * and disable EnforceConstraints on the data set.
-                     * 
-                     * TODO: Investigate. Currently using .NET 4.5.2 - Possibly behavior is different in later version.
-                     */
-                    foreach (var table in tables)
+                    catch (Exception)
                     {
-                        bool enforce = table.DataSet.EnforceConstraints;
-                        table.DataSet.EnforceConstraints = false;
-                        table.RejectChanges();
-                        table.DataSet.EnforceConstraints = enforce;
+                        transaction.Rollback();
+                        /*
+                         * Catch-22 here when a table has a self-relation.
+                         * Self-relation.AcceptRejectRule == None (the default)
+                         *      RejectChanges() throws with: cannot make this change because constraints are enforced
+                         *      
+                         * Self-relation.AcceptRejectRule == Cascade     
+                         *      RejectChanges() throws with: row has been removed, etc.
+                         *      
+                         * One thing that works is to have self-relation.AcceptRejectRule == None (the default)
+                         * and disable EnforceConstraints on the data set.
+                         * 
+                         * TODO: Investigate. Currently using .NET 4.5.2 - Possibly behavior is different in later version.
+                         */
+                        foreach (var table in tables)
+                        {
+                            bool enforce = table.DataSet.EnforceConstraints;
+                            table.DataSet.EnforceConstraints = false;
+                            table.RejectChanges();
+                            table.DataSet.EnforceConstraints = enforce;
+                        }
+                        throw;
                     }
-                    throw;
-                }
-                finally
-                {
+                    finally
+                    {
+                    }
                 }
             }
         }

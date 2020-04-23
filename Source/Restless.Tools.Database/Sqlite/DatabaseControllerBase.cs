@@ -22,6 +22,15 @@ namespace Restless.Tools.Database.SQLite
 
         #region Public fields
         /// <summary>
+        /// Provides a transaction lock object used across the transaction adapter 
+        /// and the tables that belong to this controller. Lock on this object
+        /// if you use Connection.BeginTransaction() in your app. DO NOT lock
+        /// on this object when calling Save() or TableBase.Save(). That is handled
+        /// internally and would therefore result in a deadlock.
+        /// </summary>
+        public readonly object TransactionLockObject;
+
+        /// <summary>
         /// Defines the name of the main schema.
         /// This is the schema name used by the main database, that is:
         /// the first database associated with a connection. This name is defined by Sqlite.
@@ -135,6 +144,7 @@ namespace Restless.Tools.Database.SQLite
             Initialized = false;
             DataSet = new DataSet(DataSetName);
             attached = new Dictionary<string, string>();
+            TransactionLockObject = new object();
         }
         #endregion
 
@@ -268,7 +278,7 @@ namespace Restless.Tools.Database.SQLite
                 Connection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", databaseFileName));
                 Connection.Open();
                 Execution = new ExecuteObject(Connection);
-                Transaction = new TransactionAdapter(Connection);
+                Transaction = new TransactionAdapter(this);
                 Initialized = true;
             }
         }

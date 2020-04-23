@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -591,24 +592,41 @@ namespace Restless.Tools.Database.SQLite
 
             if (transaction == null)
             {
-                using (transaction = Controller.Connection.BeginTransaction())
+                /**
+                 * According to Sqlite docs, it is thread safe, even when using the same connection
+                 * on multiple threads. It's possible that that doesn't apply to the .NET adapter.
+                 * 
+                 * Without the lock, multiple threads enter here and one of them can crash when
+                 * it tries transaction.Commit() with "no transaction is active on the connection."
+                 * 
+                 * Problem starts with BeginTransaction() which states that it "Creates a new 
+                 * System.Data.SQLite.SQLiteTransaction if one isn't already active on the connection.
+                 * 
+                 * Since it doesn't always create a new transaction (but instead returns the existing one),
+                 * the first finished thread can call transaction.Commit() and the next finished thread
+                 * fails with the above message. Therefore the lock.
+                 */
+                lock (Controller.TransactionLockObject)
                 {
-                    try
+                    using (transaction = Controller.Connection.BeginTransaction())
                     {
-                        Insert(status, transaction);
-                        Update(status, transaction);
-                        Delete(status, transaction);
-                        transaction.Commit();
-                        AcceptChanges();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        RejectChanges();
-                        throw;
-                    }
-                    finally
-                    {
+                        try
+                        {
+                            Insert(status, transaction);
+                            Update(status, transaction);
+                            Delete(status, transaction);
+                            transaction.Commit();
+                            AcceptChanges();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            RejectChanges();
+                            throw;
+                        }
+                        finally
+                        {
+                        }
                     }
                 }
             }
