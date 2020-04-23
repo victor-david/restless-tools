@@ -169,6 +169,7 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -192,6 +193,7 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -208,6 +210,7 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -231,6 +234,7 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -254,6 +258,7 @@ namespace Restless.Tools.Database.SQLite
                 {
                     Row[colName] = value;
                 }
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -270,6 +275,7 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -293,6 +299,7 @@ namespace Restless.Tools.Database.SQLite
                 { 
                     Row[colName] = value;
                 }
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
@@ -309,9 +316,20 @@ namespace Restless.Tools.Database.SQLite
             if (!Row[colName].Equals(value))
             {
                 Row[colName] = value;
+                OnSetValue(colName, value);
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Called when any of the SetValue() overloads successfully set a value, i.e. change the value from what it was.
+        /// Override in a derived class if needed. The base implementation does nothing.
+        /// </summary>
+        /// <param name="columnName">The column name.</param>
+        /// <param name="value">The value</param>
+        protected virtual void OnSetValue(string columnName, object value)
+        {
         }
         #endregion
     }
