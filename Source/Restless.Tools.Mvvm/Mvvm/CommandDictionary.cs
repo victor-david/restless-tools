@@ -37,16 +37,17 @@ namespace Restless.Tools.Mvvm
         }
 
         #endregion
-        
+
         /************************************************************************/
 
         #region Constructor
-        #pragma warning disable 1591
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandDictionary"/> class.
+        /// </summary>
         public CommandDictionary()
         {
             storage = new Dictionary<string, RelayCommand>();
         }
-        #pragma warning restore 1591
         #endregion
 
         /************************************************************************/
@@ -76,13 +77,23 @@ namespace Restless.Tools.Mvvm
         /// <param name="key">The name of the command in the dictionary</param>
         /// <param name="runCommand">The action to run the command</param>
         /// <param name="canRunCommand">The predicate to determine if the command can run, or null if it can always run</param>
+        /// <param name="supported">A value that determines if the command is supported.</param>
+        /// <param name="parameter">An optional parameter that if set will always be passed to the command method.</param>
+        public void Add(string key, Action<object> runCommand, Predicate<object> canRunCommand, CommandSupported supported, object parameter)
+        {
+            Add(key, RelayCommand.Create(runCommand, canRunCommand, supported, parameter));
+        }
+
+        /// <summary>
+        /// Adds a command to the dictionary.
+        /// </summary>
+        /// <param name="key">The name of the command in the dictionary</param>
+        /// <param name="runCommand">The action to run the command</param>
+        /// <param name="canRunCommand">The predicate to determine if the command can run, or null if it can always run</param>
         /// <param name="parameter">An optional parameter that if set will always be passed to the command method.</param>
         public void Add(string key, Action<object> runCommand, Predicate<object> canRunCommand, object parameter = null)
         {
-
-            RelayCommand cmd = RelayCommand.Create(runCommand, canRunCommand);
-            cmd.Parameter = parameter;
-            Add(key, cmd);
+            Add(key, RelayCommand.Create(runCommand, canRunCommand, CommandSupported.Yes, parameter));
         }
 
         /// <summary>
@@ -92,7 +103,7 @@ namespace Restless.Tools.Mvvm
         /// <param name="runCommand">The action to run the command</param>
         public void Add(string key, Action<object> runCommand)
         {
-            Add(key, runCommand, null);
+            Add(key, RelayCommand.Create(runCommand));
         }
 
         /// <summary>

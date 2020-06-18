@@ -45,11 +45,13 @@ namespace Restless.Tools.Mvvm
         /// <param name="execute">The method that executes the command.</param>
         /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
         /// <param name="supported">A value that determines if the command is supported.</param>
-        private RelayCommand(Action<object> execute, Predicate<object> canExecute, CommandSupported supported) 
+        /// <param name="parameter">The parameter, or null if none needed.</param>
+        private RelayCommand(Action<object> execute, Predicate<object> canExecute, CommandSupported supported, object parameter) 
         {
             this.execute = execute ?? throw new ArgumentNullException("execute"); 
             this.canExecute = canExecute;
             Supported = supported;
+            Parameter = parameter;
         }
         #endregion
 
@@ -62,10 +64,23 @@ namespace Restless.Tools.Mvvm
         /// <param name="execute">The method that executes the command</param>
         /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
         /// <param name="supported">A value that determines if the command is supported.</param>
+        /// <param name="parameter">The parameter, or null if none needed.</param>
+        /// <returns>A <see cref="RelayCommand"/> object.</returns>
+        public static RelayCommand Create(Action<object> execute, Predicate<object> canExecute, CommandSupported supported, object parameter)
+        {
+            return new RelayCommand(execute, canExecute, supported, parameter);
+        }
+
+        /// <summary>
+        /// Creates and returns an instance of <see cref="RelayCommand"/>.
+        /// </summary>
+        /// <param name="execute">The method that executes the command</param>
+        /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
+        /// <param name="supported">A value that determines if the command is supported.</param>
         /// <returns>A <see cref="RelayCommand"/> object.</returns>
         public static RelayCommand Create(Action<object> execute, Predicate<object> canExecute, CommandSupported supported)
         {
-            return new RelayCommand(execute, canExecute, supported);
+            return new RelayCommand(execute, canExecute, supported, null);
         }
 
         /// <summary>
@@ -77,7 +92,7 @@ namespace Restless.Tools.Mvvm
         /// <remarks>This overload creates a command that is marked as supported.</remarks>
         public static RelayCommand Create(Action<object> execute, Predicate<object> canExecute)
         {
-            return new RelayCommand(execute, canExecute, CommandSupported.Yes);
+            return new RelayCommand(execute, canExecute, CommandSupported.Yes, null);
         }
 
         /// <summary>
@@ -88,7 +103,7 @@ namespace Restless.Tools.Mvvm
         /// <remarks>This overload creates a command that has no corresponding command predicate and is marked as supported.</remarks>
         public static RelayCommand Create(Action<object> execute)
         {
-            return new RelayCommand(execute, null, CommandSupported.Yes);
+            return new RelayCommand(execute, null, CommandSupported.Yes, null);
         }
         #endregion
 
@@ -140,7 +155,6 @@ namespace Restless.Tools.Mvvm
                 case CommandSupported.NoWithException:
                     throw new NotSupportedException("The command is not supported.");
             }
-            
         } 
         #endregion 
     }
