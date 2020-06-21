@@ -134,6 +134,14 @@ namespace Restless.Tools.Mvvm
         {
             OnUpdate();
         }
+
+        /// <summary>
+        /// Signal the view model that it is closing.
+        /// </summary>
+        public void SignalClosing()
+        {
+            OnClosing();
+        }
         #endregion
 
         /************************************************************************/
@@ -199,6 +207,16 @@ namespace Restless.Tools.Mvvm
         protected void SetLocalOwner<T>(ref T item) where T : ViewModelBase
         {
             item = GetOwner<T>() ?? throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Called when the view model is closing, that is when <see cref="SignalClosing"/> is called.
+        /// Override in a derived class to perform cleanup operations such as removing event handlers, etc.
+        /// Always call the base method.
+        /// </summary>
+        protected virtual void OnClosing()
+        {
+            Commands.Clear();
         }
         #endregion
 

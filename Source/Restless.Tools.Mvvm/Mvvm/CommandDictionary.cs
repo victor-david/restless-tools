@@ -115,6 +115,14 @@ namespace Restless.Tools.Mvvm
         {
             return storage.ContainsKey(key);
         }
+
+        /// <summary>
+        /// Clears all items from the command dictionary.
+        /// </summary>
+        public void Clear()
+        {
+            storage.Clear();
+        }
         #endregion
     }
 }
