@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Linq;
 
 namespace Restless.Tools.Controls
 {
@@ -39,6 +40,18 @@ namespace Restless.Tools.Controls
         public void AddSeparator()
         {
             Add(new Separator());
+        }
+
+        /// <summary>
+        /// Called when items are being cleared.
+        /// </summary>
+        protected override void ClearItems()
+        {
+            foreach (MenuItem item in this.OfType<MenuItem>())
+            {
+                item.Command = null;
+            }
+            base.ClearItems();
         }
     }
 }
