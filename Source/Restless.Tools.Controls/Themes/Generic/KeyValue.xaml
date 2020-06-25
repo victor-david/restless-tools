@@ -1,0 +1,41 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.Tools.Controls">
+
+    <Style TargetType="con:KeyValue">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="con:KeyValue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding HeaderGridWidthInternal, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="{Binding HeaderMarginInternal, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            Foreground="{Binding HeaderForeground, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            FontSize="{Binding HeaderFontSize, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            VerticalAlignment="{Binding HeaderVerticalAlignment, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            Text="{Binding Header, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"/>
+
+                        <TextBlock
+                            Grid.Column="1"
+                            Foreground="{Binding ValueForeground, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            FontSize="{Binding ValueFontSize, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            VerticalAlignment="{Binding ValueVerticalAlignment, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"
+                            TextWrapping="Wrap"
+                            Text="{Binding Value, RelativeSource={RelativeSource AncestorType=con:KeyValue}}"/>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
