@@ -82,12 +82,10 @@
             </Setter>
         </Style>
 
-
-
-
-
-
-
+        <BitmapImage x:Key="ImageLog" UriSource="/Restless.Tools.App.Sample;component/Images/Image.Log.64.png"/>
+        <BitmapImage x:Key="ImageChrevonDown" UriSource="/Restless.Tools.App.Sample;component/Images/Image.Chevron.Down.64.png"/>
+        <BitmapImage x:Key="ImageChrevonUp" UriSource="/Restless.Tools.App.Sample;component/Images/Image.Chevron.Up.64.png"/>
+        <BitmapImage x:Key="ImageConfig" UriSource="/Restless.Tools.App.Sample;component/Images/Image.Config.64.png"/>
 
     </Application.Resources>
 </Application>

@@ -68,6 +68,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ImageButtonDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DataGridScrollDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,6 +117,9 @@
     </Compile>
     <Compile Include="Controls\ColorPickerDisplay.xaml.cs">
       <DependentUpon>ColorPickerDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageButtonDisplay.xaml.cs">
+      <DependentUpon>ImageButtonDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGridScrollDisplay.xaml.cs">
       <DependentUpon>DataGridScrollDisplay.xaml</DependentUpon>
@@ -167,6 +174,12 @@
       <Project>{6db76cad-d35a-4bdf-9a01-dd0db96c4019}</Project>
       <Name>Restless.Tools.OfficeAutomation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Image.Chevron.Down.64.png" />
+    <Resource Include="Images\Image.Chevron.Up.64.png" />
+    <Resource Include="Images\Image.Config.64.png" />
+    <Resource Include="Images\Image.Log.64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
