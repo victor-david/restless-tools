@@ -592,7 +592,7 @@ namespace Restless.Tools.Database.SQLite
 
             if (transaction == null)
             {
-                /**
+                /*
                  * According to Sqlite docs, it is thread safe, even when using the same connection
                  * on multiple threads. It's possible that that doesn't apply to the .NET adapter.
                  * 
