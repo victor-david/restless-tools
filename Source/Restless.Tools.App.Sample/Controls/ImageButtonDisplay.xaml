@@ -6,9 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:con="clr-namespace:Restless.Tools.Controls;assembly=Restless.Tools.Controls"
     mc:Ignorable="d" 
-    d:DesignHeight="450" d:DesignWidth="800">
+    d:DesignHeight="650" d:DesignWidth="800">
     <UserControl.Resources>
         <Style TargetType="con:ImageButton">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style TargetType="con:ImageToggleButton">
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="120"/>
@@ -19,6 +26,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,6 +35,7 @@
 
         <TextBlock Margin="4" Text="Orientation Horizontal (default)"/>
         <TextBlock Grid.Column="1" Margin="4" Text="Orientation Vertical"/>
+        <TextBlock Grid.Column="2" Margin="4" Text="ImageButtonToggle"/>
         
         <StackPanel Grid.Row="1">
             <con:ImageButton ImageSource="{StaticResource ImageConfig}" Content="Settings"/>
@@ -47,6 +56,54 @@
             <con:ImageButton ImageSource="{StaticResource ImageLog}" Content="All Logs"/>
             <con:ImageButton ImageSource="{StaticResource ImageChrevonUp}" Content="Go Up"/>
             <con:ImageButton ImageSource="{StaticResource ImageChrevonDown}" Content="Go Down" IsEnabled="False"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            
+            <con:ImageToggleButton
+                Content="Toggle"
+                ImageSourceOn="{StaticResource ImageChrevonUp}"
+                ImageSourceOff="{StaticResource ImageChrevonDown}"/>
+
+            <con:ImageToggleButton
+                Orientation="Vertical"
+                Height="66"
+                ImageSourceOn="{StaticResource ImageChrevonUp}"
+                ImageSourceOff="{StaticResource ImageChrevonDown}"
+                Content="Vertical"/>
+
+            <con:ImageToggleButton
+                ImageSourceOn="{StaticResource ImageChrevonUp}"
+                ImageSourceOff="{StaticResource ImageChrevonDown}"/>
+
+            <con:ImageToggleButton
+                Width="Auto"
+                ImageSourceOn="{StaticResource ImageChrevonUp}"
+                ImageSourceOff="{StaticResource ImageChrevonDown}"/>
+
+            <con:ImageToggleButton
+                Width="64"
+                Height="64"
+                HorizontalContentAlignment="Center"
+                ImageSourceOn="{StaticResource ImageChrevonUp}"
+                ImageSourceOff="{StaticResource ImageChrevonDown}"/>
+            
+            <con:ImageToggleButton 
+                HorizontalContentAlignment="Center"
+                Content="No Images"/>
+
+            <con:ImageToggleButton 
+                ImageSourceOn="{StaticResource ImageConfig}"
+                HorizontalContentAlignment="Center"
+                Content="One Image"/>
+
+            <con:ImageToggleButton 
+                Orientation="Vertical"
+                Height="70"
+                ImageSourceOn="{StaticResource ImageLog}"
+                HorizontalContentAlignment="Center"
+                Content="One Image (vertical)"/>
+
 
         </StackPanel>
     </Grid>

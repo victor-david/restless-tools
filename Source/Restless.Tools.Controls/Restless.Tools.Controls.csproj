@@ -77,6 +77,7 @@
     <Compile Include="DragDrop\IDragSource.cs" />
     <Compile Include="DragDrop\IDropTarget.cs" />
     <Compile Include="ImageButton\ImageButton.cs" />
+    <Compile Include="ImageButton\ImageToggleButton.cs" />
     <Compile Include="KeyValue\KeyValue.cs" />
     <Compile Include="LinkedTextBlock\LinkedTextBlock.cs" />
     <Compile Include="Core\Default.cs" />
