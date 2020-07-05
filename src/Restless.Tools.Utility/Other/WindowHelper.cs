@@ -11,7 +11,6 @@ namespace Restless.Tools.Utility
     public static class WindowHelper
     {
         #region Public Methods
-
         /// <summary>
         /// Gets a Rectangle that describes the current position and size of the window.
         /// </summary>

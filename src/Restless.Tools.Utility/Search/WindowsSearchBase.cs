@@ -15,8 +15,7 @@ namespace Restless.Tools.Utility.Search
     {
         #region Private
         private const string ConnectionStr = "Provider=Search.CollatorDSO;Extended Properties=\"Application=Windows\"";
-        private const string Rank = "rank";
-        private List<PropSystem.PropertyKey> keys;
+        private readonly List<PropSystem.PropertyKey> keys;
         #endregion
 
         /************************************************************************/
@@ -168,11 +167,7 @@ namespace Restless.Tools.Utility.Search
         /// <param name="e">The event arguments.</param>
         protected virtual void OnAddingResult(SearchResultEventArgs e)
         {
-            var handler = AddingResult;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            AddingResult?.Invoke(this, e);
         }
         #endregion
 
