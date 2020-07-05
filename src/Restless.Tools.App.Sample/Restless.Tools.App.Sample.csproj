@@ -1,185 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{84F6AF2A-3BB0-4C91-BC5E-BEBE444FBAE4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <TargetFramework>net461</TargetFramework>
+    <UseWPF>true</UseWPF>
     <RootNamespace>Restless.Tools.App.Sample</RootNamespace>
     <AssemblyName>Restless.Tools.App.Sample</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <Authors>Restless Animal Development</Authors>
+    <Company>Restless Animal Development</Company>
+    <Version>2.0.0</Version>
+    <Product>Restless Tools Samples</Product>
+    <Description>Provides demos of various controls, etc. within Restless.Tools</Description>
+    <PackageProjectUrl>https://github.com/victor-david/restless-tools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/victor-david/restless-tools</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageReleaseNotes>2.0.0 Demo project updated to use Sdk project</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <ProjectReference Include="..\Restless.Tools.Controls\Restless.Tools.Controls.csproj" />
+    <ProjectReference Include="..\Restless.Tools.Mvvm\Restless.Tools.Mvvm.csproj" />
+    <ProjectReference Include="..\Restless.Tools.OfficeAutomation\Restless.Tools.OfficeAutomation.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="Controls\CalendarDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ColorPickerDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Controls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ImageButtonDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\DataGridScrollDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\DataGridDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\DocumentConversionDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\KeyValueDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ListBoxDisplay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PersonView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TabDisplayFixed.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TabDisplayDynamic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\CalendarDisplay.xaml.cs">
-      <DependentUpon>CalendarDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ColorPickerDisplay.xaml.cs">
-      <DependentUpon>ColorPickerDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ImageButtonDisplay.xaml.cs">
-      <DependentUpon>ImageButtonDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DataGridScrollDisplay.xaml.cs">
-      <DependentUpon>DataGridScrollDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DataGridDisplay.xaml.cs">
-      <DependentUpon>DataGridDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DocumentConversionDisplay.xaml.cs">
-      <DependentUpon>DocumentConversionDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\KeyValueDisplay.xaml.cs">
-      <DependentUpon>KeyValueDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ListBoxDisplay.xaml.cs">
-      <DependentUpon>ListBoxDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PersonView.xaml.cs">
-      <DependentUpon>PersonView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TabDisplayFixed.xaml.cs">
-      <DependentUpon>TabDisplayFixed.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TabDisplayDynamic.xaml.cs">
-      <DependentUpon>TabDisplayDynamic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helper\Person.cs" />
-    <Compile Include="Helper\PersonCollection.cs" />
-    <Compile Include="Helper\TabPersonController.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Restless.Tools.Controls\Restless.Tools.Controls.csproj">
-      <Project>{8a5d6e67-1248-41d4-8cd0-eba919716210}</Project>
-      <Name>Restless.Tools.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Restless.Tools.Mvvm\Restless.Tools.Mvvm.csproj">
-      <Project>{9fbaa5ea-71bb-4548-8ac3-f10084f31c70}</Project>
-      <Name>Restless.Tools.Mvvm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Restless.Tools.OfficeAutomation\Restless.Tools.OfficeAutomation.csproj">
-      <Project>{6db76cad-d35a-4bdf-9a01-dd0db96c4019}</Project>
-      <Name>Restless.Tools.OfficeAutomation</Name>
-    </ProjectReference>
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Images\Image.Chevron.Down.64.png" />
     <Resource Include="Images\Image.Chevron.Up.64.png" />
     <Resource Include="Images\Image.Config.64.png" />
     <Resource Include="Images\Image.Log.64.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
