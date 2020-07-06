@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>Restless.Tools.App.Sample</RootNamespace>
     <AssemblyName>Restless.Tools.App.Sample</AssemblyName>
@@ -14,13 +14,12 @@
     <PackageProjectUrl>https://github.com/victor-david/restless-tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/victor-david/restless-tools</RepositoryUrl>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <PackageReleaseNotes>2.0.0 Demo project updated to use Sdk project</PackageReleaseNotes>
+    <PackageReleaseNotes>2.0.0 Demo project updated to use Sdk project</PackageReleaseNotes>    
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Restless.Tools.Controls\Restless.Tools.Controls.csproj" />
     <ProjectReference Include="..\Restless.Tools.Mvvm\Restless.Tools.Mvvm.csproj" />
-    <ProjectReference Include="..\Restless.Tools.OfficeAutomation\Restless.Tools.OfficeAutomation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

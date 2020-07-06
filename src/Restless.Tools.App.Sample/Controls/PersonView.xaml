@@ -5,28 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     mc:Ignorable="d" 
-    d:DesignHeight="150" d:DesignWidth="200">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock 
-            Foreground="Red"
-            FontSize="48"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            Text="{Binding LastName}"/>
-
-        <Label Grid.Row="1" Margin="12" HorizontalAlignment="Center">
-            <Hyperlink  ToolTip="This is a test of hyperlink">
-                <TextBlock FontSize="24">
-                    <Run Text="{Binding FirstName, Mode=OneWay}"/>
-                    <Run Text="{Binding LastName, Mode=OneWay}"/>
-                </TextBlock>
-            </Hyperlink>
-        </Label>
-
-
-    </Grid>
+    d:DesignHeight="70" d:DesignWidth="100">
+    <TextBlock FontSize="42" Foreground="Red">
+        <Run Text="{Binding FirstName, Mode=OneWay}"/>
+        <Run Text="{Binding LastName, Mode=OneWay}"/>
+        <Run Foreground="DarkBlue" Text="("/>
+        <Run Foreground="DarkBlue" Text="{Binding Position, Mode=OneWay}"/>
+        <Run  Foreground="DarkBlue" Text=")"/>
+    </TextBlock>
 </UserControl>
