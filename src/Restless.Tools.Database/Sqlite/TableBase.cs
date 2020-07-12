@@ -16,7 +16,7 @@ namespace Restless.Tools.Database.SQLite
     public abstract class TableBase : DataTable
     {
         #region Private
-        private SQLiteDataAdapter adapter;
+        private readonly SQLiteDataAdapter adapter;
         // SQLite automatically has a _rowid_ column for each table which uniquely identifies the row
         private const string RowId = "_rowid_";
         private const string RowIdAlias = "SYSROWID";
@@ -25,7 +25,7 @@ namespace Restless.Tools.Database.SQLite
         // This provides a way to avoid updating the db uneccesarily due to calculated columns.
         // When an eligible column is changed, it's added to this list. Later, during update, we check
         // to see if there's any need to update.
-        private Dictionary<DataRow,List<DataColumn>> changedEligibleColumns;
+        private readonly Dictionary<DataRow,List<DataColumn>> changedEligibleColumns;
         #endregion
 
         /************************************************************************/
@@ -57,6 +57,11 @@ namespace Restless.Tools.Database.SQLite
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the schema version for the table. Override if needed.
+        /// </summary>
+        public virtual long SchemaVersion => Controller.DefaultSchemaVersion;
         #endregion
 
         /************************************************************************/
@@ -298,9 +303,11 @@ namespace Restless.Tools.Database.SQLite
            
             if (!Columns.Contains(colName))
             {
-                DataColumn col = new DataColumn(colName);
-                col.DataType = typeof(T);
-                col.Expression = string.Format("Parent({0}).{1}", relationName, parentColName);
+                DataColumn col = new DataColumn(colName)
+                {
+                    DataType = typeof(T),
+                    Expression = string.Format("Parent({0}).{1}", relationName, parentColName)
+                };
                 Columns.Add(col);
             }
         }
@@ -334,9 +341,11 @@ namespace Restless.Tools.Database.SQLite
             
             if (!Columns.Contains(colName))
             {
-                DataColumn col = new DataColumn(colName);
-                col.DataType = typeof(T);
-                col.Expression = expression;
+                DataColumn col = new DataColumn(colName)
+                {
+                    DataType = typeof(T),
+                    Expression = expression
+                };
                 Columns.Add(col);
             }
         }
@@ -491,6 +500,15 @@ namespace Restless.Tools.Database.SQLite
         /// to set data relations via the <see cref="SetDataRelations"/> method. The base method does nothing.
         /// </summary>
         protected internal virtual void UseDataRelations()
+        {
+        }
+
+        /// <summary>
+        /// Override in a derived class to perform special operations when initialization has started.
+        /// The controller calls this method during registration, after the table has been created (if needed),
+        /// but before any data is loaded. The base method does nothing.
+        /// </summary>
+        protected internal virtual void OnInitializationStarted()
         {
         }
 
