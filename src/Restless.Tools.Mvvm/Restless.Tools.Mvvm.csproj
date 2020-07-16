@@ -18,4 +18,7 @@
     <PackageTags>wpf mvvm</PackageTags>
     <PackageReleaseNotes>2.0.0 Update to SDK project. Multi target support</PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <DocumentationFile>..\Restless.Tools.Xml\Restless.Tools.Mvvm.xml</DocumentationFile>
+  </PropertyGroup>
 </Project>

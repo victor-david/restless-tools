@@ -15,6 +15,9 @@
     <PackageTags>openxml office</PackageTags>
     <PackageReleaseNotes>2.0.0 Update to SDK project. Multi target support</PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <DocumentationFile>..\Restless.Tools.Xml\Restless.Tools.OpenXml.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.0" />
   </ItemGroup>  

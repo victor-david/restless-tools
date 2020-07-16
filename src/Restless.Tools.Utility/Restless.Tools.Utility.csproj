@@ -17,6 +17,9 @@
     <PackageTags>wpf utility</PackageTags>
     <PackageReleaseNotes>2.0.0 Update to SDK project. Multi target support</PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <DocumentationFile>..\Restless.Tools.Xml\Restless.Tools.Utility.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
     <PackageReference Include="System.Data.OleDb" Version="4.7.1" />

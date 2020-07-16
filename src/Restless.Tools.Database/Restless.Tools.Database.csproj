@@ -17,6 +17,9 @@
     <PackageTags>database sqlite</PackageTags>
     <PackageReleaseNotes>2.0.0 Update to SDK project. Multi target support</PackageReleaseNotes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <DocumentationFile>..\Restless.Tools.Xml\Restless.Tools.Database.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
   </ItemGroup>

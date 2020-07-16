@@ -2,6 +2,7 @@ obj/
 bin/
 packages/
 Help/
+Restless.Tools.Xml/
 .vs/
 *.cmd
 *.nupkg
