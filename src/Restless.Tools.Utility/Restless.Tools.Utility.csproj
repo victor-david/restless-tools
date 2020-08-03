@@ -1,109 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{24162F48-2D5B-4667-9456-B312447E0481}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restless.Tools.Utility</RootNamespace>
+    <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
     <AssemblyName>Restless.Tools.Utility</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <RootNamespace>Restless.Tools.Utility</RootNamespace>
+    <PackageId>Restless.Tools.Utility</PackageId>
+    <OutputType>Library</OutputType>
+    <Description>Provides various utility classes; converters, validation helpers, windows search, task helpers</Description>
+    <PackageProjectUrl>https://github.com/victor-david/restless-tools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/victor-david/restless-tools</RepositoryUrl>
+    <Authors>Restless Animal Development</Authors>
+    <Version>2.0.0</Version>
+    <Product>Restless Utility</Product>
+    <Title>$(AssemblyName)</Title>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <Copyright>Copyright © 2020</Copyright>
+    <PackageTags>wpf utility</PackageTags>
+    <PackageReleaseNotes>2.0.0 Update to SDK project. Multi target support</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Restless.Tools.Utility.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <DocumentationFile>..\Restless.Tools.Xml\Restless.Tools.Utility.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="System.Data.OleDb" Version="4.7.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Converters\BooleanToInverseBooleanConverter.cs" />
-    <Compile Include="Converters\BooleanToInverseVisibilityConverter.cs" />
-    <Compile Include="Converters\BooleanToTextWrappingConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityMultiConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityMultiConverterOptions.cs" />
-    <Compile Include="Converters\DateUtcToLocalConverter.cs" />
-    <Compile Include="Converters\Int64ToImageConverter.cs" />
-    <Compile Include="Converters\Int64ToVisibilityConverter.cs" />
-    <Compile Include="Converters\NegativeIntegerToString.cs" />
-    <Compile Include="Converters\StringConcatenationMultiConverter.cs" />
-    <Compile Include="Converters\StringToCleanStringConverter.cs" />
-    <Compile Include="Converters\StringToCleanStringOptions.cs" />
-    <Compile Include="Converters\StringToMaskedStringConverter.cs" />
-    <Compile Include="Search\SearchItemTypes.cs" />
-    <Compile Include="Search\SearchResultEventArgs.cs" />
-    <Compile Include="Search\SearchValueCollection.cs" />
-    <Compile Include="Search\WindowsFileSearch.cs" />
-    <Compile Include="Search\WindowsMapiSearch.cs" />
-    <Compile Include="Search\WindowsSearchBase.cs" />
-    <Compile Include="Search\WindowsSearchResult.cs" />
-    <Compile Include="Search\WindowsSearchResultCollection.cs" />
-    <Compile Include="Tasks\TaskManager.cs" />
-    <Compile Include="Tasks\TaskManagerExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Other\AssemblyInfo.cs" />
-    <Compile Include="Other\AssemblyInfoType.cs" />
-    <Compile Include="Other\Execution.cs" />
-    <Compile Include="Other\FileOperations.cs" />
-    <Compile Include="Other\Format.cs" />
-    <Compile Include="Other\Integer64List.cs" />
-    <Compile Include="Other\Messages.cs" />
-    <Compile Include="Other\OpenHelper.cs" />
-    <Compile Include="Other\SerializationExtensions.cs" />
-    <Compile Include="Other\TopLevelExceptionHandler.cs" />
-    <Compile Include="Other\Validations.cs" />
-    <Compile Include="Other\WindowHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -81,6 +81,13 @@ namespace Restless.Tools.Mvvm
             Owner = owner;
             Commands = new CommandDictionary();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
+        /// </summary>
+        protected ViewModelBase() : this(null)
+        {
+        }
         #endregion
 
         /************************************************************************/

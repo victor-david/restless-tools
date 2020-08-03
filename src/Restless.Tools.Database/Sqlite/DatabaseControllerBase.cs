@@ -15,7 +15,7 @@ namespace Restless.Tools.Database.SQLite
     {
         #region Private
         private const string DataSetName = "Main";
-        private Dictionary<string, string> attached;
+        private readonly Dictionary<string, string> attached;
         #endregion
 
         /************************************************************************/
@@ -126,6 +126,12 @@ namespace Restless.Tools.Database.SQLite
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets the default schema version number for tables.
+        /// Override in a dervived class if needed.
+        /// </summary>
+        public virtual long DefaultSchemaVersion => 100;
         #endregion
 
         /************************************************************************/
@@ -358,13 +364,16 @@ namespace Restless.Tools.Database.SQLite
                 table.CreateFromDdl();
             }
 
-            if (table.Exists() && !table.HasRows())
-            {
-                table.Populate();
-            }
-
+            /* a boolean that indicates if the table exists within the database file */
             if (table.Exists())
             {
+                table.OnInitializationStarted();
+
+                if (!table.HasRows())
+                {
+                    table.Populate();
+                }
+
                 table.Load();
             }
 
@@ -426,7 +435,6 @@ namespace Restless.Tools.Database.SQLite
         {
             TableRegistrationComplete(MainSchemaName);
         }
-
         #endregion
 
         /************************************************************************/

@@ -134,9 +134,9 @@ namespace Restless.Tools.Database.SQLite
         /// <returns>The DateTime value, or null.</returns>
         protected DateTime? GetNullableDateTime(string colName)
         {
-            if (Row[colName] is DateTime)
+            if (Row[colName] is DateTime time)
             {
-                return (DateTime)Row[colName];
+                return time;
             }
             return null;
         }
