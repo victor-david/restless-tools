@@ -1,6 +1,6 @@
 ﻿# Restless Tools
-Provides various support and helper classes for applications. The following projects are included.
-
+**Note:** This project is no longer under development. It's been superseded by [Restless Toolkit](https://github.com/victor-david/restless-toolkit)
+ 
 ## Restless.Tools.Controls
 [![Nuget](https://img.shields.io/nuget/v/Restless.Tools.Controls.svg?style=flat-square)](https://www.nuget.org/packages/Restless.Tools.Controls/)
 
